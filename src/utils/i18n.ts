@@ -157,6 +157,7 @@ export const translations = {
     'common.error': 'Hata',
     'common.success': 'Başarılı',
     'common.warning': 'Uyarı',
+    'common.confirm-delete': 'Bu öğeyi silmek istediğinizden emin misiniz?',
     
     // Units
     'units.kelvin': 'K',
@@ -340,6 +341,7 @@ export const translations = {
     'common.error': 'Error',
     'common.success': 'Success',
     'common.warning': 'Warning',
+    'common.confirm-delete': 'Are you sure you want to delete this item?',
     
     // Units
     'units.kelvin': 'K',
