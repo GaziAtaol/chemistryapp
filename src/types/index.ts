@@ -39,7 +39,7 @@ export type ElementCategory =
 export interface QuizQuestion {
   id: string;
   type: QuestionType;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'beginner' | 'easy' | 'medium' | 'hard' | 'academic';
   element_ids?: number[];
   question_tr: string;
   question_en: string;
@@ -56,7 +56,11 @@ export type QuestionType =
   | 'fill-blank'
   | 'true-false'
   | 'electron-config'
-  | 'periodic-trend';
+  | 'periodic-trend'
+  | 'naming'
+  | 'property-comparison'
+  | 'classification'
+  | 'calculation';
 
 export interface FlashCard {
   id: string;
@@ -81,7 +85,7 @@ export interface QuizSession {
   questions: QuizQuestion[];
   answers: { question_id: string; answer: string | string[]; correct: boolean; time_taken: number; }[];
   score: number;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'beginner' | 'easy' | 'medium' | 'hard' | 'academic';
   topics: string[];
   mode: 'timed' | 'practice' | 'challenge';
 }
