@@ -192,6 +192,212 @@ function getCategoryName(category: string): string {
   return categoryNames[category] || category;
 }
 
+function generateMatchingQuestion(difficulty: string): QuizQuestion {
+  const elements = getRandomElements(4);
+  const pairs = elements.map(element => ({
+    left: element.name_tr,
+    right: element.symbol
+  }));
+  
+  // Shuffle the right side
+  const rightOptions = [...pairs.map(p => p.right)].sort(() => Math.random() - 0.5);
+  
+  return {
+    id: `match_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'matching',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: elements.map(e => e.z),
+    question_tr: 'Aşağıdaki element isimlerini simgeleriyle eşleştiriniz:',
+    question_en: 'Match the following element names with their symbols:',
+    options: rightOptions,
+    correct_answer: pairs.map(p => `${p.left}:${p.right}`),
+    explanation_tr: 'Element isimleri ve simgeleri doğru şekilde eşleştirilmiştir.',
+    explanation_en: 'Element names and symbols are correctly matched.',
+    tags: ['element', 'matching', 'symbol']
+  };
+}
+
+function generateElectronConfigQuestion(difficulty: string): QuizQuestion {
+  const element = getRandomElement();
+  const wrongConfigs = getRandomElements(3)
+    .filter(e => e.z !== element.z)
+    .map(e => e.electron_config_short);
+  
+  const options = [element.electron_config_short, ...wrongConfigs].sort(() => Math.random() - 0.5);
+  
+  return {
+    id: `ec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'electron-config',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element.z],
+    question_tr: `${element.name_tr} (${element.symbol}) elementinin elektron konfigürasyonu nedir?`,
+    question_en: `What is the electron configuration of ${element.name_en} (${element.symbol})?`,
+    options,
+    correct_answer: element.electron_config_short,
+    explanation_tr: `${element.name_tr} elementinin elektron konfigürasyonu ${element.electron_config_short}'dir.`,
+    explanation_en: `The electron configuration of ${element.name_en} is ${element.electron_config_short}.`,
+    tags: ['element', 'electron-config']
+  };
+}
+
+function generatePeriodicTrendQuestion(difficulty: string): QuizQuestion {
+  const elements = getRandomElements(2).sort((a, b) => a.z - b.z);
+  const [element1, element2] = elements;
+  
+  const trends = [
+    {
+      property: 'atomic radius',
+      property_tr: 'atom yarıçapı',
+      comparison: element1.atomic_radius && element2.atomic_radius ? 
+        (element1.atomic_radius > element2.atomic_radius ? 'larger' : 'smaller') : 'unknown'
+    },
+    {
+      property: 'ionization energy',
+      property_tr: 'iyonlaşma enerjisi',
+      comparison: element1.ionization_energy[0] > element2.ionization_energy[0] ? 'higher' : 'lower'
+    }
+  ];
+  
+  const trend = trends[Math.floor(Math.random() * trends.length)];
+  
+  return {
+    id: `pt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'periodic-trend',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element1.z, element2.z],
+    question_tr: `${element1.name_tr} ve ${element2.name_tr} elementleri arasında ${trend.property_tr} bakımından hangisi daha büyüktür?`,
+    question_en: `Between ${element1.name_en} and ${element2.name_en}, which has a ${trend.comparison} ${trend.property}?`,
+    options: [element1.name_tr, element2.name_tr],
+    correct_answer: trend.comparison === 'larger' || trend.comparison === 'higher' ? 
+      element1.name_tr : element2.name_tr,
+    explanation_tr: `Periyodik tabloda ${trend.property_tr} eğilimi gereği bu sonuç doğrudur.`,
+    explanation_en: `This is correct based on the periodic trend for ${trend.property}.`,
+    tags: ['element', 'periodic-trend', 'comparison']
+  };
+}
+
+function generateNamingQuestion(difficulty: string): QuizQuestion {
+  const element = getRandomElement();
+  const wrongNames = getRandomElements(3)
+    .filter(e => e.z !== element.z)
+    .map(e => e.name_tr);
+  
+  const options = [element.name_tr, ...wrongNames].sort(() => Math.random() - 0.5);
+  
+  return {
+    id: `name_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'naming',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element.z],
+    question_tr: `${element.symbol} simgeli elementin adı nedir?`,
+    question_en: `What is the name of the element with symbol ${element.symbol}?`,
+    options,
+    correct_answer: element.name_tr,
+    explanation_tr: `${element.symbol} simgesi ${element.name_tr} elementine aittir.`,
+    explanation_en: `The symbol ${element.symbol} belongs to ${element.name_en}.`,
+    tags: ['element', 'naming', 'symbol']
+  };
+}
+
+function generatePropertyComparisonQuestion(difficulty: string): QuizQuestion {
+  const elements = getRandomElements(2);
+  const [element1, element2] = elements;
+  
+  const properties = [
+    {
+      name: 'mass',
+      name_tr: 'atom kütlesi',
+      value1: element1.mass,
+      value2: element2.mass,
+      unit: 'u'
+    },
+    {
+      name: 'atomic number',
+      name_tr: 'atom numarası',
+      value1: element1.z,
+      value2: element2.z,
+      unit: ''
+    }
+  ];
+  
+  const property = properties[Math.floor(Math.random() * properties.length)];
+  const correctElement = property.value1 > property.value2 ? element1 : element2;
+  
+  return {
+    id: `pc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'property-comparison',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element1.z, element2.z],
+    question_tr: `${element1.name_tr} ve ${element2.name_tr} elementlerinden hangisinin ${property.name_tr} daha büyüktür?`,
+    question_en: `Which element has a larger ${property.name}: ${element1.name_en} or ${element2.name_en}?`,
+    options: [element1.name_tr, element2.name_tr],
+    correct_answer: correctElement.name_tr,
+    explanation_tr: `${correctElement.name_tr} elementinin ${property.name_tr} ${property.value1 > property.value2 ? property.value1 : property.value2} ${property.unit}'dir.`,
+    explanation_en: `${correctElement.name_en} has a ${property.name} of ${property.value1 > property.value2 ? property.value1 : property.value2} ${property.unit}.`,
+    tags: ['element', 'property-comparison']
+  };
+}
+
+function generateClassificationQuestion(difficulty: string): QuizQuestion {
+  const element = getRandomElement();
+  const wrongCategories = ['alkali-metal', 'noble-gas', 'halogen', 'transition-metal']
+    .filter(cat => cat !== element.category)
+    .slice(0, 3)
+    .map(cat => getCategoryName(cat));
+  
+  const options = [getCategoryName(element.category), ...wrongCategories].sort(() => Math.random() - 0.5);
+  
+  return {
+    id: `class_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'classification',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element.z],
+    question_tr: `${element.name_tr} (${element.symbol}) hangi element grubuna aittir?`,
+    question_en: `Which element group does ${element.name_en} (${element.symbol}) belong to?`,
+    options,
+    correct_answer: getCategoryName(element.category),
+    explanation_tr: `${element.name_tr} ${getCategoryName(element.category)} grubuna aittir.`,
+    explanation_en: `${element.name_en} belongs to the ${getCategoryName(element.category)} group.`,
+    tags: ['element', 'classification', 'category']
+  };
+}
+
+function generateCalculationQuestion(difficulty: string): QuizQuestion {
+  const element = getRandomElement();
+  
+  const calculations = [
+    {
+      question_tr: `${element.name_tr} elementinin bir atomunda kaç proton vardır?`,
+      question_en: `How many protons are in one atom of ${element.name_en}?`,
+      answer: element.z.toString(),
+      explanation_tr: `Atom numarası proton sayısına eşittir: ${element.z}`,
+      explanation_en: `Atomic number equals number of protons: ${element.z}`
+    },
+    {
+      question_tr: `${element.name_tr} elementinin yaklaşık atom kütlesi kaçtır?`,
+      question_en: `What is the approximate atomic mass of ${element.name_en}?`,
+      answer: Math.round(element.mass).toString(),
+      explanation_tr: `${element.name_tr} elementinin atom kütlesi yaklaşık ${Math.round(element.mass)} u'dur.`,
+      explanation_en: `The atomic mass of ${element.name_en} is approximately ${Math.round(element.mass)} u.`
+    }
+  ];
+  
+  const calc = calculations[Math.floor(Math.random() * calculations.length)];
+  
+  return {
+    id: `calc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type: 'calculation',
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
+    element_ids: [element.z],
+    question_tr: calc.question_tr,
+    question_en: calc.question_en,
+    correct_answer: calc.answer,
+    explanation_tr: calc.explanation_tr,
+    explanation_en: calc.explanation_en,
+    tags: ['element', 'calculation']
+  };
+}
+
 function generateQuestionByType(type: QuestionType, difficulty: string): QuizQuestion {
   switch (type) {
     case 'multiple-choice':
@@ -200,8 +406,22 @@ function generateQuestionByType(type: QuestionType, difficulty: string): QuizQue
       return generateTrueFalseQuestion(difficulty);
     case 'fill-blank':
       return generateFillBlankQuestion(difficulty);
+    case 'matching':
+      return generateMatchingQuestion(difficulty);
+    case 'electron-config':
+      return generateElectronConfigQuestion(difficulty);
+    case 'periodic-trend':
+      return generatePeriodicTrendQuestion(difficulty);
+    case 'naming':
+      return generateNamingQuestion(difficulty);
+    case 'property-comparison':
+      return generatePropertyComparisonQuestion(difficulty);
+    case 'classification':
+      return generateClassificationQuestion(difficulty);
+    case 'calculation':
+      return generateCalculationQuestion(difficulty);
     default:
-      // For now, fallback to multiple choice for unimplemented types
+      // Fallback to multiple choice for any unexpected types
       return generateMultipleChoiceQuestion(difficulty);
   }
 }
@@ -210,7 +430,12 @@ export function generateQuestions(config: QuestionGeneratorConfig): QuizQuestion
   const questions: QuizQuestion[] = [];
   const { difficulty, questionCount, questionTypes } = config;
   
-  // Calculate distribution based on selected types
+  // Ensure we only generate questions from selected types
+  if (questionTypes.length === 0) {
+    throw new Error('At least one question type must be selected');
+  }
+  
+  // Calculate distribution based on selected types only
   const selectedWeights: Partial<Record<QuestionType, number>> = {};
   let totalWeight = 0;
   
@@ -219,7 +444,7 @@ export function generateQuestions(config: QuestionGeneratorConfig): QuizQuestion
     totalWeight += selectedWeights[type];
   }
   
-  // Normalize weights
+  // Normalize weights to sum to 1
   for (const type of questionTypes) {
     selectedWeights[type] = (selectedWeights[type] || 0) / totalWeight;
   }
@@ -228,7 +453,7 @@ export function generateQuestions(config: QuestionGeneratorConfig): QuizQuestion
   for (let i = 0; i < questionCount; i++) {
     const random = Math.random();
     let cumulative = 0;
-    let selectedType = questionTypes[0]; // fallback
+    let selectedType = questionTypes[0]; // fallback to first selected type
     
     for (const type of questionTypes) {
       cumulative += selectedWeights[type] || 0;
