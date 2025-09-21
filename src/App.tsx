@@ -3,7 +3,7 @@ import Navigation from './components/Navigation/Navigation';
 import PeriodicTable from './components/PeriodicTable/PeriodicTable';
 import ElementDetailPanel from './components/PeriodicTable/ElementDetailPanel';
 import Quiz from './components/Quiz/Quiz';
-import BackgroundVideo from './components/BackgroundVideo/BackgroundVideo';
+import PageContainer from './components/PageContainer/PageContainer';
 import type { Element } from './types';
 import { useSettings, useAppData } from './hooks';
 import { t } from './utils/i18n';
@@ -14,17 +14,16 @@ const Dashboard: React.FC = () => {
   const { data } = useAppData();
   
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-6">{t('dashboard.title')}</h1>
+    <PageContainer title="🏠 Pano">
       <div className="grid grid-auto gap-6">
-        <div className="card">
-          <h3 className="text-lg font-semibold mb-3">{t('dashboard.daily-cards')}</h3>
+        <div className="quiz-question-card">
+          <h3 className="text-lg font-semibold mb-3 text-brand">{t('dashboard.daily-cards')}</h3>
           <div className="text-2xl font-bold text-brand">
             {data.flashcards.filter(card => new Date(card.next_review) <= new Date()).length}
           </div>
         </div>
-        <div className="card">
-          <h3 className="text-lg font-semibold mb-3">{t('dashboard.last-quiz')}</h3>
+        <div className="quiz-question-card">
+          <h3 className="text-lg font-semibold mb-3 text-accent">{t('dashboard.last-quiz')}</h3>
           <div className="text-2xl font-bold text-accent">
             {data.quiz_sessions.length > 0 
               ? `${Math.round(data.quiz_sessions[data.quiz_sessions.length - 1].score)}%`
@@ -32,69 +31,64 @@ const Dashboard: React.FC = () => {
             }
           </div>
         </div>
-        <div className="card">
-          <h3 className="text-lg font-semibold mb-3">{t('favorites.title')}</h3>
+        <div className="quiz-question-card">
+          <h3 className="text-lg font-semibold mb-3 text-warning">{t('favorites.title')}</h3>
           <div className="text-2xl font-bold text-warning">
             {data.favorites.elements.length + data.favorites.flashcards.length + data.favorites.notes.length}
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
 
 const FlashCards: React.FC = () => (
-  <div className="container py-8">
-    <h1 className="text-3xl font-bold mb-6">{t('flashcards.title')}</h1>
-    <div className="card">
+  <PageContainer title="🃏 Kartlar">
+    <div className="quiz-question-card">
       <p>Flashcard bileşeni yakında gelecek...</p>
     </div>
-  </div>
+  </PageContainer>
 );
 
 const Favorites: React.FC = () => (
-  <div className="container py-8">
-    <h1 className="text-3xl font-bold mb-6">{t('favorites.title')}</h1>
-    <div className="card">
+  <PageContainer title="⭐ Favoriler">
+    <div className="quiz-question-card">
       <p>Favoriler bileşeni yakında gelecek...</p>
     </div>
-  </div>
+  </PageContainer>
 );
 
 const History: React.FC = () => (
-  <div className="container py-8">
-    <h1 className="text-3xl font-bold mb-6">Geçmiş</h1>
-    <div className="card">
+  <PageContainer title="📜 Geçmiş">
+    <div className="quiz-question-card">
       <p>Geçmiş bileşeni yakında gelecek...</p>
     </div>
-  </div>
+  </PageContainer>
 );
 
 const Notes: React.FC = () => (
-  <div className="container py-8">
-    <h1 className="text-3xl font-bold mb-6">{t('notes.title')}</h1>
-    <div className="card">
+  <PageContainer title="📝 Notlar">
+    <div className="quiz-question-card">
       <p>Notlar bileşeni yakında gelecek...</p>
     </div>
-  </div>
+  </PageContainer>
 );
 
 const Settings: React.FC = () => {
   const { settings, updateSettings } = useSettings();
   
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-6">{t('settings.title')}</h1>
-      <div className="max-w-2xl">
-        <div className="card space-y-6">
+    <PageContainer title="⚙️ Ayarlar">
+      <div className="max-w-2xl mx-auto">
+        <div className="quiz-question-card space-y-6">
           {/* Language Setting */}
           <div>
-            <label className="block text-sm font-medium mb-2">{t('settings.language')}</label>
+            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.language')}</label>
             <select
               value={settings.language}
               onChange={(e) => updateSettings({ language: e.target.value as 'tr' | 'en' })}
-              className="input"
+              className="input w-full"
             >
               <option value="tr">Türkçe</option>
               <option value="en">English</option>
@@ -103,11 +97,11 @@ const Settings: React.FC = () => {
 
           {/* Theme Setting */}
           <div>
-            <label className="block text-sm font-medium mb-2">{t('settings.theme')}</label>
+            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.theme')}</label>
             <select
               value={settings.theme}
               onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' })}
-              className="input"
+              className="input w-full"
             >
               <option value="light">{t('settings.theme.light')}</option>
               <option value="dark">{t('settings.theme.dark')}</option>
@@ -116,11 +110,11 @@ const Settings: React.FC = () => {
 
           {/* Font Size Setting */}
           <div>
-            <label className="block text-sm font-medium mb-2">{t('settings.font-size')}</label>
+            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.font-size')}</label>
             <select
               value={settings.font_size}
               onChange={(e) => updateSettings({ font_size: e.target.value as 'small' | 'medium' | 'large' })}
-              className="input"
+              className="input w-full"
             >
               <option value="small">{t('settings.font-size.small')}</option>
               <option value="medium">{t('settings.font-size.medium')}</option>
@@ -130,19 +124,19 @@ const Settings: React.FC = () => {
 
           {/* Daily Target */}
           <div>
-            <label className="block text-sm font-medium mb-2">{t('settings.daily-target')}</label>
+            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.daily-target')}</label>
             <input
               type="number"
               min="1"
               max="100"
               value={settings.daily_flashcard_target}
               onChange={(e) => updateSettings({ daily_flashcard_target: parseInt(e.target.value) || 20 })}
-              className="input"
+              className="input w-full"
             />
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
@@ -161,20 +155,20 @@ const PeriodicTablePage: React.FC = () => {
   };
 
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold mb-6">{t('pt.title')}</h1>
-      
-      <PeriodicTable
-        onElementSelect={handleElementSelect}
-        selectedElement={selectedElement}
-      />
+    <PageContainer title="🧪 Periyodik Tablo">
+      <div className="quiz-question-card">
+        <PeriodicTable
+          onElementSelect={handleElementSelect}
+          selectedElement={selectedElement}
+        />
+      </div>
       
       <ElementDetailPanel
         element={selectedElement}
         isOpen={detailPanelOpen}
         onClose={handleCloseDetailPanel}
       />
-    </div>
+    </PageContainer>
   );
 };
 
@@ -214,7 +208,6 @@ function App() {
 
   return (
     <div className="app">
-      <BackgroundVideo />
       <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
       <main>{renderPage()}</main>
     </div>
