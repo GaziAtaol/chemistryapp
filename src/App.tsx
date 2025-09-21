@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation';
 import PeriodicTable from './components/PeriodicTable/PeriodicTable';
 import ElementDetailPanel from './components/PeriodicTable/ElementDetailPanel';
 import Quiz from './components/Quiz/Quiz';
+import BackgroundVideo from './components/BackgroundVideo/BackgroundVideo';
 import type { Element } from './types';
 import { useSettings, useAppData } from './hooks';
 import { t } from './utils/i18n';
@@ -213,6 +214,7 @@ function App() {
 
   return (
     <div className="app">
+      <BackgroundVideo />
       <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
       <main>{renderPage()}</main>
     </div>
