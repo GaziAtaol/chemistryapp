@@ -18,13 +18,22 @@ import {
   deleteNote,
   addQuizSession,
   getCardsForReview,
-  updateCardAfterReview
+  updateCardAfterReview,
+  loadSampleData
 } from '../utils/storage';
 import { setLanguage } from '../utils/i18n';
 
 // App data hook
 export const useAppData = () => {
-  const [data, setData] = useState<AppData>(() => loadAppData());
+  const [data, setData] = useState<AppData>(() => {
+    const initialData = loadAppData();
+    // Auto-load sample data if no quiz sessions exist (for demo purposes)
+    if (initialData.quiz_sessions.length === 0) {
+      loadSampleData();
+      return loadAppData(); // Reload after sample data
+    }
+    return initialData;
+  });
   
   const refreshData = useCallback(() => {
     setData(loadAppData());
