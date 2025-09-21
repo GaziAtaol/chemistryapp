@@ -32,6 +32,7 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
   const [startTime] = useState(Date.now());
   const [timeRemaining, setTimeRemaining] = useState(timeLimit ? timeLimit * 60 : undefined);
   const [currentAnswer, setCurrentAnswer] = useState<string>('');
+  const [matchingAnswers, setMatchingAnswers] = useState<Record<string, string>>({});
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -84,6 +85,7 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
   // Reset current answer when question changes
   useEffect(() => {
     setCurrentAnswer(answers[currentQuestion?.id] as string || '');
+    setMatchingAnswers({});
   }, [currentQuestionIndex, currentQuestion?.id, answers]);
 
   const formatTime = (seconds: number): string => {
@@ -97,14 +99,30 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
   };
 
   const handleSubmitAnswer = () => {
-    if (!currentAnswer.trim()) {
-      alert('Lütfen bir cevap seçin veya girin.');
-      return;
+    let answerToSubmit: string | string[];
+
+    if (currentQuestion.type === 'matching') {
+      // Convert matching answers to the expected format
+      const matchingPairs = Object.entries(matchingAnswers)
+        .filter(([_, right]) => right !== '')
+        .map(([left, right]) => `${left}:${right}`);
+      
+      if (matchingPairs.length === 0) {
+        alert('Lütfen en az bir eşleştirme yapın.');
+        return;
+      }
+      answerToSubmit = matchingPairs;
+    } else {
+      if (!currentAnswer.trim()) {
+        alert('Lütfen bir cevap seçin veya girin.');
+        return;
+      }
+      answerToSubmit = currentAnswer;
     }
 
     const newAnswers = {
       ...answers,
-      [currentQuestion.id]: currentAnswer
+      [currentQuestion.id]: answerToSubmit
     };
     setAnswers(newAnswers);
 
@@ -113,6 +131,7 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
     } else {
       setCurrentQuestionIndex(prev => prev + 1);
       setCurrentAnswer('');
+      setMatchingAnswers({});
     }
   };
 
@@ -129,6 +148,51 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
     
     return (correctAnswer as string).toLowerCase().trim() === 
            (userAnswer as string).toLowerCase().trim();
+  };
+
+  const renderMatchingPairs = () => {
+    if (!currentQuestion || currentQuestion.type !== 'matching') return null;
+    
+    // Parse the correct answer to get left-right pairs
+    const correctPairs = (currentQuestion.correct_answer as string[]).map(pair => {
+      const [left, right] = pair.split(':');
+      return { left, right };
+    });
+    
+    const leftOptions = correctPairs.map(p => p.left);
+    const rightOptions = currentQuestion.options || [];
+    
+    return leftOptions.map((leftItem, index) => (
+      <div key={index} className="matching-pair">
+        <div className="matching-left">
+          <span className="matching-label">{leftItem}</span>
+        </div>
+        <div className="matching-connector">
+          <span>↔</span>
+        </div>
+        <div className="matching-right">
+          <select
+            value={matchingAnswers[leftItem] || ''}
+            onChange={(e) => handleMatchingChange(leftItem, e.target.value)}
+            className="matching-select"
+          >
+            <option value="">Seçiniz...</option>
+            {rightOptions.map((option, optIndex) => (
+              <option key={optIndex} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    ));
+  };
+
+  const handleMatchingChange = (leftItem: string, rightItem: string) => {
+    setMatchingAnswers(prev => ({
+      ...prev,
+      [leftItem]: rightItem
+    }));
   };
 
   const renderQuestionContent = () => {
@@ -203,6 +267,70 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
                 value={currentAnswer}
                 onChange={(e) => handleAnswerChange(e.target.value)}
                 placeholder="Cevabınızı buraya yazın..."
+                className="fill-blank-input"
+              />
+              <div className="input-decoration">
+                <div className="input-glow"></div>
+                <div className="input-border"></div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'matching':
+        return (
+          <div className="question-matching">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="matching-container">
+              <div className="matching-pairs">
+                {renderMatchingPairs()}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'electron-config':
+      case 'periodic-trend':
+      case 'naming':
+      case 'property-comparison':
+      case 'classification':
+        return (
+          <div className="question-multiple-choice">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="options-grid">
+              {currentQuestion.options?.map((option, index) => (
+                <label key={index} className="option-card">
+                  <input
+                    type="radio"
+                    name="answer"
+                    value={option}
+                    checked={currentAnswer === option}
+                    onChange={(e) => handleAnswerChange(e.target.value)}
+                    className="option-input"
+                  />
+                  <div className="option-content">
+                    <div className="option-indicator">
+                      <div className="option-radio"></div>
+                    </div>
+                    <span className="option-text">{option}</span>
+                  </div>
+                  <div className="option-glow"></div>
+                </label>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'calculation':
+        return (
+          <div className="question-fill-blank">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="fill-blank-container">
+              <input
+                type="text"
+                value={currentAnswer}
+                onChange={(e) => handleAnswerChange(e.target.value)}
+                placeholder="Sayısal cevabınızı yazın..."
                 className="fill-blank-input"
               />
               <div className="input-decoration">
