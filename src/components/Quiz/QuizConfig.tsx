@@ -81,94 +81,127 @@ const QuizConfigComponent: React.FC<QuizConfigProps> = ({ onStartQuiz, onCancel 
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">{t('quiz.config')}</h2>
+    <div className="quiz-container">
+      {/* Animated Background */}
+      <div className="quiz-bg-particles"></div>
       
-      <div className="space-y-6">
-        {/* Difficulty Selection */}
-        <div>
-          <label className="block text-sm font-medium mb-2">{t('quiz.difficulty')}</label>
-          <select
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value as QuizConfig['difficulty'])}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {difficultyOptions.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Question Count */}
-        <div>
-          <label className="block text-sm font-medium mb-2">{t('quiz.question-count')}</label>
-          <select
-            value={questionCount}
-            onChange={(e) => setQuestionCount(parseInt(e.target.value))}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {[5, 10, 15, 20, 25, 30].map(count => (
-              <option key={count} value={count}>{count}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Time Limit */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            {t('quiz.time-limit')} <span className="text-gray-500">({t('quiz.optional')})</span>
-          </label>
-          <select
-            value={timeLimit || ''}
-            onChange={(e) => setTimeLimit(e.target.value ? parseInt(e.target.value) : undefined)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {timeLimitOptions.map((option, index) => (
-              <option key={index} value={option.value || ''}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Question Types */}
-        <div>
-          <label className="block text-sm font-medium mb-2">{t('quiz.question-types')}</label>
-          <div className="grid grid-cols-2 gap-2">
-            {questionTypeOptions.map(option => (
-              <label key={option.value} className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={selectedQuestionTypes.includes(option.value)}
-                  onChange={() => handleQuestionTypeToggle(option.value)}
-                  className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <span className="text-sm">{option.label}</span>
-              </label>
-            ))}
+      <div className="max-w-4xl mx-auto p-6 relative z-10">
+        {/* Header */}
+        <div className="quiz-header card-glass mb-6">
+          <div className="flex justify-center items-center">
+            <div className="quiz-info text-center">
+              <h2 className="text-3xl font-bold text-brand mb-2 animate-fade-in">
+                ⚙️ {t('quiz.config')}
+              </h2>
+              <p className="text-muted text-lg">
+                Quiz ayarlarınızı yapılandırın
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-gray-500 mt-2">
-            Seçili: {selectedQuestionTypes.length} / {questionTypeOptions.length}
-          </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex space-x-3 pt-4">
-          <button
-            onClick={handleStartQuiz}
-            disabled={selectedQuestionTypes.length === 0}
-            className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-          >
-            {t('quiz.start')}
-          </button>
-          <button
-            onClick={onCancel}
-            className="flex-1 bg-gray-500 text-white py-3 px-6 rounded-lg hover:bg-gray-600 font-medium"
-          >
-            {t('common.cancel')}
-          </button>
+        {/* Configuration Form */}
+        <div className="quiz-question-card">
+          <div className="space-y-6">
+            {/* Difficulty Selection */}
+            <div>
+              <label className="block text-lg font-semibold mb-3 text-brand">{t('quiz.difficulty')}</label>
+              <select
+                value={difficulty}
+                onChange={(e) => setDifficulty(e.target.value as QuizConfig['difficulty'])}
+                className="input"
+              >
+                {difficultyOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Question Count */}
+            <div>
+              <label className="block text-lg font-semibold mb-3 text-brand">{t('quiz.question-count')}</label>
+              <select
+                value={questionCount}
+                onChange={(e) => setQuestionCount(parseInt(e.target.value))}
+                className="input"
+              >
+                {[5, 10, 15, 20, 25, 30].map(count => (
+                  <option key={count} value={count}>{count}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Time Limit */}
+            <div>
+              <label className="block text-lg font-semibold mb-3 text-brand">
+                {t('quiz.time-limit')} <span className="text-muted">({t('quiz.optional')})</span>
+              </label>
+              <select
+                value={timeLimit || ''}
+                onChange={(e) => setTimeLimit(e.target.value ? parseInt(e.target.value) : undefined)}
+                className="input"
+              >
+                {timeLimitOptions.map((option, index) => (
+                  <option key={index} value={option.value || ''}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Question Types */}
+            <div>
+              <label className="block text-lg font-semibold mb-3 text-brand">{t('quiz.question-types')}</label>
+              <div className="grid grid-cols-2 gap-3">
+                {questionTypeOptions.map(option => (
+                  <label key={option.value} className="option-card cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedQuestionTypes.includes(option.value)}
+                      onChange={() => handleQuestionTypeToggle(option.value)}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text text-sm font-medium">{option.label}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                ))}
+              </div>
+              <div className="text-center mt-4">
+                <span className="quiz-counter">
+                  Seçili: {selectedQuestionTypes.length} / {questionTypeOptions.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="quiz-navigation">
+              <button
+                onClick={onCancel}
+                className="btn btn-danger quiz-btn-exit"
+              >
+                <span>❌</span>
+                {t('common.cancel')}
+              </button>
+
+              <div className="quiz-nav-controls">
+                <button
+                  onClick={handleStartQuiz}
+                  disabled={selectedQuestionTypes.length === 0}
+                  className={`btn btn-primary quiz-btn-nav quiz-btn-next ${selectedQuestionTypes.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <span>🚀</span>
+                  {t('quiz.start')}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
