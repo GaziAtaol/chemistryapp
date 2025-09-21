@@ -139,20 +139,26 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
     switch (currentQuestion.type) {
       case 'multiple-choice':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold mb-4">{questionText}</h3>
-            <div className="space-y-2">
+          <div className="question-multiple-choice">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="options-grid">
               {currentQuestion.options?.map((option, index) => (
-                <label key={index} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                <label key={index} className="option-card">
                   <input
                     type="radio"
                     name="answer"
                     value={option}
                     checked={currentAnswer === option}
                     onChange={(e) => handleAnswerChange(e.target.value)}
-                    className="w-4 h-4 text-blue-600"
+                    className="option-input"
                   />
-                  <span>{option}</span>
+                  <div className="option-content">
+                    <div className="option-indicator">
+                      <div className="option-radio"></div>
+                    </div>
+                    <span className="option-text">{option}</span>
+                  </div>
+                  <div className="option-glow"></div>
                 </label>
               ))}
             </div>
@@ -161,20 +167,26 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
 
       case 'true-false':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold mb-4">{questionText}</h3>
-            <div className="space-y-2">
+          <div className="question-true-false">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="tf-options">
               {['Doğru', 'Yanlış'].map((option) => (
-                <label key={option} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                <label key={option} className={`tf-option ${option === 'Doğru' ? 'tf-true' : 'tf-false'}`}>
                   <input
                     type="radio"
                     name="answer"
                     value={option}
                     checked={currentAnswer === option}
                     onChange={(e) => handleAnswerChange(e.target.value)}
-                    className="w-4 h-4 text-blue-600"
+                    className="tf-input"
                   />
-                  <span>{option}</span>
+                  <div className="tf-content">
+                    <div className="tf-icon">
+                      {option === 'Doğru' ? '✓' : '✗'}
+                    </div>
+                    <span className="tf-text">{option}</span>
+                  </div>
+                  <div className="tf-glow"></div>
                 </label>
               ))}
             </div>
@@ -183,23 +195,32 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
 
       case 'fill-blank':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold mb-4">{questionText}</h3>
-            <input
-              type="text"
-              value={currentAnswer}
-              onChange={(e) => handleAnswerChange(e.target.value)}
-              placeholder="Cevabınızı buraya yazın..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+          <div className="question-fill-blank">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="fill-blank-container">
+              <input
+                type="text"
+                value={currentAnswer}
+                onChange={(e) => handleAnswerChange(e.target.value)}
+                placeholder="Cevabınızı buraya yazın..."
+                className="fill-blank-input"
+              />
+              <div className="input-decoration">
+                <div className="input-glow"></div>
+                <div className="input-border"></div>
+              </div>
+            </div>
           </div>
         );
 
       default:
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold mb-4">{questionText}</h3>
-            <p className="text-gray-500">Bu soru tipi henüz desteklenmiyor.</p>
+          <div className="question-unsupported">
+            <h3 className="question-title">{questionText}</h3>
+            <div className="unsupported-message">
+              <span className="unsupported-icon">🚧</span>
+              <p className="text-muted">Bu soru tipi henüz desteklenmiyor.</p>
+            </div>
           </div>
         );
     }
@@ -221,63 +242,94 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-bold">Quiz</h2>
-          <p className="text-gray-600">
-            Soru {currentQuestionIndex + 1} / {questions.length}
-          </p>
-        </div>
-        <div className="text-right">
-          {timeRemaining !== undefined && (
-            <div className="text-lg font-semibold">
-              <span className={timeRemaining < 60 ? 'text-red-600' : 'text-gray-700'}>
-                Kalan Süre: {formatTime(timeRemaining)}
-              </span>
+    <div className="quiz-container">
+      {/* Animated Background */}
+      <div className="quiz-bg-particles"></div>
+      
+      <div className="max-w-4xl mx-auto p-6 relative z-10">
+        {/* Header */}
+        <div className="quiz-header card-glass mb-6">
+          <div className="flex justify-between items-center">
+            <div className="quiz-info">
+              <h2 className="text-3xl font-bold text-brand mb-2 animate-fade-in">
+                🧪 Quiz
+              </h2>
+              <p className="text-muted text-lg">
+                Soru <span className="quiz-counter">{currentQuestionIndex + 1}</span> / {questions.length}
+              </p>
             </div>
-          )}
+            <div className="text-right">
+              {timeRemaining !== undefined && (
+                <div className="quiz-timer">
+                  <div className="timer-icon">⏱️</div>
+                  <span className={`timer-text ${timeRemaining < 60 ? 'timer-warning' : ''}`}>
+                    {formatTime(timeRemaining)}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
 
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
-        <div
-          className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-          style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-        ></div>
-      </div>
-
-      {/* Question Content */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-        {renderQuestionContent()}
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex justify-between">
-        <button
-          onClick={onBackToConfig}
-          className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-        >
-          Quiz'i Bırak
-        </button>
-
-        <div className="space-x-3">
-          {currentQuestionIndex > 0 && (
-            <button
-              onClick={() => setCurrentQuestionIndex(prev => prev - 1)}
-              className="bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400"
+        {/* Progress Bar */}
+        <div className="quiz-progress-container mb-8">
+          <div className="quiz-progress-track">
+            <div
+              className="quiz-progress-fill"
+              style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
             >
-              Önceki
-            </button>
-          )}
+              <div className="progress-glow"></div>
+            </div>
+          </div>
+          <div className="progress-percentage">
+            {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}%
+          </div>
+        </div>
+
+        {/* Question Content */}
+        <div className="quiz-question-card">
+          <div className="question-content">
+            {renderQuestionContent()}
+          </div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="quiz-navigation">
           <button
-            onClick={handleSubmitAnswer}
-            className="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700"
+            onClick={onBackToConfig}
+            className="btn btn-danger quiz-btn-exit"
           >
-            {isLastQuestion ? 'Quiz\'i Bitir' : 'Sonraki'}
+            <span>🚪</span>
+            Quiz'i Bırak
           </button>
+
+          <div className="quiz-nav-controls">
+            {currentQuestionIndex > 0 && (
+              <button
+                onClick={() => setCurrentQuestionIndex(prev => prev - 1)}
+                className="btn quiz-btn-nav quiz-btn-prev"
+              >
+                <span>←</span>
+                Önceki
+              </button>
+            )}
+            <button
+              onClick={handleSubmitAnswer}
+              className="btn btn-primary quiz-btn-nav quiz-btn-next"
+            >
+              {isLastQuestion ? (
+                <>
+                  <span>🏁</span>
+                  Quiz'i Bitir
+                </>
+              ) : (
+                <>
+                  Sonraki
+                  <span>→</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>
