@@ -227,25 +227,25 @@ const QuizHistory: React.FC = () => {
 
         {/* Filters and Sorting */}
         <div className="quiz-question-card mb-6">
-          <div className="flex flex-wrap gap-4 items-center">
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium">Sırala:</label>
+          <div className="flex flex-wrap gap-6 items-center">
+            <div className="flex items-center gap-3">
+              <label className="text-md font-semibold text-brand">Sırala:</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-3 py-1 border rounded"
+                className="input"
               >
                 <option value="date">Tarihe Göre</option>
                 <option value="score">Puana Göre</option>
                 <option value="duration">Süreye Göre</option>
               </select>
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium">Zorluk:</label>
+            <div className="flex items-center gap-3">
+              <label className="text-md font-semibold text-brand">Zorluk:</label>
               <select
                 value={filterDifficulty}
                 onChange={(e) => setFilterDifficulty(e.target.value)}
-                className="px-3 py-1 border rounded"
+                className="input"
               >
                 <option value="all">Tümü</option>
                 <option value="beginner">Başlangıç</option>
