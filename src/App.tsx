@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation';
 import PeriodicTable from './components/PeriodicTable/PeriodicTable';
 import ElementDetailPanel from './components/PeriodicTable/ElementDetailPanel';
 import Quiz from './components/Quiz/Quiz';
+import QuizHistory from './components/QuizHistory/QuizHistory';
 import PageContainer from './components/PageContainer/PageContainer';
 import Notes from './components/Notes/Notes';
 import type { Element } from './types';
@@ -62,9 +63,7 @@ const Favorites: React.FC = () => (
 
 const History: React.FC = () => (
   <PageContainer title="📜 Geçmiş">
-    <div className="quiz-question-card">
-      <p>Geçmiş bileşeni yakında gelecek...</p>
-    </div>
+    <QuizHistory />
   </PageContainer>
 );
 

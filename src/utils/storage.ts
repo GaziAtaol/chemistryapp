@@ -287,10 +287,125 @@ export const loadSampleData = (): void => {
       updated_at: new Date()
     }
   ];
+
+  // Sample quiz sessions for testing history
+  const now = new Date();
+  const sampleQuizSessions: QuizSession[] = [
+    {
+      id: 'sample-quiz-1',
+      start_time: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      end_time: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000 + 5 * 60 * 1000), // 5 minutes later
+      score: 85,
+      difficulty: 'medium',
+      mode: 'practice',
+      topics: ['periyodik-tablo', 'elementler'],
+      questions: [
+        {
+          id: 'q1',
+          type: 'multiple-choice',
+          difficulty: 'medium',
+          element_ids: [1],
+          question_tr: 'Hidrojenin atom numarası kaçtır?',
+          question_en: 'What is the atomic number of hydrogen?',
+          options: ['1', '2', '3', '4'],
+          correct_answer: '1',
+          explanation_tr: 'Hidrojen periyodik tablonun ilk elementidir ve atom numarası 1\'dir.',
+          explanation_en: 'Hydrogen is the first element in the periodic table with atomic number 1.',
+          tags: ['hidrojen', 'atom-numarası']
+        },
+        {
+          id: 'q2',
+          type: 'multiple-choice',
+          difficulty: 'medium',
+          element_ids: [8],
+          question_tr: 'Oksijenin simgesi nedir?',
+          question_en: 'What is the symbol of oxygen?',
+          options: ['O', 'Ox', 'Og', 'Os'],
+          correct_answer: 'O',
+          explanation_tr: 'Oksijenin kimyasal simgesi O\'dur.',
+          explanation_en: 'The chemical symbol for oxygen is O.',
+          tags: ['oksijen', 'simge']
+        }
+      ],
+      answers: [
+        { question_id: 'q1', answer: '1', correct: true, time_taken: 10 },
+        { question_id: 'q2', answer: 'O', correct: true, time_taken: 8 }
+      ]
+    },
+    {
+      id: 'sample-quiz-2',
+      start_time: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+      end_time: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000 + 7 * 60 * 1000), // 7 minutes later
+      score: 60,
+      difficulty: 'hard',
+      mode: 'timed',
+      topics: ['periyodik-eğilimler'],
+      questions: [
+        {
+          id: 'q3',
+          type: 'multiple-choice',
+          difficulty: 'hard',
+          element_ids: [3, 11],
+          question_tr: 'Lityum ile sodyum arasında hangi periyodik eğilim gözlemlenir?',
+          question_en: 'What periodic trend is observed between lithium and sodium?',
+          options: ['Atom yarıçapı artar', 'Atom yarıçapı azalır', 'İyonlaşma enerjisi artar', 'Elektronegatiflik artar'],
+          correct_answer: 'Atom yarıçapı artar',
+          explanation_tr: 'Grupta aşağıya indikçe atom yarıçapı artar.',
+          explanation_en: 'Atomic radius increases as you move down a group.',
+          tags: ['periyodik-eğilimler', 'atom-yarıçapı']
+        }
+      ],
+      answers: [
+        { question_id: 'q3', answer: 'Atom yarıçapı azalır', correct: false, time_taken: 25 }
+      ]
+    },
+    {
+      id: 'sample-quiz-3',
+      start_time: new Date(now.getTime() - 6 * 60 * 60 * 1000), // 6 hours ago
+      end_time: new Date(now.getTime() - 6 * 60 * 60 * 1000 + 12 * 60 * 1000), // 12 minutes later
+      score: 95,
+      difficulty: 'easy',
+      mode: 'practice',
+      topics: ['temel-elementler'],
+      questions: [
+        {
+          id: 'q4',
+          type: 'multiple-choice',
+          difficulty: 'easy',
+          element_ids: [6],
+          question_tr: 'Karbonun simgesi nedir?',
+          question_en: 'What is the symbol of carbon?',
+          options: ['C', 'Ca', 'Co', 'Cr'],
+          correct_answer: 'C',
+          explanation_tr: 'Karbonun kimyasal simgesi C\'dir.',
+          explanation_en: 'The chemical symbol for carbon is C.',
+          tags: ['karbon', 'simge']
+        },
+        {
+          id: 'q5',
+          type: 'multiple-choice',
+          difficulty: 'easy',
+          element_ids: [7],
+          question_tr: 'Azotun atom numarası kaçtır?',
+          question_en: 'What is the atomic number of nitrogen?',
+          options: ['6', '7', '8', '9'],
+          correct_answer: '7',
+          explanation_tr: 'Azotun atom numarası 7\'dir.',
+          explanation_en: 'The atomic number of nitrogen is 7.',
+          tags: ['azot', 'atom-numarası']
+        }
+      ],
+      answers: [
+        { question_id: 'q4', answer: 'C', correct: true, time_taken: 5 },
+        { question_id: 'q5', answer: '7', correct: true, time_taken: 4 }
+      ]
+    }
+  ];
   
   const data = loadAppData();
   data.flashcards = [...data.flashcards, ...sampleCards];
   data.notes = [...data.notes, ...sampleNotes];
+  data.quiz_sessions = [...data.quiz_sessions, ...sampleQuizSessions];
   saveAppData(data);
 };
 
