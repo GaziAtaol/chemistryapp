@@ -15,6 +15,34 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
   const { isElementFavorite } = useFavorites();
   const isFavorite = isElementFavorite(element.z);
 
+  // Calculate grid position for proper periodic table layout
+  const getGridPosition = () => {
+    const row = element.period;
+    let col = element.group || 1;
+    
+    // Handle lanthanides and actinides positioning
+    if (element.category === 'lanthanide') {
+      return {
+        gridRow: 9, // Place lanthanides in row 9
+        gridColumn: element.z - 54 + 3 // Starting from column 3
+      };
+    }
+    
+    if (element.category === 'actinide') {
+      return {
+        gridRow: 10, // Place actinides in row 10
+        gridColumn: element.z - 86 + 3 // Starting from column 3
+      };
+    }
+    
+    return {
+      gridRow: row,
+      gridColumn: col
+    };
+  };
+
+  const gridPosition = getGridPosition();
+
   return (
     <div
       className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''}`}
@@ -29,8 +57,8 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
         }
       }}
       style={{
-        gridColumn: element.group || 'auto',
-        gridRow: element.period || 'auto'
+        gridRow: gridPosition.gridRow,
+        gridColumn: gridPosition.gridColumn
       }}
     >
       <div className="element-number">{element.z}</div>
@@ -71,23 +99,6 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
     { value: 'f', label: t('pt.block.f') }
   ];
 
-  // Create grid layout - simplified version for mobile-first approach
-  const createPeriodicGrid = () => {
-    const grid: (Element | null)[][] = Array(7).fill(null).map(() => Array(18).fill(null));
-    
-    filteredElements.forEach(element => {
-      const row = element.period - 1;
-      const col = (element.group || 1) - 1;
-      if (row >= 0 && row < 7 && col >= 0 && col < 18) {
-        grid[row][col] = element;
-      }
-    });
-
-    return grid;
-  };
-
-  const grid = createPeriodicGrid();
-
   return (
     <div className="periodic-table-container">
       {/* Controls */}
@@ -127,22 +138,14 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
 
       {/* Periodic Table Grid */}
       <div className="periodic-table">
-        {grid.map((row, rowIndex) =>
-          row.map((element, colIndex) => {
-            if (!element) {
-              return <div key={`${rowIndex}-${colIndex}`} className="element-cell-empty"></div>;
-            }
-            
-            return (
-              <ElementCell
-                key={element.z}
-                element={element}
-                onClick={onElementSelect}
-                isSelected={selectedElement?.z === element.z}
-              />
-            );
-          })
-        )}
+        {filteredElements.map(element => (
+          <ElementCell
+            key={element.z}
+            element={element}
+            onClick={onElementSelect}
+            isSelected={selectedElement?.z === element.z}
+          />
+        ))}
       </div>
 
       {/* Legend */}
