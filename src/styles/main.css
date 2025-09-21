@@ -387,6 +387,7 @@ select.input {
 .periodic-table {
   display: grid;
   grid-template-columns: repeat(18, minmax(50px, 1fr));
+  grid-template-rows: repeat(10, minmax(50px, auto));
   gap: 6px;
   padding: var(--spacing-lg) 0;
   overflow-x: auto;
