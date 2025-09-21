@@ -18,7 +18,7 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
   // Calculate grid position for proper periodic table layout
   const getGridPosition = () => {
     const row = element.period;
-    let col = element.group || 1;
+    const col = element.group || 1;
     
     // Handle lanthanides and actinides positioning
     if (element.category === 'lanthanide') {
@@ -151,7 +151,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
       {/* Legend */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-3">{t('element.properties')}</h3>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-sm">
+        <div className="flex flex-wrap gap-4 text-sm">
           {categories.slice(1).map(cat => (
             <div key={cat.value} className="flex items-center gap-2">
               <div className={`w-4 h-4 rounded element-${cat.value}`}></div>

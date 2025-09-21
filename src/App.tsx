@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation/Navigation';
 import PeriodicTable from './components/PeriodicTable/PeriodicTable';
 import ElementDetailPanel from './components/PeriodicTable/ElementDetailPanel';
+import Quiz from './components/Quiz/Quiz';
 import type { Element } from './types';
 import { useSettings, useAppData } from './hooks';
 import { t } from './utils/i18n';
@@ -41,14 +42,6 @@ const Dashboard: React.FC = () => {
   );
 };
 
-const Quiz: React.FC = () => (
-  <div className="container py-8">
-    <h1 className="text-3xl font-bold mb-6">{t('quiz.title')}</h1>
-    <div className="card">
-      <p>Quiz bileşeni yakında gelecek...</p>
-    </div>
-  </div>
-);
 
 const FlashCards: React.FC = () => (
   <div className="container py-8">
