@@ -70,7 +70,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({
         <h3 className="text-xl font-bold mb-4">Soru Detayları</h3>
         <div className="space-y-4">
           {questions.map((question, index) => {
-            const answer = answers.find((a: any) => a.questionId === question.id);
+            const answer = answers.find((a: { questionId: string; userAnswer: string | string[]; correct: boolean; timeTaken: number; }) => a.questionId === question.id);
             const isCorrect = answer?.correct || false;
             
             return (

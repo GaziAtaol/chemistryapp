@@ -91,7 +91,7 @@ function generateMultipleChoiceQuestion(difficulty: string): QuizQuestion {
   return {
     id: `mc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     type: 'multiple-choice',
-    difficulty: difficulty as any,
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
     element_ids: [element.z],
     question_tr,
     question_en,
@@ -127,7 +127,7 @@ function generateTrueFalseQuestion(difficulty: string): QuizQuestion {
   return {
     id: `tf_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     type: 'true-false',
-    difficulty: difficulty as any,
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
     element_ids: [element.z],
     question_tr: isTrue ? statement.true_tr : statement.false_tr,
     question_en: isTrue ? statement.true_en : statement.false_en,
@@ -165,7 +165,7 @@ function generateFillBlankQuestion(difficulty: string): QuizQuestion {
   return {
     id: `fb_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     type: 'fill-blank',
-    difficulty: difficulty as any,
+    difficulty: difficulty as 'beginner' | 'easy' | 'medium' | 'hard' | 'academic',
     element_ids: [element.z],
     question_tr: template.tr,
     question_en: template.en,

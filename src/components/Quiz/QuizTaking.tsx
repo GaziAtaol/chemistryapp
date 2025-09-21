@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { QuizQuestion } from '../../types';
 
 interface QuizTakingProps {
@@ -36,6 +36,34 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
+  const handleFinishQuiz = useCallback((finalAnswers = answers) => {
+    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+    let correctCount = 0;
+
+    const detailedAnswers = questions.map(question => {
+      const userAnswer = finalAnswers[question.id] || '';
+      const isCorrect = checkAnswer(question, userAnswer);
+      if (isCorrect) correctCount++;
+
+      return {
+        questionId: question.id,
+        userAnswer,
+        correct: isCorrect,
+        timeTaken: 0 // Individual question timing would need more complex state tracking
+      };
+    });
+
+    const results: QuizResults = {
+      score: Math.round((correctCount / questions.length) * 100),
+      totalQuestions: questions.length,
+      correctAnswers: correctCount,
+      timeTaken,
+      answers: detailedAnswers
+    };
+
+    onFinishQuiz(results);
+  }, [answers, startTime, questions, onFinishQuiz]);
+
   // Timer effect
   useEffect(() => {
     if (!timeLimit) return;
@@ -51,7 +79,7 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLimit]);
+  }, [timeLimit, handleFinishQuiz]);
 
   // Reset current answer when question changes
   useEffect(() => {
@@ -86,34 +114,6 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
       setCurrentQuestionIndex(prev => prev + 1);
       setCurrentAnswer('');
     }
-  };
-
-  const handleFinishQuiz = (finalAnswers = answers) => {
-    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-    let correctCount = 0;
-
-    const detailedAnswers = questions.map(question => {
-      const userAnswer = finalAnswers[question.id] || '';
-      const isCorrect = checkAnswer(question, userAnswer);
-      if (isCorrect) correctCount++;
-
-      return {
-        questionId: question.id,
-        userAnswer,
-        correct: isCorrect,
-        timeTaken: 0 // Individual question timing would need more complex state tracking
-      };
-    });
-
-    const results: QuizResults = {
-      score: Math.round((correctCount / questions.length) * 100),
-      totalQuestions: questions.length,
-      correctAnswers: correctCount,
-      timeTaken,
-      answers: detailedAnswers
-    };
-
-    onFinishQuiz(results);
   };
 
   const checkAnswer = (question: QuizQuestion, userAnswer: string | string[]): boolean => {
