@@ -151,7 +151,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
       {/* Legend */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-3">{t('element.properties')}</h3>
-        <div className="flex flex-wrap gap-4 text-sm">
+        <div className="flex gap-4 text-sm overflow-x-auto">
           {categories.slice(1).map(cat => (
             <div key={cat.value} className="flex items-center gap-2">
               <div className={`w-4 h-4 rounded element-${cat.value}`}></div>
