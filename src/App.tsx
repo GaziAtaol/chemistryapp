@@ -4,6 +4,7 @@ import PeriodicTable from './components/PeriodicTable/PeriodicTable';
 import ElementDetailPanel from './components/PeriodicTable/ElementDetailPanel';
 import Quiz from './components/Quiz/Quiz';
 import PageContainer from './components/PageContainer/PageContainer';
+import Notes from './components/Notes/Notes';
 import type { Element } from './types';
 import { useSettings, useAppData } from './hooks';
 import { t } from './utils/i18n';
@@ -67,11 +68,9 @@ const History: React.FC = () => (
   </PageContainer>
 );
 
-const Notes: React.FC = () => (
+const NotesPage: React.FC = () => (
   <PageContainer title="📝 Notlar">
-    <div className="quiz-question-card">
-      <p>Notlar bileşeni yakında gelecek...</p>
-    </div>
+    <Notes />
   </PageContainer>
 );
 
@@ -198,7 +197,7 @@ function App() {
       case 'history':
         return <History />;
       case 'notes':
-        return <Notes />;
+        return <NotesPage />;
       case 'settings':
         return <Settings />;
       default:
