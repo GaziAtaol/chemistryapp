@@ -78,6 +78,8 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
 
   const handleNoteSuccess = () => {
     setShowNoteForm(false);
+    // Force component re-render to show the note indicator
+    // The useNotes hook should already handle the state update
   };
 
   const getMostRecentNote = () => {
@@ -92,6 +94,26 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
       <div
         className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
         onClick={() => onClick(element)}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          if (!hasNotes) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setTooltipPosition({
+              x: rect.left + rect.width / 2,
+              y: rect.bottom
+            });
+            setShowNoteForm(true);
+          }
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          const rect = e.currentTarget.getBoundingClientRect();
+          setTooltipPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.bottom
+          });
+          setShowNoteForm(true);
+        }}
         tabIndex={0}
         role="button"
         aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
@@ -113,23 +135,18 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
         {/* Icons overlay */}
         <div className="absolute top-1 right-1 flex flex-col gap-1">
           {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
-          {hasNotes ? (
+          {hasNotes && (
             <div 
-              className="text-blue-500 text-xs cursor-pointer hover:text-blue-600 hover:scale-110 transition-all duration-200" 
+              className="cursor-pointer hover:scale-125 transition-all duration-200" 
               onClick={handleNoteIconClick}
               onMouseEnter={handleNoteIconHover}
               onMouseLeave={() => setShowNoteTooltip(false)}
               title={`${elementNotes.length} not var`}
             >
-              📝
-            </div>
-          ) : (
-            <div 
-              className="text-gray-400 hover:text-brand text-xs cursor-pointer hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100" 
-              onClick={handleNoteIconClick}
-              title="Not ekle"
-            >
-              📝
+              {/* Sparkling dot indicator */}
+              <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-pulse shadow-sm relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-purple-400 rounded-full animate-ping opacity-75"></div>
+              </div>
             </div>
           )}
         </div>
