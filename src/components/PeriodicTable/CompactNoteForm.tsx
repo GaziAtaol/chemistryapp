@@ -16,7 +16,7 @@ interface CompactNoteFormProps {
 const CompactNoteForm: React.FC<CompactNoteFormProps> = ({ 
   element, 
   isVisible, 
-  position,
+  position: _position,
   onClose, 
   onSuccess 
 }) => {
