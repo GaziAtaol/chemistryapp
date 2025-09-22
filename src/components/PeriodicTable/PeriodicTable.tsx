@@ -181,10 +181,19 @@ interface PeriodicTableProps {
 }
 
 const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selectedElement }) => {
-  const { filteredElements, searchQuery, setSearchQuery, selectedCategory, setSelectedCategory, selectedBlock, setSelectedBlock } = useElements();
+  const { 
+    filteredElements, 
+    searchQuery, 
+    setSearchQuery, 
+    selectedCategories, 
+    selectedBlocks, 
+    toggleCategory, 
+    toggleBlock, 
+    clearCategoryFilters, 
+    clearBlockFilters 
+  } = useElements();
 
   const categories = [
-    { value: 'all', label: t('pt.filter.all') },
     { value: 'alkali-metal', label: t('category.alkali-metal') },
     { value: 'alkaline-earth-metal', label: t('category.alkaline-earth-metal') },
     { value: 'transition-metal', label: t('category.transition-metal') },
@@ -198,7 +207,6 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
   ];
 
   const blocks = [
-    { value: 'all', label: t('pt.filter.all') },
     { value: 's', label: t('pt.block.s') },
     { value: 'p', label: t('pt.block.p') },
     { value: 'd', label: t('pt.block.d') },
@@ -209,7 +217,8 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
     <div className="periodic-table-container">
       {/* Controls */}
       <div className="mb-6 space-y-4">
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Search */}
           <div className="flex-1">
             <input
               type="text"
@@ -219,27 +228,93 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
               className="input w-full"
             />
           </div>
-          <div className="flex gap-2">
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="input"
-            >
-              {categories.map(cat => (
-                <option key={cat.value} value={cat.value}>{cat.label}</option>
-              ))}
-            </select>
-            <select
-              value={selectedBlock}
-              onChange={(e) => setSelectedBlock(e.target.value)}
-              className="input"
-            >
-              {blocks.map(block => (
-                <option key={block.value} value={block.value}>{block.label}</option>
-              ))}
-            </select>
+
+          {/* Multi-select Filters */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            {/* Category Filter */}
+            <div className="min-w-[200px]">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium text-gray-700">{t('pt.filter.category')}</label>
+                {selectedCategories.length > 0 && (
+                  <button
+                    onClick={clearCategoryFilters}
+                    className="text-xs text-blue-600 hover:text-blue-800"
+                  >
+                    {t('pt.filter.clear')} ({selectedCategories.length})
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-2 gap-1 max-h-32 overflow-y-auto border border-gray-300 rounded p-2 bg-white">
+                {categories.map(cat => (
+                  <label key={cat.value} className="flex items-center space-x-2 text-xs cursor-pointer hover:bg-gray-50 p-1 rounded">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat.value)}
+                      onChange={() => toggleCategory(cat.value)}
+                      className="w-3 h-3 text-blue-600 rounded"
+                    />
+                    <span className={`w-3 h-3 rounded element-${cat.value}`}></span>
+                    <span className="truncate">{cat.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Block Filter */}
+            <div className="min-w-[120px]">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium text-gray-700">{t('pt.filter.block')}</label>
+                {selectedBlocks.length > 0 && (
+                  <button
+                    onClick={clearBlockFilters}
+                    className="text-xs text-blue-600 hover:text-blue-800"
+                  >
+                    {t('pt.filter.clear')} ({selectedBlocks.length})
+                  </button>
+                )}
+              </div>
+              <div className="space-y-1 border border-gray-300 rounded p-2 bg-white">
+                {blocks.map(block => (
+                  <label key={block.value} className="flex items-center space-x-2 text-sm cursor-pointer hover:bg-gray-50 p-1 rounded">
+                    <input
+                      type="checkbox"
+                      checked={selectedBlocks.includes(block.value)}
+                      onChange={() => toggleBlock(block.value)}
+                      className="w-3 h-3 text-blue-600 rounded"
+                    />
+                    <span>{block.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Active Filters Display */}
+        {(selectedCategories.length > 0 || selectedBlocks.length > 0) && (
+          <div className="flex flex-wrap gap-2 p-3 bg-blue-50 rounded-lg">
+            <span className="text-sm font-medium text-blue-800">{t('pt.filter.active')}:</span>
+            {selectedCategories.map(cat => {
+              const category = categories.find(c => c.value === cat);
+              return (
+                <span key={cat} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                  <span className={`w-2 h-2 rounded element-${cat}`}></span>
+                  {category?.label}
+                  <button onClick={() => toggleCategory(cat)} className="hover:text-blue-600">×</button>
+                </span>
+              );
+            })}
+            {selectedBlocks.map(block => {
+              const blockData = blocks.find(b => b.value === block);
+              return (
+                <span key={block} className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                  {blockData?.label}
+                  <button onClick={() => toggleBlock(block)} className="hover:text-green-600">×</button>
+                </span>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Periodic Table Grid */}
@@ -258,7 +333,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-3">{t('element.properties')}</h3>
         <div className="flex gap-4 text-sm overflow-x-auto">
-          {categories.slice(1).map(cat => (
+          {categories.map(cat => (
             <div key={cat.value} className="flex items-center gap-2">
               <div className={`w-4 h-4 rounded element-${cat.value}`}></div>
               <span>{cat.label}</span>
