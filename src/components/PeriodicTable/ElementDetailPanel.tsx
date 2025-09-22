@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import type { Element } from '../../types';
 import { useFavorites, useFlashCards, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
+import { generateTrendExplanations } from '../../utils/trendExplanations';
 import CompactNoteForm from './CompactNoteForm';
 
 interface ElementDetailPanelProps {
@@ -24,6 +25,25 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
 
   const isFavorite = isElementFavorite(element.z);
   const elementNotes = getNotesByElement(element.z);
+
+  // Generate trend explanations
+  const trendExplanations = generateTrendExplanations(element);
+
+  // Helper function to get trend explanations
+  const getTrendExplanation = (_element: Element, type: 'electronegativity' | 'atomic_radius' | 'ionization_energy' | 'general'): string => {
+    switch (type) {
+      case 'electronegativity':
+        return trendExplanations.electronegativity_trend_tr;
+      case 'atomic_radius':
+        return trendExplanations.atomic_radius_trend_tr;
+      case 'ionization_energy':
+        return trendExplanations.ionization_energy_trend_tr;
+      case 'general':
+        return trendExplanations.general_info_tr;
+      default:
+        return '';
+    }
+  };
 
   const handleAddToFavorites = () => {
     toggleElement(element.z);
@@ -200,34 +220,87 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             </div>
           </div>
 
-          {/* Trends Visualization (Simple) */}
+          {/* Enhanced Trends Visualization */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Trendler</h3>
-            <div className="space-y-2">
+            <h3 className="text-lg font-semibold mb-3">Periyodik Trendler ve Açıklamalar</h3>
+            <div className="space-y-4">
+              
+              {/* Electronegativity */}
               {element.electronegativity && (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm w-24">Elektronegatiflik:</span>
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-brand h-2 rounded-full"
-                      style={{ width: `${(element.electronegativity / 4) * 100}%` }}
-                    ></div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-sm font-medium w-32">Elektronegatiflik:</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-3">
+                      <div 
+                        className="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                        style={{ width: `${(element.electronegativity / 4) * 100}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold w-12">{element.electronegativity}</span>
                   </div>
-                  <span className="text-sm w-8">{element.electronegativity}</span>
+                  <div className="text-xs text-gray-700 mt-2">
+                    {getTrendExplanation(element, 'electronegativity')}
+                  </div>
                 </div>
               )}
+
+              {/* Atomic Radius */}
               {element.atomic_radius && (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm w-24">Atom Yarıçapı:</span>
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-accent h-2 rounded-full"
-                      style={{ width: `${Math.min((element.atomic_radius / 300) * 100, 100)}%` }}
-                    ></div>
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-sm font-medium w-32">Atom Yarıçapı:</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-3">
+                      <div 
+                        className="bg-green-500 h-3 rounded-full transition-all duration-300"
+                        style={{ width: `${Math.min((element.atomic_radius / 300) * 100, 100)}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold w-12">{element.atomic_radius} pm</span>
                   </div>
-                  <span className="text-sm w-8">{element.atomic_radius}</span>
+                  <div className="text-xs text-gray-700 mt-2">
+                    {getTrendExplanation(element, 'atomic_radius')}
+                  </div>
                 </div>
               )}
+
+              {/* Ionization Energy */}
+              {element.ionization_energy && element.ionization_energy[0] && (
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-sm font-medium w-32">İyonlaşma Enerjisi:</span>
+                    <div className="flex-1 bg-gray-200 rounded-full h-3">
+                      <div 
+                        className="bg-red-500 h-3 rounded-full transition-all duration-300"
+                        style={{ width: `${Math.min((element.ionization_energy[0] / 25) * 100, 100)}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-sm font-bold w-12">{element.ionization_energy[0]} eV</span>
+                  </div>
+                  <div className="text-xs text-gray-700 mt-2">
+                    {getTrendExplanation(element, 'ionization_energy')}
+                  </div>
+                </div>
+              )}
+
+              {/* General Element Information */}
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2">🔬 Element Hakkında</h4>
+                <div className="text-xs text-gray-700">
+                  {getTrendExplanation(element, 'general')}
+                </div>
+              </div>
+
+              {/* Periodic Position Context */}
+              <div className="p-3 bg-green-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2">📍 Periyodik Tablodaki Konumu</h4>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div><strong>Periyot:</strong> {element.period}</div>
+                  <div><strong>Grup:</strong> {element.group || 'Belirsiz'}</div>
+                  <div><strong>Blok:</strong> {element.block}-blok</div>
+                  <div><strong>Kategori:</strong> {t(`category.${element.category}`)}</div>
+                </div>
+              </div>
+
             </div>
           </div>
 

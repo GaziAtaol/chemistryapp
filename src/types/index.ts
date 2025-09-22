@@ -22,6 +22,17 @@ export interface Element {
   discovery_year?: number;
   discovered_by?: string;
   phase_at_stp: 'solid' | 'liquid' | 'gas';
+  // Enhanced trend information
+  trend_explanations?: {
+    electronegativity_trend_tr?: string;
+    electronegativity_trend_en?: string;
+    atomic_radius_trend_tr?: string;
+    atomic_radius_trend_en?: string;
+    ionization_energy_trend_tr?: string;
+    ionization_energy_trend_en?: string;
+    general_info_tr?: string;
+    general_info_en?: string;
+  };
 }
 
 export type ElementCategory = 
