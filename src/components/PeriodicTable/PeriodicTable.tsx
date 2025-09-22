@@ -1,9 +1,11 @@
 // Periodic Table Component
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { Element } from '../../types';
-import { useElements, useFavorites } from '../../hooks';
+import { useElements, useFavorites, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
+import Tooltip from './Tooltip';
+import CompactNoteForm from './CompactNoteForm';
 
 interface ElementCellProps {
   element: Element;
@@ -13,7 +15,14 @@ interface ElementCellProps {
 
 const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected }) => {
   const { isElementFavorite } = useFavorites();
+  const { getNotesByElement } = useNotes();
+  const [showNoteTooltip, setShowNoteTooltip] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  
   const isFavorite = isElementFavorite(element.z);
+  const elementNotes = getNotesByElement(element.z);
+  const hasNotes = elementNotes.length > 0;
 
   // Calculate grid position for proper periodic table layout
   const getGridPosition = () => {
@@ -41,31 +50,120 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
     };
   };
 
+  const handleNoteIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    setShowNoteTooltip(true);
+  };
+
+  const handleNoteIconHover = (e: React.MouseEvent) => {
+    if (!hasNotes) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    setShowNoteTooltip(true);
+  };
+
+  const handleNoteSuccess = () => {
+    // Note was created successfully, we can show a brief success indication
+    setShowNoteForm(false);
+  };
+
   const gridPosition = getGridPosition();
 
+  const getMostRecentNote = () => {
+    if (elementNotes.length === 0) return null;
+    return elementNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())[0];
+  };
+
+  const recentNote = getMostRecentNote();
+
   return (
-    <div
-      className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''}`}
-      onClick={() => onClick(element)}
-      tabIndex={0}
-      role="button"
-      aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick(element);
-        }
-      }}
-      style={{
-        gridRow: gridPosition.gridRow,
-        gridColumn: gridPosition.gridColumn
-      }}
-    >
-      <div className="element-number">{element.z}</div>
-      <div className="element-symbol">{element.symbol}</div>
-      <div className="element-name">{getElementName(element).slice(0, 8)}</div>
-      {isFavorite && <div className="absolute top-1 right-1 text-yellow-400">⭐</div>}
-    </div>
+    <>
+      <div
+        className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
+        onClick={() => onClick(element)}
+        tabIndex={0}
+        role="button"
+        aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick(element);
+          }
+        }}
+        style={{
+          gridRow: gridPosition.gridRow,
+          gridColumn: gridPosition.gridColumn
+        }}
+      >
+        <div className="element-number">{element.z}</div>
+        <div className="element-symbol">{element.symbol}</div>
+        <div className="element-name">{getElementName(element).slice(0, 8)}</div>
+        
+        {/* Icons overlay */}
+        <div className="absolute top-1 right-1 flex flex-col gap-1">
+          {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
+          {hasNotes && (
+            <div 
+              className="text-blue-500 text-xs cursor-pointer hover:text-blue-600 hover:scale-110 transition-all duration-200" 
+              onClick={handleNoteIconClick}
+              onMouseEnter={handleNoteIconHover}
+              onMouseLeave={() => setShowNoteTooltip(false)}
+              title={`${elementNotes.length} not var`}
+            >
+              📝
+            </div>
+          )}
+        </div>
+
+        {/* Quick note button on hover (when no notes exist) */}
+        {!hasNotes && (
+          <div 
+            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            onClick={(e) => {
+              e.stopPropagation();
+              const rect = e.currentTarget.getBoundingClientRect();
+              setTooltipPosition({
+                x: rect.left + rect.width / 2,
+                y: rect.bottom
+              });
+              setShowNoteForm(true);
+            }}
+          >
+            <div className="text-gray-400 hover:text-brand text-xs cursor-pointer hover:scale-110 transition-all duration-200" title="Not ekle">
+              📝
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Note Tooltip */}
+      {showNoteTooltip && hasNotes && recentNote && (
+        <Tooltip
+          isVisible={showNoteTooltip}
+          position={tooltipPosition}
+          title={recentNote.title}
+          content={recentNote.content}
+          onClose={() => setShowNoteTooltip(false)}
+        />
+      )}
+
+      {/* Compact Note Form */}
+      <CompactNoteForm
+        element={element}
+        isVisible={showNoteForm}
+        position={tooltipPosition}
+        onClose={() => setShowNoteForm(false)}
+        onSuccess={handleNoteSuccess}
+      />
+    </>
   );
 };
 
