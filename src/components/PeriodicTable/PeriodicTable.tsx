@@ -1,9 +1,11 @@
 // Periodic Table Component
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { Element } from '../../types';
-import { useElements, useFavorites } from '../../hooks';
+import { useElements, useFavorites, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
+import Tooltip from './Tooltip';
+import CompactNoteForm from './CompactNoteForm';
 
 interface ElementCellProps {
   element: Element;
@@ -13,7 +15,14 @@ interface ElementCellProps {
 
 const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected }) => {
   const { isElementFavorite } = useFavorites();
+  const { getNotesByElement } = useNotes();
+  const [showNoteTooltip, setShowNoteTooltip] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  
   const isFavorite = isElementFavorite(element.z);
+  const elementNotes = getNotesByElement(element.z);
+  const hasNotes = elementNotes.length > 0;
 
   // Calculate grid position for proper periodic table layout
   const getGridPosition = () => {
@@ -43,29 +52,126 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
 
   const gridPosition = getGridPosition();
 
+  const handleNoteIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    if (hasNotes) {
+      setShowNoteTooltip(true);
+    } else {
+      setShowNoteForm(true);
+    }
+  };
+
+  const handleNoteIconHover = (e: React.MouseEvent) => {
+    if (!hasNotes) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    setShowNoteTooltip(true);
+  };
+
+  const handleNoteSuccess = () => {
+    setShowNoteForm(false);
+    // Force component re-render to show the note indicator
+    // The useNotes hook should already handle the state update
+  };
+
+  const getMostRecentNote = () => {
+    if (elementNotes.length === 0) return null;
+    return elementNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())[0];
+  };
+
+  const recentNote = getMostRecentNote();
+
   return (
-    <div
-      className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''}`}
-      onClick={() => onClick(element)}
-      tabIndex={0}
-      role="button"
-      aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+    <>
+      <div
+        className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
+        onClick={() => onClick(element)}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          if (!hasNotes) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setTooltipPosition({
+              x: rect.left + rect.width / 2,
+              y: rect.bottom
+            });
+            setShowNoteForm(true);
+          }
+        }}
+        onContextMenu={(e) => {
           e.preventDefault();
-          onClick(element);
-        }
-      }}
-      style={{
-        gridRow: gridPosition.gridRow,
-        gridColumn: gridPosition.gridColumn
-      }}
-    >
-      <div className="element-number">{element.z}</div>
-      <div className="element-symbol">{element.symbol}</div>
-      <div className="element-name">{getElementName(element).slice(0, 8)}</div>
-      {isFavorite && <div className="absolute top-1 right-1 text-yellow-400">⭐</div>}
-    </div>
+          const rect = e.currentTarget.getBoundingClientRect();
+          setTooltipPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.bottom
+          });
+          setShowNoteForm(true);
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onClick(element);
+          }
+        }}
+        style={{
+          gridRow: gridPosition.gridRow,
+          gridColumn: gridPosition.gridColumn
+        }}
+      >
+        <div className="element-number">{element.z}</div>
+        <div className="element-symbol">{element.symbol}</div>
+        <div className="element-name">{getElementName(element).slice(0, 8)}</div>
+        
+        {/* Icons overlay */}
+        <div className="absolute top-1 right-1 flex flex-col gap-1">
+          {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
+          {hasNotes && (
+            <div 
+              className="cursor-pointer hover:scale-125 transition-all duration-200" 
+              onClick={handleNoteIconClick}
+              onMouseEnter={handleNoteIconHover}
+              onMouseLeave={() => setShowNoteTooltip(false)}
+              title={`${elementNotes.length} not var`}
+            >
+              {/* Sparkling dot indicator */}
+              <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-pulse shadow-sm relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-purple-400 rounded-full animate-ping opacity-75"></div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Note Tooltip */}
+      {showNoteTooltip && hasNotes && recentNote && (
+        <Tooltip
+          isVisible={showNoteTooltip}
+          position={tooltipPosition}
+          title={recentNote.title}
+          content={recentNote.content}
+          onClose={() => setShowNoteTooltip(false)}
+        />
+      )}
+
+      {/* Compact Note Form */}
+      <CompactNoteForm
+        element={element}
+        isVisible={showNoteForm}
+        position={tooltipPosition}
+        onClose={() => setShowNoteForm(false)}
+        onSuccess={handleNoteSuccess}
+      />
+    </>
   );
 };
 

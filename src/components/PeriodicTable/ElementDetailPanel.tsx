@@ -1,10 +1,10 @@
 // Element Detail Panel Component
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { Element } from '../../types';
 import { useFavorites, useFlashCards, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
-import InlineNoteForm from './InlineNoteForm';
+import CompactNoteForm from './CompactNoteForm';
 
 interface ElementDetailPanelProps {
   element: Element | undefined;
@@ -17,6 +17,8 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   const { createCard } = useFlashCards();
   const { getNotesByElement } = useNotes();
   const [showNoteForm, setShowNoteForm] = useState(false);
+  const [noteFormPosition, setNoteFormPosition] = useState({ x: 0, y: 0 });
+  const noteButtonRef = useRef<HTMLButtonElement>(null);
 
   if (!element) return null;
 
@@ -46,6 +48,13 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   };
 
   const handleAddNote = () => {
+    if (noteButtonRef.current) {
+      const rect = noteButtonRef.current.getBoundingClientRect();
+      setNoteFormPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.bottom + 5
+      });
+    }
     setShowNoteForm(true);
   };
 
@@ -54,6 +63,7 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
     const message = `${t('notes.create')} - ${getElementName(element)}`;
     // Using a simple alert for now, could be replaced with a toast notification
     alert(message);
+    setShowNoteForm(false);
   };
 
   const formatValue = (value: number | undefined, unit: string) => {
@@ -109,6 +119,7 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             📚 {t('element.create-flashcard')}
           </button>
           <button
+            ref={noteButtonRef}
             onClick={handleAddNote}
             className="btn"
           >
@@ -237,15 +248,17 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             </div>
           )}
 
-          {/* Inline Note Creation Form */}
-          <InlineNoteForm
-            element={element}
-            isOpen={showNoteForm}
-            onClose={() => setShowNoteForm(false)}
-            onSuccess={handleNoteSuccess}
-          />
         </div>
       </div>
+
+      {/* Compact Note Form */}
+      <CompactNoteForm
+        element={element}
+        isVisible={showNoteForm}
+        position={noteFormPosition}
+        onClose={() => setShowNoteForm(false)}
+        onSuccess={handleNoteSuccess}
+      />
     </>
   );
 };
