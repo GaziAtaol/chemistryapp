@@ -50,6 +50,8 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
     };
   };
 
+  const gridPosition = getGridPosition();
+
   const handleNoteIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -57,7 +59,11 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
       x: rect.left + rect.width / 2,
       y: rect.bottom
     });
-    setShowNoteTooltip(true);
+    if (hasNotes) {
+      setShowNoteTooltip(true);
+    } else {
+      setShowNoteForm(true);
+    }
   };
 
   const handleNoteIconHover = (e: React.MouseEvent) => {
@@ -71,11 +77,8 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
   };
 
   const handleNoteSuccess = () => {
-    // Note was created successfully, we can show a brief success indication
     setShowNoteForm(false);
   };
-
-  const gridPosition = getGridPosition();
 
   const getMostRecentNote = () => {
     if (elementNotes.length === 0) return null;
@@ -110,7 +113,7 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
         {/* Icons overlay */}
         <div className="absolute top-1 right-1 flex flex-col gap-1">
           {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
-          {hasNotes && (
+          {hasNotes ? (
             <div 
               className="text-blue-500 text-xs cursor-pointer hover:text-blue-600 hover:scale-110 transition-all duration-200" 
               onClick={handleNoteIconClick}
@@ -120,28 +123,16 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
             >
               📝
             </div>
-          )}
-        </div>
-
-        {/* Quick note button on hover (when no notes exist) */}
-        {!hasNotes && (
-          <div 
-            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            onClick={(e) => {
-              e.stopPropagation();
-              const rect = e.currentTarget.getBoundingClientRect();
-              setTooltipPosition({
-                x: rect.left + rect.width / 2,
-                y: rect.bottom
-              });
-              setShowNoteForm(true);
-            }}
-          >
-            <div className="text-gray-400 hover:text-brand text-xs cursor-pointer hover:scale-110 transition-all duration-200" title="Not ekle">
+          ) : (
+            <div 
+              className="text-gray-400 hover:text-brand text-xs cursor-pointer hover:scale-110 transition-all duration-200 opacity-0 group-hover:opacity-100" 
+              onClick={handleNoteIconClick}
+              title="Not ekle"
+            >
               📝
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Note Tooltip */}
