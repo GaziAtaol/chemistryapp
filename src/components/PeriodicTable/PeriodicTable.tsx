@@ -230,7 +230,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
           </div>
 
           {/* Multi-select Filters */}
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-row gap-6">
             {/* Category Filter */}
             <div className="flex-1 min-w-0">
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200 shadow-sm">
@@ -266,7 +266,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
             </div>
 
             {/* Block Filter */}
-            <div className="flex-shrink-0 w-full md:w-48">
+            <div className="flex-shrink-0 w-72">
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-sm font-semibold text-green-800 flex items-center gap-2">
