@@ -1,9 +1,10 @@
 // Element Detail Panel Component
 
-import React from 'react';
+import React, { useState } from 'react';
 import type { Element } from '../../types';
 import { useFavorites, useFlashCards, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
+import InlineNoteForm from './InlineNoteForm';
 
 interface ElementDetailPanelProps {
   element: Element | undefined;
@@ -14,7 +15,8 @@ interface ElementDetailPanelProps {
 const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen, onClose }) => {
   const { toggleElement, isElementFavorite } = useFavorites();
   const { createCard } = useFlashCards();
-  const { createNote, getNotesByElement } = useNotes();
+  const { getNotesByElement } = useNotes();
+  const [showNoteForm, setShowNoteForm] = useState(false);
 
   if (!element) return null;
 
@@ -44,17 +46,14 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   };
 
   const handleAddNote = () => {
-    const title = `${getElementName(element)} ${t('notes.title')}`;
-    const content = `${t('element.atomic-number')}: ${element.z}\n${t('element.electron-config')}: ${element.electron_config}`;
-    
-    createNote({
-      title,
-      content,
-      element_id: element.z,
-      tags: ['element', element.symbol.toLowerCase()]
-    });
-    
-    alert(t('notes.create') + ' - ' + getElementName(element));
+    setShowNoteForm(true);
+  };
+
+  const handleNoteSuccess = () => {
+    // Show success notification
+    const message = `${t('notes.create')} - ${getElementName(element)}`;
+    // Using a simple alert for now, could be replaced with a toast notification
+    alert(message);
   };
 
   const formatValue = (value: number | undefined, unit: string) => {
@@ -237,6 +236,14 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
               </div>
             </div>
           )}
+
+          {/* Inline Note Creation Form */}
+          <InlineNoteForm
+            element={element}
+            isOpen={showNoteForm}
+            onClose={() => setShowNoteForm(false)}
+            onSuccess={handleNoteSuccess}
+          />
         </div>
       </div>
     </>
