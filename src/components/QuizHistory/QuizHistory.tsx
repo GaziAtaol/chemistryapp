@@ -272,15 +272,15 @@ const QuizHistory: React.FC = () => {
             {filteredAndSortedSessions.map((session) => (
               <div
                 key={session.id}
-                className="quiz-question-card hover:shadow-md transition-shadow cursor-pointer"
+                className="quiz-question-card hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:bg-opacity-90 hover:border-brand/30"
                 onClick={() => setSelectedSession(session)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className={`text-2xl font-bold ${getScoreColor(session.score)}`}>
+                    <div className={`text-2xl font-bold transition-colors duration-200 hover:scale-105 ${getScoreColor(session.score)}`}>
                       {Math.round(session.score)}%
                     </div>
-                    <div>
+                    <div className="hover:text-brand transition-colors duration-200">
                       <div className="font-semibold">
                         {getDifficultyLabel(session.difficulty)} Quiz
                       </div>
@@ -290,23 +290,23 @@ const QuizHistory: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-6 text-sm text-gray-600">
-                    <div className="text-center">
+                    <div className="text-center hover:text-brand transition-colors duration-200">
                       <div className="font-medium">{session.questions.length}</div>
                       <div>Soru</div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center hover:text-brand transition-colors duration-200">
                       <div className="font-medium">
                         {formatDuration(session.start_time, session.end_time)}
                       </div>
                       <div>Süre</div>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center hover:text-brand transition-colors duration-200">
                       <div className="font-medium">
                         {session.answers.filter(a => a.correct).length}
                       </div>
                       <div>Doğru</div>
                     </div>
-                    <div className="text-blue-600">
+                    <div className="text-blue-600 hover:text-brand transition-all duration-200 hover:scale-110">
                       →
                     </div>
                   </div>
