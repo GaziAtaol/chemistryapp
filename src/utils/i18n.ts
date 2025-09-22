@@ -52,6 +52,16 @@ export const translations = {
     'element.add-note': 'Not Ekle',
     'element.add-to-quiz': 'Quiz\'e Ekle',
     
+    // Academic Information
+    'element.academic-info': 'Akademik Düzey Bilgiler',
+    'element.usage-areas': 'Kullanım Alanları',
+    'element.toxicity': 'Toksisite',
+    'element.appearance': 'Fiziksel Görünüm',
+    'element.radiation': 'Radyasyon Özellikleri',
+    'element.isotopes': 'Yaygın İzotopları',
+    'element.natural-occurrence': 'Doğada Bulunma Halleri',
+    'element.academic-notes': 'Akademik Notlar',
+    
     // Quiz
     'quiz.title': 'Quiz',
     'quiz.start': 'Quiz Başlat',
@@ -235,6 +245,16 @@ export const translations = {
     'element.create-flashcard': 'Create Flashcard',
     'element.add-note': 'Add Note',
     'element.add-to-quiz': 'Add to Quiz',
+    
+    // Academic Information
+    'element.academic-info': 'Academic Level Information',
+    'element.usage-areas': 'Usage Areas',
+    'element.toxicity': 'Toxicity',
+    'element.appearance': 'Physical Appearance',
+    'element.radiation': 'Radiation Properties',
+    'element.isotopes': 'Common Isotopes',
+    'element.natural-occurrence': 'Natural Occurrence',
+    'element.academic-notes': 'Academic Notes',
     
     // Quiz
     'quiz.title': 'Quiz',

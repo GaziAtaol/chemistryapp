@@ -1,4 +1,5 @@
 import type { Element } from '../types';
+import { generateAcademicInfo } from './academicInfo';
 
 export interface TrendComparison {
   property: string;
@@ -18,7 +19,7 @@ export function generateTrendExplanations(element: Element): {
   ionization_energy_trend_en: string;
   general_info_tr: string;
   general_info_en: string;
-} {
+} & ReturnType<typeof generateAcademicInfo> {
   const period = element.period;
   const group = element.group;
 
@@ -48,6 +49,9 @@ export function generateTrendExplanations(element: Element): {
   const general_info_tr = generateGeneralInfo(element);
   const general_info_en = generateGeneralInfoEn(element);
 
+  // Academic information
+  const academicInfo = generateAcademicInfo(element);
+
   return {
     electronegativity_trend_tr,
     electronegativity_trend_en,
@@ -56,7 +60,8 @@ export function generateTrendExplanations(element: Element): {
     ionization_energy_trend_tr,
     ionization_energy_trend_en,
     general_info_tr,
-    general_info_en
+    general_info_en,
+    ...academicInfo
   };
 }
 

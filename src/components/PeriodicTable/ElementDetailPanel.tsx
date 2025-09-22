@@ -304,6 +304,84 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             </div>
           </div>
 
+          {/* Academic Information Section */}
+          <div>
+            <h3 className="text-lg font-semibold mb-3">📚 {t('element.academic-info')}</h3>
+            <div className="space-y-4">
+              
+              {/* Usage Areas */}
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  🏭 {t('element.usage-areas')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.usage_areas_tr}
+                </div>
+              </div>
+
+              {/* Toxicity */}
+              <div className="p-3 bg-red-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  ⚠️ {t('element.toxicity')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.toxicity_tr}
+                </div>
+              </div>
+
+              {/* Appearance */}
+              <div className="p-3 bg-yellow-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  👁️ {t('element.appearance')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.appearance_tr}
+                </div>
+              </div>
+
+              {/* Radiation */}
+              <div className="p-3 bg-orange-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  ☢️ {t('element.radiation')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.radiation_tr}
+                </div>
+              </div>
+
+              {/* Isotopes */}
+              <div className="p-3 bg-indigo-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  ⚛️ {t('element.isotopes')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.isotopes_tr}
+                </div>
+              </div>
+
+              {/* Natural Occurrence */}
+              <div className="p-3 bg-green-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  🌍 {t('element.natural-occurrence')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.natural_occurrence_tr}
+                </div>
+              </div>
+
+              {/* Academic Notes */}
+              <div className="p-3 bg-gray-50 rounded-lg">
+                <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                  🎓 {t('element.academic-notes')}
+                </h4>
+                <div className="text-xs text-gray-700">
+                  {trendExplanations.academic_notes_tr}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
           {/* Related Notes */}
           {elementNotes.length > 0 && (
             <div>
