@@ -33,6 +33,30 @@ export interface Element {
     general_info_tr?: string;
     general_info_en?: string;
   };
+  // Academic-level detailed information
+  academic_info?: {
+    // Usage areas / Applications
+    usage_areas_tr?: string;
+    usage_areas_en?: string;
+    // Toxicity information
+    toxicity_tr?: string;
+    toxicity_en?: string;
+    // Physical appearance properties
+    appearance_tr?: string;
+    appearance_en?: string;
+    // Radiation properties
+    radiation_tr?: string;
+    radiation_en?: string;
+    // Common isotopes
+    isotopes_tr?: string;
+    isotopes_en?: string;
+    // Natural occurrence
+    natural_occurrence_tr?: string;
+    natural_occurrence_en?: string;
+    // Additional academic information
+    academic_notes_tr?: string;
+    academic_notes_en?: string;
+  };
 }
 
 export type ElementCategory = 

@@ -1,0 +1,397 @@
+import type { Element } from '../types';
+
+// Academic-level element information for chemistry education
+export function generateAcademicInfo(element: Element): {
+  usage_areas_tr: string;
+  usage_areas_en: string;
+  toxicity_tr: string;
+  toxicity_en: string;
+  appearance_tr: string;
+  appearance_en: string;
+  radiation_tr: string;
+  radiation_en: string;
+  isotopes_tr: string;
+  isotopes_en: string;
+  natural_occurrence_tr: string;
+  natural_occurrence_en: string;
+  academic_notes_tr: string;
+  academic_notes_en: string;
+} {
+  const academicData = getElementAcademicData(element.z);
+  
+  return {
+    usage_areas_tr: academicData.usage_areas_tr || 'Kullanım alanı bilgisi güncelleniyor.',
+    usage_areas_en: academicData.usage_areas_en || 'Usage information is being updated.',
+    toxicity_tr: academicData.toxicity_tr || 'Toksisite bilgisi güncelleniyor.',
+    toxicity_en: academicData.toxicity_en || 'Toxicity information is being updated.',
+    appearance_tr: academicData.appearance_tr || 'Görünüm bilgisi güncelleniyor.',
+    appearance_en: academicData.appearance_en || 'Appearance information is being updated.',
+    radiation_tr: academicData.radiation_tr || 'Radyasyon bilgisi güncelleniyor.',
+    radiation_en: academicData.radiation_en || 'Radiation information is being updated.',
+    isotopes_tr: academicData.isotopes_tr || 'İzotop bilgisi güncelleniyor.',
+    isotopes_en: academicData.isotopes_en || 'Isotope information is being updated.',
+    natural_occurrence_tr: academicData.natural_occurrence_tr || 'Doğal bulunuş bilgisi güncelleniyor.',
+    natural_occurrence_en: academicData.natural_occurrence_en || 'Natural occurrence information is being updated.',
+    academic_notes_tr: academicData.academic_notes_tr || 'Akademik notlar güncelleniyor.',
+    academic_notes_en: academicData.academic_notes_en || 'Academic notes are being updated.'
+  };
+}
+
+interface AcademicElementData {
+  usage_areas_tr: string;
+  usage_areas_en: string;
+  toxicity_tr: string;
+  toxicity_en: string;
+  appearance_tr: string;
+  appearance_en: string;
+  radiation_tr: string;
+  radiation_en: string;
+  isotopes_tr: string;
+  isotopes_en: string;
+  natural_occurrence_tr: string;
+  natural_occurrence_en: string;
+  academic_notes_tr: string;
+  academic_notes_en: string;
+}
+
+function getElementAcademicData(atomicNumber: number): AcademicElementData {
+  const academicDatabase: { [key: number]: AcademicElementData } = {
+    1: { // Hydrogen
+      usage_areas_tr: "Petrol rafinerileri, amonyak üretimi, margarin üretimi, yakıt hücreleri, roketler için yakıt, cam endüstrisi, metalurji (indirgen ajan), elektronik endüstrisi, nükleer enerji, meteoroloji balonları.",
+      usage_areas_en: "Oil refineries, ammonia production, margarine production, fuel cells, rocket fuel, glass industry, metallurgy (reducing agent), electronics industry, nuclear energy, weather balloons.",
+      toxicity_tr: "Düşük toksisite. Yüksek konsantrasyonlarda oksijen eksikliğine neden olabilir. Patlayıcı gaz karışımları oluşturabilir.",
+      toxicity_en: "Low toxicity. High concentrations can cause oxygen deficiency. Can form explosive gas mixtures.",
+      appearance_tr: "Renksiz, kokusuz, tatsız gaz. En hafif element. Düşük yoğunluk.",
+      appearance_en: "Colorless, odorless, tasteless gas. Lightest element. Low density.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değildir. Tritium (³H) radyoaktif izotopudur.",
+      radiation_en: "Not naturally radioactive. Tritium (³H) is a radioactive isotope.",
+      isotopes_tr: "Protium (¹H, %99.985), Deuterium (²H, %0.015), Tritium (³H, radyoaktif, yarı ömrü 12.3 yıl).",
+      isotopes_en: "Protium (¹H, 99.985%), Deuterium (²H, 0.015%), Tritium (³H, radioactive, half-life 12.3 years).",
+      natural_occurrence_tr: "Evrendeki en bol element (%75). Su molekülünde, organik bileşiklerde, gaz halinde atmosferde az miktarda bulunur.",
+      natural_occurrence_en: "Most abundant element in the universe (75%). Found in water molecules, organic compounds, small amounts in atmosphere as gas.",
+      academic_notes_tr: "Kuantum mekaniğinde temel atom. Füzyon reaksiyonlarında ana yakıt. Endüstriyel Haber-Bosch prosesinde kritik rol.",
+      academic_notes_en: "Fundamental atom in quantum mechanics. Primary fuel in fusion reactions. Critical role in industrial Haber-Bosch process."
+    },
+    2: { // Helium
+      usage_areas_tr: "Soğutma sistemleri, süperiletkenlik araştırmaları, nükleer reaktörler, derin deniz dalışları, balon dolgusu, koruyucu atmosfer kaynağı, tıbbi görüntüleme (MRI), kriyojenik uygulamalar.",
+      usage_areas_en: "Cooling systems, superconductivity research, nuclear reactors, deep-sea diving, balloon filling, protective atmosphere welding, medical imaging (MRI), cryogenic applications.",
+      toxicity_tr: "Toksik değildir. Ancak yüksek konsantrasyonlarda oksijen eksikliğine (asfiksi) neden olabilir.",
+      toxicity_en: "Non-toxic. However, high concentrations can cause oxygen deficiency (asphyxiation).",
+      appearance_tr: "Renksiz, kokusuz, tatsız soygas. İkinci en hafif element. Çok düşük kaynama noktası.",
+      appearance_en: "Colorless, odorless, tasteless noble gas. Second lightest element. Very low boiling point.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değildir. Tüm izotopları kararlıdır.",
+      radiation_en: "Not naturally radioactive. All isotopes are stable.",
+      isotopes_tr: "He-4 (%99.99986), He-3 (%0.00014). Diğer izotoplar çok kısa yarı ömürlüdür.",
+      isotopes_en: "He-4 (99.99986%), He-3 (0.00014%). Other isotopes have very short half-lives.",
+      natural_occurrence_tr: "Doğal gazlarda, atmosferde az miktarda (%0.0005), alfa bozunumu sonucu oluşur. Güneş'te bol miktarda.",
+      natural_occurrence_en: "In natural gas, small amounts in atmosphere (0.0005%), formed by alpha decay. Abundant in the Sun.",
+      academic_notes_tr: "Sıfır değerlikli. Hiçbir kimyasal bileşik oluşturmaz. Süper-akışkanlık özelliği gösterir.",
+      academic_notes_en: "Zero valence. Forms no chemical compounds. Exhibits superfluidity properties."
+    },
+    3: { // Lithium
+      usage_areas_tr: "Lityum-iyon piller, psikiyatrik ilaçlar, seramik ve cam endüstrisi, gres yağları, havacılık alaşımları, nükleer teknoloji, klima sistemleri, metalurji.",
+      usage_areas_en: "Lithium-ion batteries, psychiatric medications, ceramics and glass industry, lubricating greases, aerospace alloys, nuclear technology, air conditioning systems, metallurgy.",
+      toxicity_tr: "Orta düzey toksisite. Sinir sistemi üzerinde etkilidir. Tedavi dozunda güvenli, aşırı dozda toksiktir.",
+      toxicity_en: "Moderate toxicity. Effects on nervous system. Safe at therapeutic doses, toxic in overdose.",
+      appearance_tr: "Gümüşi-beyaz, yumuşak metal. En hafif metal. Hava ile temas ettiğinde yüzeyi kararmaktadır.",
+      appearance_en: "Silvery-white, soft metal. Lightest metal. Surface darkens when exposed to air.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değildir. Li-6 nükleer reaksiyonlarda kullanılır.",
+      radiation_en: "Not naturally radioactive. Li-6 is used in nuclear reactions.",
+      isotopes_tr: "Li-7 (%92.5), Li-6 (%7.5). Her ikisi de kararlı izotoplardır.",
+      isotopes_en: "Li-7 (92.5%), Li-6 (7.5%). Both are stable isotopes.",
+      natural_occurrence_tr: "Pegmatit kayaçlarında, tuz göllerinde, deniz suyunda az miktarda bulunur. Chile ve Arjantin'de bol.",
+      natural_occurrence_en: "Found in pegmatite rocks, salt lakes, small amounts in seawater. Abundant in Chile and Argentina.",
+      academic_notes_tr: "En düşük yoğunluklu metal. Elektrokimyasal seride en reaktif metal. Psikiyatride mood stabilizer olarak kullanılır.",
+      academic_notes_en: "Lowest density metal. Most reactive metal in electrochemical series. Used as mood stabilizer in psychiatry."
+    },
+    4: { // Beryllium
+      usage_areas_tr: "Havacılık endüstrisi, nükleer reaktörler, X-ışını penceresi, elektronik bileşenler, otomotiv parçaları, savunma sanayii, telescope aynalarında.",
+      usage_areas_en: "Aerospace industry, nuclear reactors, X-ray windows, electronic components, automotive parts, defense industry, telescope mirrors.",
+      toxicity_tr: "Yüksek toksisite! Karsinojenik. Beriliozis hastalığına neden olur. Solunması çok tehlikelidir.",
+      toxicity_en: "High toxicity! Carcinogenic. Causes berylliosis disease. Inhalation is very dangerous.",
+      appearance_tr: "Gri-metalik, sert, hafif metal. Yüksek erime noktası. Çelik gibi sert ancak hafif.",
+      appearance_en: "Gray-metallic, hard, lightweight metal. High melting point. Hard as steel but lightweight.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değildir. Nükleer reaksiyonlarda nötron kaynağı olarak kullanılır.",
+      radiation_en: "Not naturally radioactive. Used as neutron source in nuclear reactions.",
+      isotopes_tr: "Be-9 (tek kararlı izotop %100). Be-10 kozmojenik radyoaktif izotop.",
+      isotopes_en: "Be-9 (only stable isotope 100%). Be-10 is cosmogenic radioactive isotope.",
+      natural_occurrence_tr: "Beryl ve krizobril minerallerinde bulunur. Çok nadir element. Kayaçlarda çok düşük konsantrasyonda.",
+      natural_occurrence_en: "Found in beryl and chrysoberyl minerals. Very rare element. Very low concentration in rocks.",
+      academic_notes_tr: "Diagonal ilişki magnezyum ile. Amfoter oksit oluşturur. X-ışınlarını zayıf absorbe eder.",
+      academic_notes_en: "Diagonal relationship with magnesium. Forms amphoteric oxide. Weakly absorbs X-rays."
+    },
+    5: { // Boron
+      usage_areas_tr: "Cam ve seramik endüstrisi, deterjanlarda, tarımda gübre, nükleer teknolojide nötron absorber, kompozit malzemeler, yarı iletkenler, optik fiber.",
+      usage_areas_en: "Glass and ceramics industry, detergents, agriculture fertilizers, neutron absorber in nuclear technology, composite materials, semiconductors, optical fiber.",
+      toxicity_tr: "Düşük-orta toksisite. Yüksek dozlarda gastrointestinal ve nörolojik etkiler. Borik asit göz irritasyonu yapar.",
+      toxicity_en: "Low-moderate toxicity. High doses cause gastrointestinal and neurological effects. Boric acid causes eye irritation.",
+      appearance_tr: "Kahverengi-siyah, metalsi, sert element. Elmas benzeri kristal yapı. Yarı iletken özellik.",
+      appearance_en: "Brown-black, metalloid, hard element. Diamond-like crystal structure. Semiconductor properties.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değildir. B-10 nötron absorpsiyonu yüksektir.",
+      radiation_en: "Not naturally radioactive. B-10 has high neutron absorption.",
+      isotopes_tr: "B-11 (%80.1), B-10 (%19.9). Her ikisi de kararlı izotoplardır.",
+      isotopes_en: "B-11 (80.1%), B-10 (19.9%). Both are stable isotopes.",
+      natural_occurrence_tr: "Kernit, boraks, kolemanit minerallerinde. Türkiye dünya boron rezervlerinin %65'ine sahip.",
+      natural_occurrence_en: "Found in kernite, borax, colemanite minerals. Turkey has 65% of world's boron reserves.",
+      academic_notes_tr: "Elektron eksikliği yaşar. Benzersiz üç merkezli bağlar oluşturur. Süper sert malzemelerde kullanılır.",
+      academic_notes_en: "Electron deficient. Forms unique three-center bonds. Used in super-hard materials."
+    },
+    6: { // Carbon
+      usage_areas_tr: "Organik kimya temelinde, çelik üretimi, elmas endüstrisi, grafit kalemler, karbon fiber, plastikler, yakıtlar, filtreleme sistemleri, nanotüpler.",
+      usage_areas_en: "Basis of organic chemistry, steel production, diamond industry, graphite pencils, carbon fiber, plastics, fuels, filtration systems, nanotubes.",
+      toxicity_tr: "Element halde toksik değil. Karbon monoksit (CO) çok toksik. Karbon dioksit yüksek konsantrasyonda zararlı.",
+      toxicity_en: "Non-toxic in elemental form. Carbon monoxide (CO) is highly toxic. Carbon dioxide harmful at high concentrations.",
+      appearance_tr: "Çok farklı formlar: elmas (şeffaf, sert), grafit (siyah, yumuşak), fuleren (moleküler kafes), amorf karbon (siyah).",
+      appearance_en: "Many different forms: diamond (transparent, hard), graphite (black, soft), fullerene (molecular cage), amorphous carbon (black).",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. C-14 radyoaktif, radyokarbon tarihlendirmede kullanılır.",
+      radiation_en: "Not naturally radioactive. C-14 is radioactive, used in radiocarbon dating.",
+      isotopes_tr: "C-12 (%98.93), C-13 (%1.07), C-14 (radyoaktif, yarı ömür 5,730 yıl).",
+      isotopes_en: "C-12 (98.93%), C-13 (1.07%), C-14 (radioactive, half-life 5,730 years).",
+      natural_occurrence_tr: "Tüm canlı varlıklarda, kömür, petrol, doğal gaz, kireçtaşı, mermer, atmosferdeki CO₂.",
+      natural_occurrence_en: "In all living beings, coal, petroleum, natural gas, limestone, marble, atmospheric CO₂.",
+      academic_notes_tr: "Yaşamın temeli. 4 değerlik, katenasyon özelliği. Hibridizasyon çeşitliliği (sp³, sp², sp).",
+      academic_notes_en: "Basis of life. Tetravalent, catenation property. Hybridization diversity (sp³, sp², sp)."
+    },
+    7: { // Nitrogen
+      usage_areas_tr: "Gübre üretimi (amonyak), patlayıcı madde sanayii, koruyucu atmosfer, gıda paketleme, kriyojenik uygulamalar, nitrik asit üretimi, plastik sanayii.",
+      usage_areas_en: "Fertilizer production (ammonia), explosives industry, protective atmosphere, food packaging, cryogenic applications, nitric acid production, plastics industry.",
+      toxicity_tr: "Gaz halinde toksik değil ancak asfiksi riski. Nitrik oksit ve diazot tetroksit toksiktir.",
+      toxicity_en: "Non-toxic as gas but asphyxiation risk. Nitric oxide and dinitrogen tetroxide are toxic.",
+      appearance_tr: "Renksiz, kokusuz, tatsız gaz. Çok inerttir. Sıvı azot çok soğuktur (-196°C).",
+      appearance_en: "Colorless, odorless, tasteless gas. Very inert. Liquid nitrogen is very cold (-196°C).",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. N-13 kısa yarı ömürlü radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. N-13 is short-lived radioactive isotope.",
+      isotopes_tr: "N-14 (%99.632), N-15 (%0.368). Her ikisi de kararlı izotoplardır.",
+      isotopes_en: "N-14 (99.632%), N-15 (0.368%). Both are stable isotopes.",
+      natural_occurrence_tr: "Atmosferin %78'i azot gazı. Tüm protein ve nüklein asitlerde. Toprakta nitrat olarak.",
+      natural_occurrence_en: "78% of atmosphere is nitrogen gas. In all proteins and nucleic acids. In soil as nitrates.",
+      academic_notes_tr: "Azot döngüsü ekolojide kritik. Çok güçlü N≡N üçlü bağı. Haber-Bosch prosesi ile amonyak.",
+      academic_notes_en: "Nitrogen cycle critical in ecology. Very strong N≡N triple bond. Ammonia via Haber-Bosch process."
+    },
+    8: { // Oxygen
+      usage_areas_tr: "Medikal oksijen tedavisi, çelik üretimi, kaynak işlemi, roket yakıtları, su arıtma, kimya endüstrisi, cam üretimi, solunum cihazları.",
+      usage_areas_en: "Medical oxygen therapy, steel production, welding, rocket fuels, water treatment, chemical industry, glass production, breathing apparatus.",
+      toxicity_tr: "Normal konsantrasyonda güvenli (%21). Yüksek konsantrasyonda oksijen zehirlenmesi. Yangın riski artar.",
+      toxicity_en: "Safe at normal concentration (21%). Oxygen toxicity at high concentrations. Increased fire risk.",
+      appearance_tr: "Renksiz, kokusuz, tatsız gaz. Sıvı oksijen açık mavi renkte. Manyetik özellik gösterir.",
+      appearance_en: "Colorless, odorless, tasteless gas. Liquid oxygen is pale blue. Shows magnetic properties.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. O-15 ve O-18 tıbbi görüntülemede kullanılır.",
+      radiation_en: "Not naturally radioactive. O-15 and O-18 used in medical imaging.",
+      isotopes_tr: "O-16 (%99.757), O-18 (%0.205), O-17 (%0.038). Tümü kararlı izotoplardır.",
+      isotopes_en: "O-16 (99.757%), O-18 (0.205%), O-17 (0.038%). All are stable isotopes.",
+      natural_occurrence_tr: "Atmosferin %21'i. Su molekülünde. Yer kabuğunun %46'sı. Tüm canlılarda.",
+      natural_occurrence_en: "21% of atmosphere. In water molecules. 46% of Earth's crust. In all living beings.",
+      academic_notes_tr: "Yaşam için gerekli. Yanma ve oksidasyonda temel rol. Ozon tabakasında O₃ formu.",
+      academic_notes_en: "Essential for life. Fundamental role in combustion and oxidation. O₃ form in ozone layer."
+    },
+    9: { // Fluorine
+      usage_areas_tr: "Diş macunu (fluorür), teflon üretimi, soğutucu gazlar, uranyum zenginleştirme, farmasötik sanayi, cam ve seramik sanayii.",
+      usage_areas_en: "Toothpaste (fluoride), teflon production, refrigerants, uranium enrichment, pharmaceutical industry, glass and ceramics industry.",
+      toxicity_tr: "Çok toksik ve aşındırıcı! Gaz halinde ölümcüldür. Fluorür bileşikleri kemik ve diş sistemi etkiler.",
+      toxicity_en: "Highly toxic and corrosive! Gas form is lethal. Fluoride compounds affect bone and dental systems.",
+      appearance_tr: "Soluk sarı-yeşil renkte gaz. Çok reaktif. Keskin koku. Sıvı hali açık sarıdır.",
+      appearance_en: "Pale yellow-green gas. Highly reactive. Pungent odor. Liquid form is pale yellow.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. F-18 pozitron emisyon tomografide (PET) kullanılır.",
+      radiation_en: "Not naturally radioactive. F-18 used in positron emission tomography (PET).",
+      isotopes_tr: "F-19 (tek kararlı izotop %100). Diğer izotoplar çok kısa yarı ömürlüdür.",
+      isotopes_en: "F-19 (only stable isotope 100%). Other isotopes have very short half-lives.",
+      natural_occurrence_tr: "Florit (CaF₂), kriolit, apatit minerallerinde. Deniz suyunda az miktarda. Toprakta fluorür.",
+      natural_occurrence_en: "In fluorite (CaF₂), cryolite, apatite minerals. Small amounts in seawater. Fluoride in soil.",
+      academic_notes_tr: "En elektronegatif element. Çok güçlü oksitleyici. Tüm elementlerle reaksiyona girer.",
+      academic_notes_en: "Most electronegative element. Very strong oxidizing agent. Reacts with all elements."
+    },
+    10: { // Neon
+      usage_areas_tr: "Neon ışıkları ve reklamlar, lazer teknolojisi, kriyojenik soğutma, elektronik tüplerde, plazma panellerde, koruyucu atmosfer.",
+      usage_areas_en: "Neon lights and advertising, laser technology, cryogenic cooling, electronic tubes, plasma panels, protective atmosphere.",
+      toxicity_tr: "Toksik değildir. Kimyasal olarak inert. Yüksek konsantrasyonlarda asfiksi riski.",
+      toxicity_en: "Non-toxic. Chemically inert. Asphyxiation risk at high concentrations.",
+      appearance_tr: "Renksiz, kokusuz soygas. Elektrik akımından geçirildiğinde turuncu-kırmızı ışık verir.",
+      appearance_en: "Colorless, odorless noble gas. Gives orange-red light when electric current passes through.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Tüm izotopları kısa yarı ömürlüdür.",
+      radiation_en: "Not naturally radioactive. All isotopes have short half-lives.",
+      isotopes_tr: "Ne-20 (%90.48), Ne-22 (%9.25), Ne-21 (%0.27). Tümü kararlı izotoplardır.",
+      isotopes_en: "Ne-20 (90.48%), Ne-22 (9.25%), Ne-21 (0.27%). All are stable isotopes.",
+      natural_occurrence_tr: "Atmosferde çok az miktarda (%0.0018). Yıldızlarda nükleer füzyon ürünü.",
+      natural_occurrence_en: "Very small amount in atmosphere (0.0018%). Nuclear fusion product in stars.",
+      academic_notes_tr: "Kimyasal bileşik oluşturmaz. Keşfedilen ilk soygazdır. Çok düşük çözünürlük.",
+      academic_notes_en: "Forms no chemical compounds. First noble gas discovered. Very low solubility."
+    },
+    11: { // Sodium
+      usage_areas_tr: "Tuz üretimi, sabun ve deterjan sanayii, cam endüstrisi, metallurji, sodyum lambalar, nükleer reaktörler, kimya endüstrisi.",
+      usage_areas_en: "Salt production, soap and detergent industry, glass industry, metallurgy, sodium lamps, nuclear reactors, chemical industry.",
+      toxicity_tr: "Metal formu çok reaktif ve yangın riski. Sodyum tuzları fazla tüketimde hipertansiyona neden olur.",
+      toxicity_en: "Metal form highly reactive and fire risk. Sodium salts cause hypertension with excessive consumption.",
+      appearance_tr: "Gümüşi-beyaz, yumuşak metal. Bıçakla kesilebilir. Hava ile temas ettiğinde yüzeyi oksitlenir.",
+      appearance_en: "Silvery-white, soft metal. Can be cut with knife. Surface oxidizes when exposed to air.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Na-22 ve Na-24 radyoaktif izotoplar.",
+      radiation_en: "Not naturally radioactive. Na-22 and Na-24 are radioactive isotopes.",
+      isotopes_tr: "Na-23 (tek kararlı izotop %100). Diğer izotoplar radyoaktiftir.",
+      isotopes_en: "Na-23 (only stable isotope 100%). Other isotopes are radioactive.",
+      natural_occurrence_tr: "Tuz yataklarında (NaCl), deniz suyunda, kayaçlarda. Tüm canlı varlıklarda esansiyel.",
+      natural_occurrence_en: "In salt deposits (NaCl), seawater, rocks. Essential in all living beings.",
+      academic_notes_tr: "Su ile şiddetli reaksiyon. Sinir iletiminde kritik rol. Flame test'te sarı renk verir.",
+      academic_notes_en: "Violent reaction with water. Critical role in nerve transmission. Gives yellow color in flame test."
+    },
+    12: { // Magnesium  
+      usage_areas_tr: "Hafif alaşımlar, havacılık sanayii, otomobil endüstrisi, fişek ve havai fişekler, tıpta antasit, yapı malzemeleri, metalurji.",
+      usage_areas_en: "Lightweight alloys, aerospace industry, automotive industry, flares and fireworks, medical antacids, construction materials, metallurgy.",
+      toxicity_tr: "Metal formu düşük toksisite. Magnezyum oksit tozu solunduğinda irritasyon. Genel olarak güvenli.",
+      toxicity_en: "Metal form low toxicity. Magnesium oxide dust causes irritation when inhaled. Generally safe.",
+      appearance_tr: "Gümüşi-beyaz, hafif metal. Parlak yüzey. Yanırken çok parlak beyaz ışık verir.",
+      appearance_en: "Silvery-white, lightweight metal. Bright surface. Burns with very bright white light.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Mg-28 kısa yarı ömürlü radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. Mg-28 is short-lived radioactive isotope.",
+      isotopes_tr: "Mg-24 (%78.99), Mg-26 (%11.01), Mg-25 (%10.00). Tümü kararlı izotoplardır.",
+      isotopes_en: "Mg-24 (78.99%), Mg-26 (11.01%), Mg-25 (10.00%). All are stable isotopes.",
+      natural_occurrence_tr: "Yer kabuğunun %2'si. Deniz suyunda, dolomit, magnesit minerallerinde. Klorofilde.",
+      natural_occurrence_en: "2% of Earth's crust. In seawater, dolomite, magnesite minerals. In chlorophyll.",
+      academic_notes_tr: "Klorofilin merkezinde. Enzimlerin kofaktörü. Diagonal ilişki lityum ile.",
+      academic_notes_en: "Central in chlorophyll. Enzyme cofactor. Diagonal relationship with lithium."
+    },
+    13: { // Aluminum
+      usage_areas_tr: "Uçak sanayii, otomobil parçaları, ambalaj endüstrisi, yapı malzemeleri, elektronik, kablolar, mutfak eşyaları, kozmetik.",
+      usage_areas_en: "Aircraft industry, automotive parts, packaging industry, construction materials, electronics, cables, kitchenware, cosmetics.",
+      toxicity_tr: "Genel olarak düşük toksisite. Yüksek dozda nörotoksik etkiler. Alzheimer ile bağlantısı tartışmalı.",
+      toxicity_en: "Generally low toxicity. Neurotoxic effects at high doses. Connection with Alzheimer's is controversial.",
+      appearance_tr: "Gümüşi-beyaz, hafif metal. Oksit tabakası oluşturarak kendini korur. Parlak yüzey.",
+      appearance_en: "Silvery-white, lightweight metal. Protects itself by forming oxide layer. Bright surface.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Al-26 kozmojenik radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. Al-26 is cosmogenic radioactive isotope.",
+      isotopes_tr: "Al-27 (tek kararlı izotop %100). Diğer izotoplar kısa yarı ömürlüdür.",
+      isotopes_en: "Al-27 (only stable isotope 100%). Other isotopes have short half-lives.",
+      natural_occurrence_tr: "Yer kabuğunun %8'i, en bol metal. Boksit, feldspat, mika minerallerinde.",
+      natural_occurrence_en: "8% of Earth's crust, most abundant metal. In bauxite, feldspar, mica minerals.",
+      academic_notes_tr: "Amfoter oksit oluşturur. Hall-Héroult prosesi ile üretilir. Elektrik iletkenliği yüksek.",
+      academic_notes_en: "Forms amphoteric oxide. Produced by Hall-Héroult process. High electrical conductivity."
+    },
+    14: { // Silicon
+      usage_areas_tr: "Yarı iletken endüstrisi, bilgisayar çipleri, güneş panelleri, cam ve seramik, silikon kauçuk, yapı malzemeleri, optik fiber.",
+      usage_areas_en: "Semiconductor industry, computer chips, solar panels, glass and ceramics, silicone rubber, construction materials, optical fiber.",
+      toxicity_tr: "Elementel formu toksik değil. Silika tozu silikozise neden olur. Silikonlar genel olarak güvenli.",
+      toxicity_en: "Elemental form non-toxic. Silica dust causes silicosis. Silicones generally safe.",
+      appearance_tr: "Koyu gri, metalsi element. Kristal yapıda parlak. Amorf formda mat görünüm.",
+      appearance_en: "Dark gray, metalloid element. Shiny in crystalline form. Dull appearance in amorphous form.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Si-32 uzun yarı ömürlü radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. Si-32 is long-lived radioactive isotope.",
+      isotopes_tr: "Si-28 (%92.23), Si-29 (%4.67), Si-30 (%3.10). Tümü kararlı izotoplardır.",
+      isotopes_en: "Si-28 (92.23%), Si-29 (4.67%), Si-30 (3.10%). All are stable isotopes.",
+      natural_occurrence_tr: "Yer kabuğunun %27'si, ikinci en bol element. Kuvartz, feldspat, mika minerallerinde.",
+      natural_occurrence_en: "27% of Earth's crust, second most abundant element. In quartz, feldspar, mica minerals.",
+      academic_notes_tr: "Karbon ile benzer kimya. Teknoloji devriminin temeli. Dört değerlik gösterir.",
+      academic_notes_en: "Similar chemistry to carbon. Foundation of technology revolution. Shows tetravalence."
+    },
+    15: { // Phosphorus
+      usage_areas_tr: "Gübre sanayii, deterjan endüstrisi, kibrit üretimi, patlayıcı maddeler, gıda katkı maddeleri, metalurji, alev geciktiriciler.",
+      usage_areas_en: "Fertilizer industry, detergent industry, match production, explosives, food additives, metallurgy, flame retardants.",
+      toxicity_tr: "Beyaz fosfor çok toksik ve yanıcı. Kırmızı fosfor daha güvenli. Fosfin gazı çok zehirli.",
+      toxicity_en: "White phosphorus highly toxic and flammable. Red phosphorus safer. Phosphine gas highly poisonous.",
+      appearance_tr: "Beyaz (şeffaf mumsu), kırmızı (toz), siyah (metalik parlaklık) formları vardır.",
+      appearance_en: "Exists in white (transparent waxy), red (powder), black (metallic luster) forms.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. P-32 tıp ve araştırmada kullanılan radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. P-32 is radioactive isotope used in medicine and research.",
+      isotopes_tr: "P-31 (tek kararlı izotop %100). Diğer izotoplar radyoaktiftir.",
+      isotopes_en: "P-31 (only stable isotope 100%). Other isotopes are radioactive.",
+      natural_occurrence_tr: "Apatit mineralinde, kemiklerde, DNA ve RNA'da, ATP'de. Tüm canlı hücrelerde.",
+      natural_occurrence_en: "In apatite mineral, bones, DNA and RNA, ATP. In all living cells.",
+      academic_notes_tr: "Yaşam için esansiyel. ATP'de enerji depolama. Çok farklı allotropları var.",
+      academic_notes_en: "Essential for life. Energy storage in ATP. Has many different allotropes."
+    },
+    16: { // Sulfur
+      usage_areas_tr: "Sülfürik asit üretimi, vulkanizasyon, gübre sanayii, ilaç endüstrisi, kauçuk sanayii, kağıt endüstrisi, petrol rafinerisi.",
+      usage_areas_en: "Sulfuric acid production, vulcanization, fertilizer industry, pharmaceutical industry, rubber industry, paper industry, oil refining.",
+      toxicity_tr: "Element formu düşük toksisite. Hidrojen sülfür çok toksik. Sülfür dioksit solunum irritasyonu.",
+      toxicity_en: "Elemental form low toxicity. Hydrogen sulfide highly toxic. Sulfur dioxide causes respiratory irritation.",
+      appearance_tr: "Sarı, kristal katı. Kokusuz (elementel form). Yanırken mavi alev ve keskin koku.",
+      appearance_en: "Yellow, crystalline solid. Odorless (elemental form). Burns with blue flame and pungent odor.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. S-35 biyolojik araştırmalarda kullanılan radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. S-35 is radioactive isotope used in biological research.",
+      isotopes_tr: "S-32 (%94.99), S-34 (%4.25), S-33 (%0.76), S-36 (%0.02). Tümü kararlı.",
+      isotopes_en: "S-32 (94.99%), S-34 (4.25%), S-33 (0.76%), S-36 (0.02%). All stable.",
+      natural_occurrence_tr: "Volkanik bölgelerde element halinde, sülfat ve sülfür minerallerinde, petrolde, proteinlerde.",
+      natural_occurrence_en: "Elemental form in volcanic regions, in sulfate and sulfide minerals, petroleum, proteins.",
+      academic_notes_tr: "Protein yapısında kritik. Birçok allotropu var. Endüstriyel kimyada temel element.",
+      academic_notes_en: "Critical in protein structure. Has many allotropes. Fundamental element in industrial chemistry."
+    },
+    17: { // Chlorine
+      usage_areas_tr: "Su arıtma, çamaşır suyu, PVC üretimi, organik kimya sanayii, kağıt ağartma, dezenfektan, tuzlama.",
+      usage_areas_en: "Water treatment, bleach, PVC production, organic chemical industry, paper bleaching, disinfectants, chlorination.",
+      toxicity_tr: "Çok toksik gaz! Solunum sistemi için zararlı. Kimyasal silah olarak kullanılmış. Cilt yakıcı.",
+      toxicity_en: "Highly toxic gas! Harmful to respiratory system. Used as chemical weapon. Skin corrosive.",
+      appearance_tr: "Sarı-yeşil renkte gaz. Keskin, boğucu koku. Sıvı hali sarı-yeşil renklidir.",
+      appearance_en: "Yellow-green gas. Sharp, choking odor. Liquid form is yellow-green colored.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Cl-36 uzun yarı ömürlü radyoaktif izotop.",
+      radiation_en: "Not naturally radioactive. Cl-36 is long-lived radioactive isotope.",
+      isotopes_tr: "Cl-35 (%75.78), Cl-37 (%24.22). Her ikisi de kararlı izotoplardır.",
+      isotopes_en: "Cl-35 (75.78%), Cl-37 (24.22%). Both are stable isotopes.",
+      natural_occurrence_tr: "Deniz suyunda, tuz yataklarında (NaCl), çeşitli minerallers. Hiç element halinde bulunmaz.",
+      natural_occurrence_en: "In seawater, salt deposits (NaCl), various minerals. Never found in elemental form.",
+      academic_notes_tr: "Güçlü oksitleyici. Organik bileşiklerde yaygın. Çevre kirliliği yapabilir.",
+      academic_notes_en: "Strong oxidizing agent. Common in organic compounds. Can cause environmental pollution."
+    },
+    18: { // Argon
+      usage_areas_tr: "Koruyucu atmosfer kaynağı, akkor ampuller, lazer teknolojisi, kriyojenik uygulamalar, pencere camları, metal işleme.",
+      usage_areas_en: "Protective atmosphere welding, incandescent bulbs, laser technology, cryogenic applications, window glass, metal processing.",
+      toxicity_tr: "Toksik değildir. Kimyasal olarak inert. Yüksek konsantrasyonlarda asfiksi riski.",
+      toxicity_en: "Non-toxic. Chemically inert. Asphyxiation risk at high concentrations.",
+      appearance_tr: "Renksiz, kokusuz soygas. Elektrik akımından geçirildiğinde mor-mavi ışık verir.",
+      appearance_en: "Colorless, odorless noble gas. Gives purple-blue light when electric current passes through.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Ar-39 atmosferde kozmik ışınlarla oluşur.",
+      radiation_en: "Not naturally radioactive. Ar-39 forms in atmosphere by cosmic rays.",
+      isotopes_tr: "Ar-40 (%99.60), Ar-36 (%0.34), Ar-38 (%0.06). Tümü kararlı izotoplardır.",
+      isotopes_en: "Ar-40 (99.60%), Ar-36 (0.34%), Ar-38 (0.06%). All are stable isotopes.",
+      natural_occurrence_tr: "Atmosferin %0.93'ü. Potasyum-40'ın bozunumu ile oluşur. Kayaçlarda küçük miktarlarda.",
+      natural_occurrence_en: "0.93% of atmosphere. Formed by decay of potassium-40. Small amounts in rocks.",
+      academic_notes_tr: "Üçüncü en bol atmosferik gaz. Kimyasal bileşik oluşturmaz. Tarihlendirmede kullanılır.",
+      academic_notes_en: "Third most abundant atmospheric gas. Forms no chemical compounds. Used in dating."
+    },
+    19: { // Potassium
+      usage_areas_tr: "Gübre sanayii, sabun üretimi, cam endüstrisi, patlayıcı maddeler, tıpta elektrolit, fotoğraf sanayii, metalurji.",
+      usage_areas_en: "Fertilizer industry, soap production, glass industry, explosives, medical electrolytes, photography industry, metallurgy.",
+      toxicity_tr: "Metal formu su ile şiddetli reaksiyon. Potasyum tuzları fazla alımda kalp ritim bozukluğu.",
+      toxicity_en: "Metal form reacts violently with water. Potassium salts cause heart rhythm disorders with excess intake.",
+      appearance_tr: "Gümüşi-beyaz, çok yumuşak metal. Bıçakla kesilebilir. Hava ile hızla oksitlenir.",
+      appearance_en: "Silvery-white, very soft metal. Can be cut with knife. Rapidly oxidizes in air.",
+      radiation_tr: "K-40 doğal radyoaktif izotop (%0.012). Yaşlı kayaçların tarihlendirmesinde kullanılır.",
+      radiation_en: "K-40 is naturally radioactive isotope (0.012%). Used in dating old rocks.",
+      isotopes_tr: "K-39 (%93.26), K-41 (%6.73), K-40 (%0.012, radyoaktif). İki kararlı, bir radyoaktif.",
+      isotopes_en: "K-39 (93.26%), K-41 (6.73%), K-40 (0.012%, radioactive). Two stable, one radioactive.",
+      natural_occurrence_tr: "Feldspat, mika minerallerinde. Deniz suyunda. Tüm canlı hücrelerde esansiyel.",
+      natural_occurrence_en: "In feldspar, mica minerals. In seawater. Essential in all living cells.",
+      academic_notes_tr: "Sinir iletimi ve kas fonksiyonu için kritik. Flame test'te mor renk verir.",
+      academic_notes_en: "Critical for nerve transmission and muscle function. Gives violet color in flame test."
+    },
+    20: { // Calcium
+      usage_areas_tr: "İnşaat sektörü (çimento, kireç), metalurji, kağıt sanayii, plastik endüstrisi, gıda sanayii, tıpta kemik sağlığı.",
+      usage_areas_en: "Construction sector (cement, lime), metallurgy, paper industry, plastics industry, food industry, medical bone health.",
+      toxicity_tr: "Metal formu su ile reaksiyon. Kalsiyum tuzları genel olarak güvenli, aşırı alım böbrek taşı riski.",
+      toxicity_en: "Metal form reacts with water. Calcium salts generally safe, excess intake risks kidney stones.",
+      appearance_tr: "Gümüşi-beyaz, orta sertlikte metal. Hava ile temas ettiğinde yüzeyi kararmaktadır.",
+      appearance_en: "Silvery-white, medium hardness metal. Surface darkens when exposed to air.",
+      radiation_tr: "Doğal radyoaktiviteye sahip değil. Ca-45 ve Ca-47 tıbbi araştırmalarda kullanılır.",
+      radiation_en: "Not naturally radioactive. Ca-45 and Ca-47 used in medical research.",
+      isotopes_tr: "Ca-40 (%96.94), Ca-44 (%2.09), Ca-42 (%0.65), diğerleri. 6 kararlı izotop.",
+      isotopes_en: "Ca-40 (96.94%), Ca-44 (2.09%), Ca-42 (0.65%), others. 6 stable isotopes.",
+      natural_occurrence_tr: "Yer kabuğunun %4'ü. Kireçtaşı, mermer, jips minerallerinde. Kemik ve dişlerde.",
+      natural_occurrence_en: "4% of Earth's crust. In limestone, marble, gypsum minerals. In bones and teeth.",
+      academic_notes_tr: "Kemik yapısında kritik. Kas kasılması için gerekli. Flame test'te turuncu-kırmızı renk.",
+      academic_notes_en: "Critical in bone structure. Required for muscle contraction. Orange-red color in flame test."
+    }
+  };
+
+  return academicDatabase[atomicNumber] || {
+    usage_areas_tr: 'Kullanım alanı bilgisi güncelleniyor.',
+    usage_areas_en: 'Usage information is being updated.',
+    toxicity_tr: 'Toksisite bilgisi güncelleniyor.',
+    toxicity_en: 'Toxicity information is being updated.',
+    appearance_tr: 'Görünüm bilgisi güncelleniyor.',
+    appearance_en: 'Appearance information is being updated.',
+    radiation_tr: 'Radyasyon bilgisi güncelleniyor.',
+    radiation_en: 'Radiation information is being updated.',
+    isotopes_tr: 'İzotop bilgisi güncelleniyor.',
+    isotopes_en: 'Isotope information is being updated.',
+    natural_occurrence_tr: 'Doğal bulunuş bilgisi güncelleniyor.',
+    natural_occurrence_en: 'Natural occurrence information is being updated.',
+    academic_notes_tr: 'Akademik notlar güncelleniyor.',
+    academic_notes_en: 'Academic notes are being updated.'
+  };
+}
