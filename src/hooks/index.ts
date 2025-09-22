@@ -135,8 +135,8 @@ export const useFavorites = () => {
 export const useElements = () => {
   const { data } = useAppData();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedBlock, setSelectedBlock] = useState<string>('all');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedBlocks, setSelectedBlocks] = useState<string[]>([]);
   
   const filteredElements = useCallback(() => {
     let filtered = data.elements;
@@ -152,32 +152,58 @@ export const useElements = () => {
       );
     }
     
-    // Category filter
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(element => element.category === selectedCategory);
+    // Category filter - multiple selection support
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(element => selectedCategories.includes(element.category));
     }
     
-    // Block filter
-    if (selectedBlock !== 'all') {
-      filtered = filtered.filter(element => element.block === selectedBlock);
+    // Block filter - multiple selection support
+    if (selectedBlocks.length > 0) {
+      filtered = filtered.filter(element => selectedBlocks.includes(element.block));
     }
     
     return filtered;
-  }, [data.elements, searchQuery, selectedCategory, selectedBlock]);
+  }, [data.elements, searchQuery, selectedCategories, selectedBlocks]);
   
   const getElementById = useCallback((id: number) => {
     return data.elements.find(element => element.z === id);
   }, [data.elements]);
+
+  const toggleCategory = useCallback((category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  }, []);
+
+  const toggleBlock = useCallback((block: string) => {
+    setSelectedBlocks(prev => 
+      prev.includes(block) 
+        ? prev.filter(b => b !== block)
+        : [...prev, block]
+    );
+  }, []);
+
+  const clearCategoryFilters = useCallback(() => {
+    setSelectedCategories([]);
+  }, []);
+
+  const clearBlockFilters = useCallback(() => {
+    setSelectedBlocks([]);
+  }, []);
   
   return {
     elements: data.elements,
     filteredElements: filteredElements(),
     searchQuery,
     setSearchQuery,
-    selectedCategory,
-    setSelectedCategory,
-    selectedBlock,
-    setSelectedBlock,
+    selectedCategories,
+    selectedBlocks,
+    toggleCategory,
+    toggleBlock,
+    clearCategoryFilters,
+    clearBlockFilters,
     getElementById
   };
 };
