@@ -67,7 +67,7 @@ const CompactNoteForm: React.FC<CompactNoteFormProps> = ({
       height: formHeight,
       isMobile
     };
-  }, [isVisible]);
+  }, []);
 
   if (!isVisible) return null;
 
@@ -75,14 +75,17 @@ const CompactNoteForm: React.FC<CompactNoteFormProps> = ({
     <>
       {/* Enhanced Backdrop with better darkening */}
       <div 
-        className="fixed inset-0 z-40 bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
-        style={{ animation: 'fadeIn 0.3s ease-out' }}
+        style={{ 
+          animation: 'fadeIn 0.3s ease-out',
+          zIndex: 300
+        }}
       />
       
       {/* Enhanced Centered Modal-style Note Form */}
       <div
-        className={`fixed z-50 bg-white border border-brand/30 rounded-2xl shadow-2xl overflow-hidden ${centerPosition.isMobile ? 'modal-responsive' : ''}`}
+        className={`fixed bg-white border border-brand/30 rounded-2xl shadow-2xl overflow-hidden ${centerPosition.isMobile ? 'modal-responsive' : ''}`}
         style={{
           left: centerPosition.x,
           top: centerPosition.y,
@@ -90,6 +93,7 @@ const CompactNoteForm: React.FC<CompactNoteFormProps> = ({
           minHeight: `${centerPosition.height}px`,
           animation: 'modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1)',
+          zIndex: 301
         }}
       >
         {/* Enhanced Header with better gradient and typography */}
