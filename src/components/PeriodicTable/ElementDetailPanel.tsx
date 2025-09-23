@@ -18,7 +18,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   const { createCard } = useFlashCards();
   const { getNotesByElement } = useNotes();
   const [showNoteForm, setShowNoteForm] = useState(false);
-  const [noteFormPosition, setNoteFormPosition] = useState({ x: 0, y: 0 });
   const noteButtonRef = useRef<HTMLButtonElement>(null);
 
   if (!element) return null;
@@ -68,13 +67,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   };
 
   const handleAddNote = () => {
-    if (noteButtonRef.current) {
-      const rect = noteButtonRef.current.getBoundingClientRect();
-      setNoteFormPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.bottom + 5
-      });
-    }
     setShowNoteForm(true);
   };
 
@@ -406,7 +398,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
       <CompactNoteForm
         element={element}
         isVisible={showNoteForm}
-        position={noteFormPosition}
         onClose={() => setShowNoteForm(false)}
         onSuccess={handleNoteSuccess}
       />
