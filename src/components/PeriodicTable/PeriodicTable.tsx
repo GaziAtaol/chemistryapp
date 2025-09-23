@@ -1,10 +1,9 @@
 // Periodic Table Component
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { Element } from '../../types';
-import { useElements, useFavorites, useNotes } from '../../hooks';
+import { useElements, useFavorites } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
-import Tooltip from './Tooltip';
 
 interface ElementCellProps {
   element: Element;
@@ -14,11 +13,8 @@ interface ElementCellProps {
 
 const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected }) => {
   const { isElementFavorite } = useFavorites();
-  const { getNotesByElement } = useNotes();
   
   const isFavorite = isElementFavorite(element.z);
-  const elementNotes = getNotesByElement(element.z);
-  const hasNotes = elementNotes.length > 0;
 
   // Calculate grid position for proper periodic table layout
   const getGridPosition = () => {
@@ -48,67 +44,33 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
 
   const gridPosition = getGridPosition();
 
-  const getMostRecentNote = () => {
-    if (elementNotes.length === 0) return null;
-    return elementNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())[0];
-  };
-
-  const recentNote = getMostRecentNote();
-
   return (
-    <>
-      <div
-        className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
-        onClick={() => onClick(element)}
-        tabIndex={0}
-        role="button"
-        aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            onClick(element);
-          }
-        }}
-        style={{
-          gridRow: gridPosition.gridRow,
-          gridColumn: gridPosition.gridColumn
-        }}
-      >
-        <div className="element-number">{element.z}</div>
-        <div className="element-symbol">{element.symbol}</div>
-        <div className="element-name">{getElementName(element).slice(0, 8)}</div>
-        
-        {/* Icons overlay */}
-        <div className="absolute top-1 right-1 flex flex-col gap-1">
-          {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
-          {hasNotes && (
-            <div 
-              className="cursor-pointer hover:scale-125 transition-all duration-200" 
-              title={`${elementNotes.length} not var`}
-            >
-              {/* Sparkling dot indicator */}
-              <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-pulse shadow-sm relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-purple-400 rounded-full animate-ping opacity-75"></div>
-              </div>
-            </div>
-          )}
-        </div>
+    <div
+      className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
+      onClick={() => onClick(element)}
+      tabIndex={0}
+      role="button"
+      aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(element);
+        }
+      }}
+      style={{
+        gridRow: gridPosition.gridRow,
+        gridColumn: gridPosition.gridColumn
+      }}
+    >
+      <div className="element-number">{element.z}</div>
+      <div className="element-symbol">{element.symbol}</div>
+      <div className="element-name">{getElementName(element).slice(0, 8)}</div>
+      
+      {/* Icons overlay */}
+      <div className="absolute top-1 right-1 flex flex-col gap-1">
+        {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
       </div>
-
-      {/* Note Tooltip - Only show tooltip, note creation is handled by ElementDetailPanel */}
-      {hasNotes && recentNote && (
-        <Tooltip
-          isVisible={false} // Disable tooltips on element cells to avoid conflicts
-          position={{ x: 0, y: 0 }}
-          title={recentNote.title}
-          content={recentNote.content}
-          onClose={() => {}}
-        />
-      )}
-
-      {/* Note: CompactNoteForm removed from individual cells to prevent conflicts.
-          Note creation is now handled through the ElementDetailPanel only. */}
-    </>
+    </div>
   );
 };
 
@@ -166,72 +128,66 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
             />
           </div>
 
-          {/* Multi-select Filters */}
-          <div className="flex flex-row gap-6">
-            {/* Category Filter */}
-            <div className="flex-1 min-w-0">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-semibold text-blue-800 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    {t('pt.filter.category')}
+          {/* Separated Filters */}
+          <div className="space-y-4">
+            {/* Category Filter Row */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-3">
+                <label className="text-sm font-semibold text-gray-700">
+                  {t('pt.filter.category')}
+                </label>
+                {selectedCategories.length > 0 && (
+                  <button
+                    onClick={clearCategoryFilters}
+                    className="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 bg-blue-50 rounded-full transition-all"
+                  >
+                    {t('pt.filter.clear')} ({selectedCategories.length})
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {categories.map(cat => (
+                  <label key={cat.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-white px-2 py-1 rounded-md transition-colors border border-gray-200 bg-white">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat.value)}
+                      onChange={() => toggleCategory(cat.value)}
+                      className="w-3 h-3 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    />
+                    <span className={`w-2 h-2 rounded-full element-${cat.value}`}></span>
+                    <span className="font-medium">{cat.label}</span>
                   </label>
-                  {selectedCategories.length > 0 && (
-                    <button
-                      onClick={clearCategoryFilters}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 bg-white rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                      {t('pt.filter.clear')} ({selectedCategories.length})
-                    </button>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto bg-white rounded-lg p-3 border border-blue-100 shadow-inner">
-                  {categories.map(cat => (
-                    <label key={cat.value} className="flex items-center space-x-2 text-xs cursor-pointer hover:bg-blue-50 p-2 rounded-md transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(cat.value)}
-                        onChange={() => toggleCategory(cat.value)}
-                        className="w-3.5 h-3.5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                      />
-                      <span className={`w-3 h-3 rounded-full element-${cat.value} shadow-sm`}></span>
-                      <span className="truncate font-medium">{cat.label}</span>
-                    </label>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Block Filter */}
-            <div className="flex-shrink-0 w-72">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-semibold text-green-800 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    {t('pt.filter.block')}
+            {/* Block Filter Row */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-3">
+                <label className="text-sm font-semibold text-gray-700">
+                  {t('pt.filter.block')}
+                </label>
+                {selectedBlocks.length > 0 && (
+                  <button
+                    onClick={clearBlockFilters}
+                    className="text-xs text-green-600 hover:text-green-800 font-medium px-2 py-1 bg-green-50 rounded-full transition-all"
+                  >
+                    {t('pt.filter.clear')} ({selectedBlocks.length})
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {blocks.map(block => (
+                  <label key={block.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-white px-2 py-1 rounded-md transition-colors border border-gray-200 bg-white">
+                    <input
+                      type="checkbox"
+                      checked={selectedBlocks.includes(block.value)}
+                      onChange={() => toggleBlock(block.value)}
+                      className="w-3 h-3 text-green-600 rounded border-gray-300 focus:ring-green-500"
+                    />
+                    <span className="font-medium">{block.label}</span>
                   </label>
-                  {selectedBlocks.length > 0 && (
-                    <button
-                      onClick={clearBlockFilters}
-                      className="text-xs text-green-600 hover:text-green-800 font-medium px-2 py-1 bg-white rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                      {t('pt.filter.clear')} ({selectedBlocks.length})
-                    </button>
-                  )}
-                </div>
-                <div className="space-y-2 bg-white rounded-lg p-3 border border-green-100 shadow-inner">
-                  {blocks.map(block => (
-                    <label key={block.value} className="flex items-center space-x-3 text-sm cursor-pointer hover:bg-green-50 p-2 rounded-md transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={selectedBlocks.includes(block.value)}
-                        onChange={() => toggleBlock(block.value)}
-                        className="w-3.5 h-3.5 text-green-600 rounded border-gray-300 focus:ring-green-500"
-                      />
-                      <span className="font-medium">{block.label}</span>
-                    </label>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>
