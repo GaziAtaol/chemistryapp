@@ -128,72 +128,66 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
             />
           </div>
 
-          {/* Multi-select Filters */}
-          <div className="flex flex-col lg:flex-row gap-4">
+          {/* Compact Filters */}
+          <div className="flex flex-wrap gap-6 items-start">
             {/* Category Filter */}
-            <div className="flex-1">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-semibold text-blue-800 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    {t('pt.filter.category')}
+            <div className="flex-1 min-w-fit">
+              <div className="flex items-center gap-2 mb-2">
+                <label className="text-sm font-semibold text-gray-700">
+                  {t('pt.filter.category')}
+                </label>
+                {selectedCategories.length > 0 && (
+                  <button
+                    onClick={clearCategoryFilters}
+                    className="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 bg-blue-50 rounded-full transition-all"
+                  >
+                    {t('pt.filter.clear')} ({selectedCategories.length})
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {categories.map(cat => (
+                  <label key={cat.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md transition-colors border border-gray-200">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat.value)}
+                      onChange={() => toggleCategory(cat.value)}
+                      className="w-3 h-3 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    />
+                    <span className={`w-2 h-2 rounded-full element-${cat.value}`}></span>
+                    <span className="font-medium">{cat.label}</span>
                   </label>
-                  {selectedCategories.length > 0 && (
-                    <button
-                      onClick={clearCategoryFilters}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 bg-white rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                      {t('pt.filter.clear')} ({selectedCategories.length})
-                    </button>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-1.5 bg-white rounded-lg p-3 border border-blue-100 shadow-inner">
-                  {categories.map(cat => (
-                    <label key={cat.value} className="flex items-center space-x-2 text-xs cursor-pointer hover:bg-blue-50 p-2 rounded-md transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(cat.value)}
-                        onChange={() => toggleCategory(cat.value)}
-                        className="w-3.5 h-3.5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                      />
-                      <span className={`w-3 h-3 rounded-full element-${cat.value} shadow-sm`}></span>
-                      <span className="truncate font-medium">{cat.label}</span>
-                    </label>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
 
             {/* Block Filter */}
-            <div className="lg:w-80">
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-semibold text-green-800 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    {t('pt.filter.block')}
+            <div className="flex-shrink-0">
+              <div className="flex items-center gap-2 mb-2">
+                <label className="text-sm font-semibold text-gray-700">
+                  {t('pt.filter.block')}
+                </label>
+                {selectedBlocks.length > 0 && (
+                  <button
+                    onClick={clearBlockFilters}
+                    className="text-xs text-green-600 hover:text-green-800 font-medium px-2 py-1 bg-green-50 rounded-full transition-all"
+                  >
+                    {t('pt.filter.clear')} ({selectedBlocks.length})
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {blocks.map(block => (
+                  <label key={block.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md transition-colors border border-gray-200">
+                    <input
+                      type="checkbox"
+                      checked={selectedBlocks.includes(block.value)}
+                      onChange={() => toggleBlock(block.value)}
+                      className="w-3 h-3 text-green-600 rounded border-gray-300 focus:ring-green-500"
+                    />
+                    <span className="font-medium">{block.label}</span>
                   </label>
-                  {selectedBlocks.length > 0 && (
-                    <button
-                      onClick={clearBlockFilters}
-                      className="text-xs text-green-600 hover:text-green-800 font-medium px-2 py-1 bg-white rounded-full shadow-sm hover:shadow-md transition-all"
-                    >
-                      {t('pt.filter.clear')} ({selectedBlocks.length})
-                    </button>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 bg-white rounded-lg p-3 border border-green-100 shadow-inner">
-                  {blocks.map(block => (
-                    <label key={block.value} className="flex items-center space-x-3 text-sm cursor-pointer hover:bg-green-50 p-2 rounded-md transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={selectedBlocks.includes(block.value)}
-                        onChange={() => toggleBlock(block.value)}
-                        className="w-3.5 h-3.5 text-green-600 rounded border-gray-300 focus:ring-green-500"
-                      />
-                      <span className="font-medium">{block.label}</span>
-                    </label>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>
