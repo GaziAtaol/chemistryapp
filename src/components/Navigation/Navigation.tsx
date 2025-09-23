@@ -11,11 +11,11 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) => {
   const navItems = [
-    { id: 'dashboard', label: 'Pano' },
+    { id: 'dashboard', label: t('nav.dashboard') },
     { id: 'periodic-table', label: t('nav.periodic-table') },
     { id: 'quiz', label: t('nav.quiz') },
     { id: 'flashcards', label: t('nav.flashcards') },
-    { id: 'favorites', label: 'Favoriler' },
+    { id: 'favorites', label: t('nav.favorites') },
     { id: 'history', label: t('nav.history') },
     { id: 'notes', label: t('nav.notes') },
     { id: 'settings', label: t('nav.settings') }
@@ -25,13 +25,8 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
     <nav className="nav">
       <div className="container">
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <h1 className="text-xl font-bold text-brand mr-8 flex items-center">
-              <img src={logoImg} alt="Chemfy Logo" className="logo-nav" />
-            </h1>
-          </div>
-          
           <div className="flex items-center gap-3">
+            <img src={logoImg} alt="Chemfy Logo" className="logo-nav" />
             {navItems.map(item => (
               <button
                 key={item.id}

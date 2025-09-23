@@ -349,7 +349,7 @@ select.input {
 .nav {
   background: var(--card);
   border-bottom: 1px solid var(--border);
-  padding: var(--spacing-sm) 0; /* Reduced padding for narrower header */
+  padding: var(--spacing-xs) 0; /* Further reduced padding for smaller header */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -561,11 +561,11 @@ select.input {
 
 /* Logo styles */
 .logo-nav {
-  height: 192px; /* 2x larger: 96px * 2 = 192px */
+  height: 76px; /* Reduced by 2.5x: 192px / 2.5 = 76.8px ≈ 76px */
   width: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
-  margin-right: calc(var(--spacing-md) * 6); /* 6x more space to the left */
+  margin-right: var(--spacing-md); /* Reduced margin */
 }
 
 /* Periodic Table Styles */
