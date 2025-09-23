@@ -13,7 +13,7 @@ export const translations = {
     'nav.settings': 'Ayarlar',
     
     // Dashboard
-    'dashboard.title': 'Kimya Öğrenme Uygulaması',
+    'dashboard.title': 'Chemify',
     'dashboard.welcome': 'Hoş geldiniz',
     'dashboard.daily-cards': 'Bugünkü Kartlar',
     'dashboard.last-quiz': 'Son Quiz Skoru',
@@ -211,7 +211,7 @@ export const translations = {
     'nav.settings': 'Settings',
     
     // Dashboard
-    'dashboard.title': 'Chemistry Learning App',
+    'dashboard.title': 'Chemify',
     'dashboard.welcome': 'Welcome',
     'dashboard.daily-cards': 'Daily Cards',
     'dashboard.last-quiz': 'Last Quiz Score',
