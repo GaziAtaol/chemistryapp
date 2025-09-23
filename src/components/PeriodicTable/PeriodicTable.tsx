@@ -5,6 +5,7 @@ import type { Element } from '../../types';
 import { useElements, useFavorites, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
 import Tooltip from './Tooltip';
+import CompactNoteForm from './CompactNoteForm';
 
 interface ElementCellProps {
   element: Element;
@@ -15,6 +16,9 @@ interface ElementCellProps {
 const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected }) => {
   const { isElementFavorite } = useFavorites();
   const { getNotesByElement } = useNotes();
+  const [showNoteTooltip, setShowNoteTooltip] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   
   const isFavorite = isElementFavorite(element.z);
   const elementNotes = getNotesByElement(element.z);
@@ -48,6 +52,36 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
 
   const gridPosition = getGridPosition();
 
+  const handleNoteIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    if (hasNotes) {
+      setShowNoteTooltip(true);
+    } else {
+      setShowNoteForm(true);
+    }
+  };
+
+  const handleNoteIconHover = (e: React.MouseEvent) => {
+    if (!hasNotes) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.bottom
+    });
+    setShowNoteTooltip(true);
+  };
+
+  const handleNoteSuccess = () => {
+    setShowNoteForm(false);
+    // Force component re-render to show the note indicator
+    // The useNotes hook should already handle the state update
+  };
+
   const getMostRecentNote = () => {
     if (elementNotes.length === 0) return null;
     return elementNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())[0];
@@ -60,6 +94,26 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
       <div
         className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
         onClick={() => onClick(element)}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          if (!hasNotes) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setTooltipPosition({
+              x: rect.left + rect.width / 2,
+              y: rect.bottom
+            });
+            setShowNoteForm(true);
+          }
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          const rect = e.currentTarget.getBoundingClientRect();
+          setTooltipPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.bottom
+          });
+          setShowNoteForm(true);
+        }}
         tabIndex={0}
         role="button"
         aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
@@ -84,6 +138,9 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
           {hasNotes && (
             <div 
               className="cursor-pointer hover:scale-125 transition-all duration-200" 
+              onClick={handleNoteIconClick}
+              onMouseEnter={handleNoteIconHover}
+              onMouseLeave={() => setShowNoteTooltip(false)}
               title={`${elementNotes.length} not var`}
             >
               {/* Sparkling dot indicator */}
@@ -95,19 +152,25 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
         </div>
       </div>
 
-      {/* Note Tooltip - Only show tooltip, note creation is handled by ElementDetailPanel */}
-      {hasNotes && recentNote && (
+      {/* Note Tooltip */}
+      {showNoteTooltip && hasNotes && recentNote && (
         <Tooltip
-          isVisible={false} // Disable tooltips on element cells to avoid conflicts
-          position={{ x: 0, y: 0 }}
+          isVisible={showNoteTooltip}
+          position={tooltipPosition}
           title={recentNote.title}
           content={recentNote.content}
-          onClose={() => {}}
+          onClose={() => setShowNoteTooltip(false)}
         />
       )}
 
-      {/* Note: CompactNoteForm removed from individual cells to prevent conflicts.
-          Note creation is now handled through the ElementDetailPanel only. */}
+      {/* Compact Note Form */}
+      <CompactNoteForm
+        element={element}
+        isVisible={showNoteForm}
+        position={tooltipPosition}
+        onClose={() => setShowNoteForm(false)}
+        onSuccess={handleNoteSuccess}
+      />
     </>
   );
 };
