@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useQuiz } from '../../hooks';
+import { t } from '../../utils/i18n';
 import type { QuizSession } from '../../types';
 
 const QuizHistory: React.FC = () => {
@@ -262,9 +263,9 @@ const QuizHistory: React.FC = () => {
         {filteredAndSortedSessions.length === 0 ? (
           <div className="quiz-question-card text-center py-12">
             <div className="text-6xl mb-4">📊</div>
-            <h3 className="text-xl font-bold mb-2">Henüz Quiz Geçmişiniz Yok</h3>
+            <h3 className="text-xl font-bold mb-2">{t('history.empty-title')}</h3>
             <p className="text-gray-600 mb-6">
-              İlk quiz'inizi çözdükten sonra burada geçmiş performansınızı görebileceksiniz.
+              {t('history.empty-description')}
             </p>
           </div>
         ) : (

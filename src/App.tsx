@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
   const { data } = useAppData();
   
   return (
-    <PageContainer title="🏠 Pano">
+    <PageContainer title={t('dashboard.page-title')}>
       <div className="grid grid-auto gap-6">
         <div className="quiz-question-card">
           <h3 className="text-lg font-semibold mb-3 text-brand">{t('dashboard.daily-cards')}</h3>
@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
 
 
 const FlashCards: React.FC = () => (
-  <PageContainer title="🃏 Kartlar">
+  <PageContainer title={t('flashcards.page-title')}>
     <div className="quiz-question-card">
       <p>Flashcard bileşeni yakında gelecek...</p>
     </div>
@@ -100,7 +100,7 @@ const Favorites: React.FC = () => {
     .sort((a, b) => a.z - b.z);
 
   return (
-    <PageContainer title="⭐ Favoriler">
+    <PageContainer title={t('favorites.page-title')}>
       {favoriteElements.length === 0 ? (
         <div className="quiz-question-card">
           <p>Henüz favori element eklemediniz. Periyodik tabloda elementlere tıklayarak favorilere ekleyebilirsiniz.</p>
@@ -132,13 +132,13 @@ const Favorites: React.FC = () => {
 };
 
 const History: React.FC = () => (
-  <PageContainer title="📜 Geçmiş">
+  <PageContainer title={t('history.page-title')}>
     <QuizHistory />
   </PageContainer>
 );
 
 const NotesPage: React.FC = () => (
-  <PageContainer title="📝 Notlar">
+  <PageContainer title={t('notes.page-title')}>
     <Notes />
   </PageContainer>
 );
@@ -147,12 +147,12 @@ const Settings: React.FC = () => {
   const { settings, updateSettings } = useSettings();
   
   return (
-    <PageContainer title="⚙️ Ayarlar">
+    <PageContainer title={t('settings.page-title')}>
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-2 gap-6">
           {/* Personal Settings */}
           <div className="quiz-question-card">
-            <h3 className="text-xl font-semibold mb-6 text-brand">👤 Kişisel Ayarlar</h3>
+            <h3 className="text-xl font-semibold mb-6 text-brand">{t('settings.personal')}</h3>
             <div className="space-y-6">
               {/* Language Setting */}
               <div>
@@ -298,7 +298,7 @@ const Settings: React.FC = () => {
 
           {/* Learning Settings */}
           <div className="quiz-question-card">
-            <h3 className="text-xl font-semibold mb-6 text-brand">🎯 Öğrenme Ayarları</h3>
+            <h3 className="text-xl font-semibold mb-6 text-brand">{t('settings.learning')}</h3>
             <div className="space-y-6">
               {/* Daily Target */}
               <div>

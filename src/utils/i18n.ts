@@ -14,6 +14,7 @@ export const translations = {
     
     // Dashboard
     'dashboard.title': 'Chemify',
+    'dashboard.page-title': '🏠 Ana Sayfa',
     'dashboard.welcome': 'Hoş geldiniz',
     'dashboard.daily-cards': 'Bugünkü Kartlar',
     'dashboard.last-quiz': 'Son Quiz Skoru',
@@ -68,6 +69,7 @@ export const translations = {
     
     // Quiz
     'quiz.title': 'Quiz',
+    'quiz.page-title': '🎯 Quiz',
     'quiz.start': 'Quiz Başlat',
     'quiz.config': 'Quiz Ayarları',
     'quiz.difficulty': 'Zorluk',
@@ -103,6 +105,7 @@ export const translations = {
     
     // Flashcards
     'flashcards.title': 'Kartlar',
+    'flashcards.page-title': '🃏 Kartlar',
     'flashcards.study': 'Çalışma',
     'flashcards.create': 'Yeni Kart',
     'flashcards.leitner-boxes': 'Leitner Kutuları',
@@ -118,6 +121,7 @@ export const translations = {
     
     // Favorites
     'favorites.title': 'Favoriler',
+    'favorites.page-title': '⭐ Favoriler',
     'favorites.elements': 'Elementler',
     'favorites.questions': 'Sorular',
     'favorites.flashcards': 'Kartlar',
@@ -125,8 +129,15 @@ export const translations = {
     'favorites.empty': 'Henüz favori eklenmemiş',
     'favorites.add-some': 'Favori eklemek için elementlere, sorulara veya kartlara tıklayın',
     
+    // History
+    'history.title': 'Geçmiş',
+    'history.page-title': '📜 Geçmiş',
+    'history.empty-title': 'Henüz Quiz Geçmişiniz Yok',
+    'history.empty-description': 'İlk quiz\'inizi çözdükten sonra burada geçmiş performansınızı görebileceksiniz.',
+    
     // Notes
     'notes.title': 'Notlar',
+    'notes.page-title': '📝 Notlar',
     'notes.create': 'Yeni Not',
     'notes.edit': 'Düzenle',
     'notes.delete': 'Sil',
@@ -139,6 +150,9 @@ export const translations = {
     
     // Settings
     'settings.title': 'Ayarlar',
+    'settings.page-title': '⚙️ Ayarlar',
+    'settings.personal': '👤 Kişisel Ayarlar',
+    'settings.learning': '🎯 Öğrenme Ayarları',
     'settings.language': 'Dil',
     'settings.theme': 'Tema',
     'settings.theme.light': 'Açık',
@@ -212,6 +226,7 @@ export const translations = {
     
     // Dashboard
     'dashboard.title': 'Chemify',
+    'dashboard.page-title': '🏠 Dashboard',
     'dashboard.welcome': 'Welcome',
     'dashboard.daily-cards': 'Daily Cards',
     'dashboard.last-quiz': 'Last Quiz Score',
@@ -266,6 +281,7 @@ export const translations = {
     
     // Quiz
     'quiz.title': 'Quiz',
+    'quiz.page-title': '🎯 Quiz',
     'quiz.start': 'Start Quiz',
     'quiz.config': 'Quiz Configuration',
     'quiz.difficulty': 'Difficulty',
@@ -301,6 +317,7 @@ export const translations = {
     
     // Flashcards
     'flashcards.title': 'Flashcards',
+    'flashcards.page-title': '🃏 Flashcards',
     'flashcards.study': 'Study',
     'flashcards.create': 'New Card',
     'flashcards.leitner-boxes': 'Leitner Boxes',
@@ -316,6 +333,7 @@ export const translations = {
     
     // Favorites
     'favorites.title': 'Favorites',
+    'favorites.page-title': '⭐ Favorites',
     'favorites.elements': 'Elements',
     'favorites.questions': 'Questions',
     'favorites.flashcards': 'Flashcards',
@@ -323,8 +341,15 @@ export const translations = {
     'favorites.empty': 'No favorites yet',
     'favorites.add-some': 'Click on elements, questions, or cards to add favorites',
     
+    // History
+    'history.title': 'History',
+    'history.page-title': '📜 History',
+    'history.empty-title': 'No Quiz History Yet',
+    'history.empty-description': 'After completing your first quiz, you will be able to see your past performance here.',
+    
     // Notes
     'notes.title': 'Notes',
+    'notes.page-title': '📝 Notes',
     'notes.create': 'New Note',
     'notes.edit': 'Edit',
     'notes.delete': 'Delete',
@@ -337,6 +362,9 @@ export const translations = {
     
     // Settings
     'settings.title': 'Settings',
+    'settings.page-title': '⚙️ Settings',
+    'settings.personal': '👤 Personal Settings',
+    'settings.learning': '🎯 Learning Settings',
     'settings.language': 'Language',
     'settings.theme': 'Theme',
     'settings.theme.light': 'Light',
