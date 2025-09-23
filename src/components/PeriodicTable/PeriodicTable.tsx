@@ -128,11 +128,11 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
             />
           </div>
 
-          {/* Compact Filters */}
-          <div className="flex flex-wrap gap-6 items-start">
-            {/* Category Filter */}
-            <div className="flex-1 min-w-fit">
-              <div className="flex items-center gap-2 mb-2">
+          {/* Separated Filters */}
+          <div className="space-y-4">
+            {/* Category Filter Row */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-3">
                 <label className="text-sm font-semibold text-gray-700">
                   {t('pt.filter.category')}
                 </label>
@@ -147,7 +147,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
               </div>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => (
-                  <label key={cat.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md transition-colors border border-gray-200">
+                  <label key={cat.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-white px-2 py-1 rounded-md transition-colors border border-gray-200 bg-white">
                     <input
                       type="checkbox"
                       checked={selectedCategories.includes(cat.value)}
@@ -161,9 +161,9 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
               </div>
             </div>
 
-            {/* Block Filter */}
-            <div className="flex-shrink-0">
-              <div className="flex items-center gap-2 mb-2">
+            {/* Block Filter Row */}
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-3">
                 <label className="text-sm font-semibold text-gray-700">
                   {t('pt.filter.block')}
                 </label>
@@ -178,7 +178,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({ onElementSelect, selected
               </div>
               <div className="flex flex-wrap gap-2">
                 {blocks.map(block => (
-                  <label key={block.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md transition-colors border border-gray-200">
+                  <label key={block.value} className="flex items-center space-x-1 text-xs cursor-pointer hover:bg-white px-2 py-1 rounded-md transition-colors border border-gray-200 bg-white">
                     <input
                       type="checkbox"
                       checked={selectedBlocks.includes(block.value)}
