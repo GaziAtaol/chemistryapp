@@ -1,11 +1,10 @@
 // Element Detail Panel Component
 
-import React, { useState } from 'react';
+import React from 'react';
 import type { Element } from '../../types';
-import { useFavorites, useFlashCards, useNotes } from '../../hooks';
+import { useFavorites, useFlashCards } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
 import { generateTrendExplanations } from '../../utils/trendExplanations';
-import ElementNoteModal from './ElementNoteModal';
 
 
 interface ElementDetailPanelProps {
@@ -17,13 +16,10 @@ interface ElementDetailPanelProps {
 const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen, onClose }) => {
   const { toggleElement, isElementFavorite } = useFavorites();
   const { createCard } = useFlashCards();
-  const { getNotesByElement } = useNotes();
-  const [showNoteModal, setShowNoteModal] = useState(false);
 
   if (!element) return null;
 
   const isFavorite = isElementFavorite(element.z);
-  const elementNotes = getNotesByElement(element.z);
 
   // Generate trend explanations
   const trendExplanations = generateTrendExplanations(element);
@@ -64,15 +60,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
     
     // Show success notification (simplified)
     alert(t('flashcards.create') + ' - ' + getElementName(element));
-  };
-
-  const handleAddNote = () => {
-    setShowNoteModal(true);
-  };
-
-  const handleNoteSuccess = () => {
-    alert(`Not başarıyla oluşturuldu: ${getElementName(element)}`);
-    setShowNoteModal(false);
   };
 
   const formatValue = (value: number | undefined, unit: string) => {
@@ -126,12 +113,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             className="btn"
           >
             📚 {t('element.create-flashcard')}
-          </button>
-          <button
-            onClick={handleAddNote}
-            className="btn"
-          >
-            📝 {t('element.add-note')}
           </button>
           <button className="btn">
             🧪 {t('element.add-to-quiz')}
@@ -370,31 +351,8 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             </div>
           </div>
 
-          {/* Show existing notes if any */}
-          {elementNotes.length > 0 && (
-            <div>
-              <h3 className="text-lg font-semibold mb-3">💡 Notlarım ({elementNotes.length})</h3>
-              <div className="space-y-2">
-                {elementNotes.map(note => (
-                  <div key={note.id} className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <h4 className="font-medium text-yellow-800 mb-1">{note.title}</h4>
-                    <p className="text-sm text-yellow-700">{note.content}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
         </div>
       </div>
-
-      {/* Note Modal */}
-      <ElementNoteModal
-        element={element}
-        isOpen={showNoteModal}
-        onClose={() => setShowNoteModal(false)}
-        onSuccess={handleNoteSuccess}
-      />
     </>
   );
 };

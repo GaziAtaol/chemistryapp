@@ -379,8 +379,8 @@ select.input {
 
 /* Logo styles */
 .logo-nav {
-  height: 32px;
-  width: 32px;
+  height: 48px;
+  width: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
 }
