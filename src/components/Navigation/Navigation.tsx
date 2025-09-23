@@ -11,14 +11,14 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) => {
   const navItems = [
-    { id: 'dashboard', label: t('nav.dashboard'), icon: '🏠' },
-    { id: 'periodic-table', label: t('nav.periodic-table'), icon: '🧪' },
-    { id: 'quiz', label: t('nav.quiz'), icon: '❓' },
-    { id: 'flashcards', label: t('nav.flashcards'), icon: '📚' },
-    { id: 'favorites', label: t('nav.favorites'), icon: '⭐' },
-    { id: 'history', label: t('nav.history'), icon: '📊' },
-    { id: 'notes', label: t('nav.notes'), icon: '📝' },
-    { id: 'settings', label: t('nav.settings'), icon: '⚙️' }
+    { id: 'dashboard', label: 'Pano' },
+    { id: 'periodic-table', label: t('nav.periodic-table') },
+    { id: 'quiz', label: t('nav.quiz') },
+    { id: 'flashcards', label: t('nav.flashcards') },
+    { id: 'favorites', label: 'Favoriler' },
+    { id: 'history', label: t('nav.history') },
+    { id: 'notes', label: t('nav.notes') },
+    { id: 'settings', label: t('nav.settings') }
   ];
 
   return (
@@ -31,16 +31,16 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
             </h1>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {navItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => onPageChange(item.id)}
-                className={`nav-link ${currentPage === item.id ? 'active' : ''}`}
+                className={`nav-btn ${currentPage === item.id ? 'nav-btn-active' : ''}`}
                 title={item.label}
               >
-                <span className="mr-2">{item.icon}</span>
-                <span className="hidden md:inline">{item.label}</span>
+                <span className="nav-btn-text">{item.label}</span>
+                <div className="nav-btn-glow"></div>
               </button>
             ))}
           </div>

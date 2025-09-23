@@ -349,7 +349,7 @@ select.input {
 .nav {
   background: var(--card);
   border-bottom: 1px solid var(--border);
-  padding: var(--spacing-md) 0;
+  padding: var(--spacing-sm) 0; /* Reduced padding for narrower header */
   position: sticky;
   top: 0;
   z-index: 100;
@@ -377,12 +377,195 @@ select.input {
   color: var(--brand);
 }
 
+/* New navigation button styles similar to quiz option cards */
+.nav-btn {
+  position: relative;
+  background: var(--bg-alt);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition: var(--transition);
+  overflow: hidden;
+  font-weight: 500;
+  color: var(--fg);
+  min-width: 80px;
+  text-align: center;
+}
+
+.nav-btn:hover {
+  border-color: var(--brand);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.15);
+}
+
+.nav-btn-active {
+  border-color: var(--brand);
+  background: rgba(34, 197, 94, 0.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
+}
+
+.nav-btn-text {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--fg);
+  position: relative;
+  z-index: 2;
+}
+
+.nav-btn-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(34, 197, 94, 0.1) 50%, transparent 70%);
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.nav-btn:hover .nav-btn-glow,
+.nav-btn-active .nav-btn-glow {
+  opacity: 1;
+}
+
+/* Settings-specific option layouts */
+.settings-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.settings-options-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Settings slider */
+.settings-slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  outline: none;
+  transition: var(--transition);
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--brand);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  transition: var(--transition);
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--brand);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  transition: var(--transition);
+}
+
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.slider-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Toggle switch styles */
+.settings-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.toggle-switch:hover {
+  background: var(--bg-alt);
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-slider {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: var(--border);
+  border-radius: 13px;
+  transition: var(--transition);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.toggle-input:checked + .toggle-slider {
+  background: var(--brand);
+}
+
+.toggle-input:checked + .toggle-slider::before {
+  transform: translateX(24px);
+}
+
+.toggle-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--fg);
+}
+
 /* Logo styles */
 .logo-nav {
-  height: 96px;
+  height: 192px; /* 2x larger: 96px * 2 = 192px */
   width: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
+  margin-right: calc(var(--spacing-md) * 6); /* 6x more space to the left */
 }
 
 /* Periodic Table Styles */
