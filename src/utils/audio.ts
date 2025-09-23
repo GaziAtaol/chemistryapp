@@ -2,11 +2,11 @@
 
 import { loadSettings } from './storage';
 
-// Audio file paths
+// Audio file paths (URL encoded for special characters)
 const AUDIO_FILES = {
-  buttonClick: '/button_pressed_on_we-1758670484243.mp3',
-  nextQuestion: '/a_next_question_butt-#1-1758670514824.mp3',
-  quizSuccess: '/perfect_you_did_your-#3-1758670502731.mp3'
+  buttonClick: '/button_click_sound.mp3',
+  nextQuestion: '/next_question_sound.mp3',
+  quizSuccess: '/quiz_success_sound.mp3'
 };
 
 // Audio effect types
