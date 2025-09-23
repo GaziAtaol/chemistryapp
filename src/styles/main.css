@@ -1469,15 +1469,37 @@ select.input {
   50% { transform: translateY(-5px); }
 }
 
-/* Modal Animation for Note Form */
+/* Enhanced Modal Animation for Note Form */
 @keyframes modalSlideIn {
   0% { 
     opacity: 0; 
-    transform: translateY(-20px) scale(0.95); 
+    transform: translateY(-30px) scale(0.9); 
   }
   100% { 
     opacity: 1; 
     transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Enhanced focus ring for accessibility */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.1);
+}
+
+/* Responsive modal adjustments */
+@media (max-width: 640px) {
+  .modal-responsive {
+    margin: 10px;
+    width: calc(100% - 20px) !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%);
   }
 }
 
