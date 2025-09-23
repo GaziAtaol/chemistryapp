@@ -1,11 +1,12 @@
 // Element Detail Panel Component
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import type { Element } from '../../types';
 import { useFavorites, useFlashCards, useNotes } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
 import { generateTrendExplanations } from '../../utils/trendExplanations';
-import CompactNoteForm from './CompactNoteForm';
+import ElementNoteModal from './ElementNoteModal';
+
 
 interface ElementDetailPanelProps {
   element: Element | undefined;
@@ -17,8 +18,7 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   const { toggleElement, isElementFavorite } = useFavorites();
   const { createCard } = useFlashCards();
   const { getNotesByElement } = useNotes();
-  const [showNoteForm, setShowNoteForm] = useState(false);
-  const noteButtonRef = useRef<HTMLButtonElement>(null);
+  const [showNoteModal, setShowNoteModal] = useState(false);
 
   if (!element) return null;
 
@@ -67,15 +67,12 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
   };
 
   const handleAddNote = () => {
-    setShowNoteForm(true);
+    setShowNoteModal(true);
   };
 
   const handleNoteSuccess = () => {
-    // Show success notification
-    const message = `${t('notes.create')} - ${getElementName(element)}`;
-    // Using a simple alert for now, could be replaced with a toast notification
-    alert(message);
-    setShowNoteForm(false);
+    alert(`Not başarıyla oluşturuldu: ${getElementName(element)}`);
+    setShowNoteModal(false);
   };
 
   const formatValue = (value: number | undefined, unit: string) => {
@@ -131,7 +128,6 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             📚 {t('element.create-flashcard')}
           </button>
           <button
-            ref={noteButtonRef}
             onClick={handleAddNote}
             className="btn"
           >
@@ -374,17 +370,15 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
             </div>
           </div>
 
-          {/* Related Notes */}
+          {/* Show existing notes if any */}
           {elementNotes.length > 0 && (
             <div>
-              <h3 className="text-lg font-semibold mb-3">İlgili Notlar ({elementNotes.length})</h3>
+              <h3 className="text-lg font-semibold mb-3">💡 Notlarım ({elementNotes.length})</h3>
               <div className="space-y-2">
-                {elementNotes.slice(0, 3).map(note => (
-                  <div key={note.id} className="card card-compact">
-                    <div className="text-sm font-medium">{note.title}</div>
-                    <div className="text-xs text-gray-600 mt-1">
-                      {note.content.slice(0, 100)}...
-                    </div>
+                {elementNotes.map(note => (
+                  <div key={note.id} className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <h4 className="font-medium text-yellow-800 mb-1">{note.title}</h4>
+                    <p className="text-sm text-yellow-700">{note.content}</p>
                   </div>
                 ))}
               </div>
@@ -394,11 +388,11 @@ const ElementDetailPanel: React.FC<ElementDetailPanelProps> = ({ element, isOpen
         </div>
       </div>
 
-      {/* Compact Note Form */}
-      <CompactNoteForm
+      {/* Note Modal */}
+      <ElementNoteModal
         element={element}
-        isVisible={showNoteForm}
-        onClose={() => setShowNoteForm(false)}
+        isOpen={showNoteModal}
+        onClose={() => setShowNoteModal(false)}
         onSuccess={handleNoteSuccess}
       />
     </>
