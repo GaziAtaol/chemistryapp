@@ -379,7 +379,7 @@ select.input {
 
 /* Logo styles */
 .logo-nav {
-  height: 48px;
+  height: 96px;
   width: auto;
   object-fit: contain;
   border-radius: var(--radius-sm);
@@ -390,6 +390,15 @@ select.input {
   background: var(--bg-alt);
   border-radius: var(--radius);
   padding: var(--spacing-lg);
+}
+
+/* Favorites Grid */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: var(--spacing-sm);
+  justify-items: center;
+  padding: var(--spacing-md);
 }
 
 .periodic-table {

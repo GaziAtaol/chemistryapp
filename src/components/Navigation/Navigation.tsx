@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { t } from '../../utils/i18n';
-import logoImg from '../../assets/logo-new.jpeg';
+import logoImg from '../../assets/logo-newest.png';
 
 interface NavigationProps {
   currentPage: string;
