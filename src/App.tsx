@@ -148,59 +148,245 @@ const Settings: React.FC = () => {
   
   return (
     <PageContainer title="⚙️ Ayarlar">
-      <div className="max-w-2xl mx-auto">
-        <div className="quiz-question-card space-y-6">
-          {/* Language Setting */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.language')}</label>
-            <select
-              value={settings.language}
-              onChange={(e) => updateSettings({ language: e.target.value as 'tr' | 'en' })}
-              className="input w-full"
-            >
-              <option value="tr">Türkçe</option>
-              <option value="en">English</option>
-            </select>
+      <div className="max-w-4xl mx-auto">
+        <div className="grid grid-2 gap-6">
+          {/* Personal Settings */}
+          <div className="quiz-question-card">
+            <h3 className="text-xl font-semibold mb-6 text-brand">👤 Kişisel Ayarlar</h3>
+            <div className="space-y-6">
+              {/* Language Setting */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">{t('settings.language')}</label>
+                <div className="settings-options">
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="language"
+                      value="tr"
+                      checked={settings.language === 'tr'}
+                      onChange={(e) => updateSettings({ language: e.target.value as 'tr' | 'en' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text">🇹🇷 Türkçe</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="language"
+                      value="en"
+                      checked={settings.language === 'en'}
+                      onChange={(e) => updateSettings({ language: e.target.value as 'tr' | 'en' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text">🇺🇸 English</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Theme Setting */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">{t('settings.theme')}</label>
+                <div className="settings-options">
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="theme"
+                      value="light"
+                      checked={settings.theme === 'light'}
+                      onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text">☀️ {t('settings.theme.light')}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="theme"
+                      value="dark"
+                      checked={settings.theme === 'dark'}
+                      onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text">🌙 {t('settings.theme.dark')}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Font Size Setting */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">{t('settings.font-size')}</label>
+                <div className="settings-options settings-options-3">
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="font_size"
+                      value="small"
+                      checked={settings.font_size === 'small'}
+                      onChange={(e) => updateSettings({ font_size: e.target.value as 'small' | 'medium' | 'large' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text text-xs">📝 {t('settings.font-size.small')}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="font_size"
+                      value="medium"
+                      checked={settings.font_size === 'medium'}
+                      onChange={(e) => updateSettings({ font_size: e.target.value as 'small' | 'medium' | 'large' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text text-sm">📄 {t('settings.font-size.medium')}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                  <label className="option-card">
+                    <input
+                      type="radio"
+                      name="font_size"
+                      value="large"
+                      checked={settings.font_size === 'large'}
+                      onChange={(e) => updateSettings({ font_size: e.target.value as 'small' | 'medium' | 'large' })}
+                      className="option-input"
+                    />
+                    <div className="option-content">
+                      <div className="option-indicator">
+                        <div className="option-radio"></div>
+                      </div>
+                      <span className="option-text text-lg">📋 {t('settings.font-size.large')}</span>
+                    </div>
+                    <div className="option-glow"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Theme Setting */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.theme')}</label>
-            <select
-              value={settings.theme}
-              onChange={(e) => updateSettings({ theme: e.target.value as 'light' | 'dark' })}
-              className="input w-full"
-            >
-              <option value="light">{t('settings.theme.light')}</option>
-              <option value="dark">{t('settings.theme.dark')}</option>
-            </select>
-          </div>
+          {/* Learning Settings */}
+          <div className="quiz-question-card">
+            <h3 className="text-xl font-semibold mb-6 text-brand">🎯 Öğrenme Ayarları</h3>
+            <div className="space-y-6">
+              {/* Daily Target */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">{t('settings.daily-target')}</label>
+                <div className="settings-slider">
+                  <input
+                    type="range"
+                    min="5"
+                    max="50"
+                    step="5"
+                    value={settings.daily_flashcard_target}
+                    onChange={(e) => updateSettings({ daily_flashcard_target: parseInt(e.target.value) })}
+                    className="slider"
+                  />
+                  <div className="slider-value">
+                    <span className="text-2xl font-bold text-brand">{settings.daily_flashcard_target}</span>
+                    <span className="text-sm text-muted">kart/gün</span>
+                  </div>
+                </div>
+              </div>
 
-          {/* Font Size Setting */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.font-size')}</label>
-            <select
-              value={settings.font_size}
-              onChange={(e) => updateSettings({ font_size: e.target.value as 'small' | 'medium' | 'large' })}
-              className="input w-full"
-            >
-              <option value="small">{t('settings.font-size.small')}</option>
-              <option value="medium">{t('settings.font-size.medium')}</option>
-              <option value="large">{t('settings.font-size.large')}</option>
-            </select>
-          </div>
+              {/* Notifications */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">🔔 {t('settings.notifications')}</label>
+                <div className="settings-toggle">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      defaultChecked={true}
+                      className="toggle-input"
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-label">Günlük hatırlatmalar</span>
+                  </label>
+                </div>
+              </div>
 
-          {/* Daily Target */}
-          <div>
-            <label className="block text-sm font-medium mb-2 text-brand">{t('settings.daily-target')}</label>
-            <input
-              type="number"
-              min="1"
-              max="100"
-              value={settings.daily_flashcard_target}
-              onChange={(e) => updateSettings({ daily_flashcard_target: parseInt(e.target.value) || 20 })}
-              className="input w-full"
-            />
+              {/* Auto-save */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">💾 Otomatik Kaydetme</label>
+                <div className="settings-toggle">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      defaultChecked={true}
+                      className="toggle-input"
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-label">İlerlemeyi otomatik kaydet</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Sound Effects */}
+              <div>
+                <label className="block text-sm font-medium mb-3 text-brand">🔊 Ses Efektleri</label>
+                <div className="settings-toggle">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      defaultChecked={false}
+                      className="toggle-input"
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-label">Quiz ses efektleri</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Data Management Section */}
+        <div className="quiz-question-card mt-6">
+          <h3 className="text-xl font-semibold mb-6 text-brand">🗂️ Veri Yönetimi</h3>
+          <div className="grid grid-3 gap-4">
+            <button className="btn btn-secondary">
+              <span>📤</span>
+              {t('settings.export')}
+            </button>
+            <button className="btn btn-secondary">
+              <span>📥</span>
+              {t('settings.import')}
+            </button>
+            <button className="btn btn-danger">
+              <span>🗑️</span>
+              {t('settings.reset')}
+            </button>
           </div>
         </div>
       </div>
