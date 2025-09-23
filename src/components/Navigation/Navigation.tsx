@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { t } from '../../utils/i18n';
+import logoImg from '../../assets/logo.png';
 
 interface NavigationProps {
   currentPage: string;
@@ -25,8 +26,9 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
       <div className="container">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-brand mr-8">
-              ⚗️ {t('dashboard.title')}
+            <h1 className="text-xl font-bold text-brand mr-8 flex items-center">
+              <img src={logoImg} alt="Chemify Logo" className="logo-nav mr-3" />
+              {t('dashboard.title')}
             </h1>
           </div>
           

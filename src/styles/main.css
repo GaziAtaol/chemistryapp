@@ -377,6 +377,14 @@ select.input {
   color: var(--brand);
 }
 
+/* Logo styles */
+.logo-nav {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
 /* Periodic Table Styles */
 .periodic-table-container {
   background: var(--bg-alt);
