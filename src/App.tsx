@@ -7,8 +7,8 @@ import QuizHistory from './components/QuizHistory/QuizHistory';
 import PageContainer from './components/PageContainer/PageContainer';
 import Notes from './components/Notes/Notes';
 import type { Element } from './types';
-import { useSettings, useAppData } from './hooks';
-import { t } from './utils/i18n';
+import { useSettings, useAppData, useFavorites } from './hooks';
+import { t, getElementName } from './utils/i18n';
 import './styles/main.css';
 
 // Page components (simplified for now)
@@ -53,13 +53,83 @@ const FlashCards: React.FC = () => (
   </PageContainer>
 );
 
-const Favorites: React.FC = () => (
-  <PageContainer title="⭐ Favoriler">
-    <div className="quiz-question-card">
-      <p>Favoriler bileşeni yakında gelecek...</p>
+// Favorite Element Cell Component (similar to periodic table element cell)
+interface FavoriteElementCellProps {
+  element: Element;
+  onClick: (element: Element) => void;
+  isSelected?: boolean;
+}
+
+const FavoriteElementCell: React.FC<FavoriteElementCellProps> = ({ element, onClick, isSelected }) => {
+  const { isElementFavorite } = useFavorites();
+  const isFavorite = isElementFavorite(element.z);
+  
+  return (
+    <div
+      className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
+      onClick={() => onClick(element)}
+      tabIndex={0}
+      role="button"
+      aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(element);
+        }
+      }}
+    >
+      <div className="element-number">{element.z}</div>
+      <div className="element-symbol">{element.symbol}</div>
+      <div className="element-name">{getElementName(element).slice(0, 8)}</div>
+      
+      {/* Icons overlay */}
+      <div className="absolute top-1 right-1 flex flex-col gap-1">
+        {isFavorite && <div className="text-yellow-400 text-xs">⭐</div>}
+      </div>
     </div>
-  </PageContainer>
-);
+  );
+};
+
+const Favorites: React.FC = () => {
+  const { data } = useAppData();
+  const [selectedElement, setSelectedElement] = useState<Element | null>(null);
+
+  // Filter elements to get only favorites and sort by atomic number
+  const favoriteElements = data.elements
+    .filter(element => data.favorites.elements.includes(element.z))
+    .sort((a, b) => a.z - b.z);
+
+  return (
+    <PageContainer title="⭐ Favoriler">
+      {favoriteElements.length === 0 ? (
+        <div className="quiz-question-card">
+          <p>Henüz favori element eklemediniz. Periyodik tabloda elementlere tıklayarak favorilere ekleyebilirsiniz.</p>
+        </div>
+      ) : (
+        <div className="periodic-table-container">
+          <div className="favorites-grid">
+            {favoriteElements.map(element => (
+              <FavoriteElementCell 
+                key={element.z}
+                element={element}
+                onClick={setSelectedElement}
+                isSelected={selectedElement?.z === element.z}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {selectedElement && (
+        <ElementDetailPanel
+          element={selectedElement}
+          isOpen={true}
+          onClose={() => setSelectedElement(null)}
+        />
+      )}
+    </PageContainer>
+  );
+};
 
 const History: React.FC = () => (
   <PageContainer title="📜 Geçmiş">
