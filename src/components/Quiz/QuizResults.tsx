@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { QuizQuestion } from '../../types';
 import type { QuizResults as QuizResultsType } from '../Quiz/QuizTaking';
+import { playQuizSuccessSound, playButtonClickSound } from '../../utils/audio';
 
 interface QuizResultsProps {
   results: QuizResultsType;
@@ -16,6 +17,18 @@ const QuizResults: React.FC<QuizResultsProps> = ({
   onBackToConfig
 }) => {
   const { score, totalQuestions, correctAnswers, timeTaken, answers } = results;
+  
+  // Play success sound for good scores
+  useEffect(() => {
+    if (score >= 70) {
+      // Small delay to let the component render first
+      const timer = setTimeout(() => {
+        playQuizSuccessSound();
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [score]);
   
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -160,14 +173,20 @@ const QuizResults: React.FC<QuizResultsProps> = ({
         {/* Action Buttons */}
         <div className="results-actions">
           <button
-            onClick={onRetakeQuiz}
+            onClick={() => {
+              playButtonClickSound();
+              onRetakeQuiz();
+            }}
             className="btn btn-primary quiz-btn-retake"
           >
             <span>🔄</span>
             Tekrar Çöz
           </button>
           <button
-            onClick={onBackToConfig}
+            onClick={() => {
+              playButtonClickSound();
+              onBackToConfig();
+            }}
             className="btn quiz-btn-new-quiz"
           >
             <span>✨</span>

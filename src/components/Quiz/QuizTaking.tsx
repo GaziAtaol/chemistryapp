@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { QuizQuestion } from '../../types';
+import { playNextQuestionSound, playButtonClickSound } from '../../utils/audio';
 
 interface QuizTakingProps {
   questions: QuizQuestion[];
@@ -127,8 +128,10 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
     setAnswers(newAnswers);
 
     if (isLastQuestion) {
+      playButtonClickSound(); // Play button click sound for finishing quiz
       handleFinishQuiz(newAnswers);
     } else {
+      playNextQuestionSound(); // Play next question sound
       setCurrentQuestionIndex(prev => prev + 1);
       setCurrentAnswer('');
       setMatchingAnswers({});
@@ -424,7 +427,10 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
         {/* Navigation Buttons */}
         <div className="quiz-navigation">
           <button
-            onClick={onBackToConfig}
+            onClick={() => {
+              playButtonClickSound();
+              onBackToConfig();
+            }}
             className="btn btn-danger quiz-btn-exit"
           >
             <span>🚪</span>
@@ -434,7 +440,10 @@ const QuizTaking: React.FC<QuizTakingProps> = ({
           <div className="quiz-nav-controls">
             {currentQuestionIndex > 0 && (
               <button
-                onClick={() => setCurrentQuestionIndex(prev => prev - 1)}
+                onClick={() => {
+                  playButtonClickSound();
+                  setCurrentQuestionIndex(prev => prev - 1);
+                }}
                 className="btn quiz-btn-nav quiz-btn-prev"
               >
                 <span>←</span>
