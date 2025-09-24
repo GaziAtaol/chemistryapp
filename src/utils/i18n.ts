@@ -11,6 +11,7 @@ export const translations = {
     'nav.history': 'Geçmiş',
     'nav.notes': 'Notlar',
     'nav.settings': 'Ayarlar',
+    'nav.calculator': 'Hesap Makinesi',
     
     // Dashboard
     'dashboard.title': 'Chemify',
@@ -223,6 +224,7 @@ export const translations = {
     'nav.history': 'History',
     'nav.notes': 'Notes',
     'nav.settings': 'Settings',
+    'nav.calculator': 'Calculator',
     
     // Dashboard
     'dashboard.title': 'Chemify',

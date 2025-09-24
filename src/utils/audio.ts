@@ -4,10 +4,10 @@ import { loadSettings } from './storage';
 
 // Audio file paths (URL encoded for special characters)
 const AUDIO_FILES = {
-  buttonClick: '/button_click_sound.mp3',
+  buttonClick: '/newbuttonclicked.mp3',
   nextQuestion: '/next_question_sound.mp3',
   quizSuccess: '/quiz_success_sound.mp3',
-  modernDactilo: '/modern_dactilo.mp3',
+  modernDactilo: '/newdactilo.mp3',
   enterDactilo: '/enter_dactilo.mp3'
 };
 
