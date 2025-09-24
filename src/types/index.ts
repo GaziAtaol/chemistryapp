@@ -141,6 +141,11 @@ export interface UserSettings {
   font_size: 'small' | 'medium' | 'large';
   daily_flashcard_target: number;
   notifications_enabled: boolean;
+  sound_effects: {
+    button_clicks: boolean;
+    next_question: boolean;
+    quiz_success: boolean;
+  };
 }
 
 export interface AppData {

@@ -12,7 +12,12 @@ const defaultSettings: UserSettings = {
   theme: 'light',
   font_size: 'medium',
   daily_flashcard_target: 20,
-  notifications_enabled: true
+  notifications_enabled: true,
+  sound_effects: {
+    button_clicks: true,
+    next_question: true,
+    quiz_success: true
+  }
 };
 
 // Default app data

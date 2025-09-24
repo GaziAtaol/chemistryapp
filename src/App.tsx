@@ -9,6 +9,7 @@ import Notes from './components/Notes/Notes';
 import type { Element } from './types';
 import { useSettings, useAppData, useFavorites } from './hooks';
 import { t, getElementName } from './utils/i18n';
+import { playButtonClickSound, preloadAudioFiles } from './utils/audio';
 import './styles/main.css';
 
 // Page components (simplified for now)
@@ -145,6 +146,10 @@ const NotesPage: React.FC = () => (
 
 const Settings: React.FC = () => {
   const { settings, updateSettings } = useSettings();
+  
+  const handleButtonClick = () => {
+    playButtonClickSound();
+  };
   
   return (
     <PageContainer title={t('settings.page-title')}>
@@ -359,11 +364,51 @@ const Settings: React.FC = () => {
                   <label className="toggle-switch">
                     <input
                       type="checkbox"
-                      defaultChecked={false}
+                      checked={settings.sound_effects.button_clicks}
+                      onChange={(e) => updateSettings({ 
+                        sound_effects: { 
+                          ...settings.sound_effects, 
+                          button_clicks: e.target.checked 
+                        } 
+                      })}
                       className="toggle-input"
                     />
                     <span className="toggle-slider"></span>
-                    <span className="toggle-label">Quiz ses efektleri</span>
+                    <span className="toggle-label">🖱️ Buton tıklama sesleri</span>
+                  </label>
+                </div>
+                <div className="settings-toggle">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={settings.sound_effects.next_question}
+                      onChange={(e) => updateSettings({ 
+                        sound_effects: { 
+                          ...settings.sound_effects, 
+                          next_question: e.target.checked 
+                        } 
+                      })}
+                      className="toggle-input"
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-label">➡️ Sonraki soru sesleri</span>
+                  </label>
+                </div>
+                <div className="settings-toggle">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={settings.sound_effects.quiz_success}
+                      onChange={(e) => updateSettings({ 
+                        sound_effects: { 
+                          ...settings.sound_effects, 
+                          quiz_success: e.target.checked 
+                        } 
+                      })}
+                      className="toggle-input"
+                    />
+                    <span className="toggle-slider"></span>
+                    <span className="toggle-label">🎉 Quiz başarı sesleri</span>
                   </label>
                 </div>
               </div>
@@ -375,15 +420,15 @@ const Settings: React.FC = () => {
         <div className="quiz-question-card mt-6">
           <h3 className="text-xl font-semibold mb-6 text-brand">🗂️ Veri Yönetimi</h3>
           <div className="grid grid-3 gap-4">
-            <button className="btn btn-secondary">
+            <button className="btn btn-secondary" onClick={handleButtonClick}>
               <span>📤</span>
               {t('settings.export')}
             </button>
-            <button className="btn btn-secondary">
+            <button className="btn btn-secondary" onClick={handleButtonClick}>
               <span>📥</span>
               {t('settings.import')}
             </button>
-            <button className="btn btn-danger">
+            <button className="btn btn-danger" onClick={handleButtonClick}>
               <span>🗑️</span>
               {t('settings.reset')}
             </button>
@@ -437,6 +482,16 @@ function App() {
     document.documentElement.lang = settings.language;
   }, [settings]);
 
+  // Preload audio files on app initialization
+  useEffect(() => {
+    preloadAudioFiles();
+  }, []);
+
+  const handlePageChange = (page: string) => {
+    playButtonClickSound();
+    setCurrentPage(page);
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard':
@@ -462,7 +517,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
+      <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
       <main>{renderPage()}</main>
     </div>
   );
