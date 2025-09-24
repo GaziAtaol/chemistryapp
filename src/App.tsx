@@ -6,6 +6,7 @@ import Quiz from './components/Quiz/Quiz';
 import QuizHistory from './components/QuizHistory/QuizHistory';
 import PageContainer from './components/PageContainer/PageContainer';
 import Notes from './components/Notes/Notes';
+import Calculator from './components/Calculator/Calculator';
 import type { Element } from './types';
 import { useSettings, useAppData, useFavorites } from './hooks';
 import { t, getElementName } from './utils/i18n';
@@ -478,6 +479,7 @@ const PeriodicTablePage: React.FC = () => {
 
 function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [isCalculatorVisible, setIsCalculatorVisible] = useState(false);
   const { settings } = useSettings();
 
   // Initialize app theme and language
@@ -495,6 +497,15 @@ function App() {
   const handlePageChange = (page: string) => {
     playButtonClickSound();
     setCurrentPage(page);
+  };
+
+  const handleToggleCalculator = () => {
+    playButtonClickSound();
+    setIsCalculatorVisible(!isCalculatorVisible);
+  };
+
+  const handleCloseCalculator = () => {
+    setIsCalculatorVisible(false);
   };
 
   const renderPage = () => {
@@ -522,8 +533,16 @@ function App() {
 
   return (
     <div className="app">
-      <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
+      <Navigation 
+        currentPage={currentPage} 
+        onPageChange={handlePageChange}
+        onToggleCalculator={handleToggleCalculator}
+      />
       <main>{renderPage()}</main>
+      <Calculator 
+        isVisible={isCalculatorVisible}
+        onClose={handleCloseCalculator}
+      />
     </div>
   );
 }
