@@ -7,6 +7,7 @@ import QuizHistory from './components/QuizHistory/QuizHistory';
 import PageContainer from './components/PageContainer/PageContainer';
 import Notes from './components/Notes/Notes';
 import Calculator from './components/Calculator/Calculator';
+import FlashCardApp from './components/FlashCard';
 import type { Element } from './types';
 import { useSettings, useAppData, useFavorites } from './hooks';
 import { t, getElementName } from './utils/i18n';
@@ -49,9 +50,7 @@ const Dashboard: React.FC = () => {
 
 const FlashCards: React.FC = () => (
   <PageContainer title={t('flashcards.page-title')}>
-    <div className="quiz-question-card">
-      <p>Flashcard bileşeni yakında gelecek...</p>
-    </div>
+    <FlashCardApp />
   </PageContainer>
 );
 
