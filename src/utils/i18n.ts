@@ -8,6 +8,7 @@ export const translations = {
     'nav.quiz': 'Quiz',
     'nav.flashcards': 'Kartlar',
     'nav.favorites': 'Favoriler',
+    'nav.achievements': 'Başarılar',
     'nav.history': 'Geçmiş',
     'nav.notes': 'Notlar',
     'nav.settings': 'Ayarlar',
@@ -188,6 +189,56 @@ export const translations = {
     'common.warning': 'Uyarı',
     'common.confirm-delete': 'Bu öğeyi silmek istediğinizden emin misiniz?',
     
+    // Achievements
+    'achievements.title': 'Başarılar',
+    'achievements.page-title': '🏆 Başarılar',
+    'achievements.subtitle': 'Tamamladıkça rozetler kazan, ilerlemeni takip et.',
+    'achievements.completed': 'Tamamlandı',
+    'achievements.progress': 'İlerleme',
+    'achievements.unlock-date': 'Açılış Tarihi',
+    
+    // Achievement names and descriptions
+    'achievement.first-step.name': 'İlk Adım',
+    'achievement.first-step.desc': 'İlk 5 kartı tamamla',
+    'achievement.element-hunter.name': 'Element Avcısı',
+    'achievement.element-hunter.desc': '10 farklı elementi çalış',
+    'achievement.period-master.name': 'Periyot Ustası',
+    'achievement.period-master.desc': '1. ve 2. periyot elementlerini bitir',
+    'achievement.group-collector.name': 'Grup Koleksiyoneri',
+    'achievement.group-collector.desc': 'Bir element grubunu tamamen çalış',
+    'achievement.molecule-curious.name': 'Molekül Meraklısı',
+    'achievement.molecule-curious.desc': '20 elementin özelliklerini aç',
+    'achievement.quiz-beginner.name': 'Quiz Başlangıcı',
+    'achievement.quiz-beginner.desc': 'İlk quizini çöz',
+    'achievement.high-score.name': 'Yüksek Skor',
+    'achievement.high-score.desc': 'Bir quizde %90+ skor al',
+    'achievement.perfectionist.name': 'Mükemmeliyetçi',
+    'achievement.perfectionist.desc': 'Bir quizde %100 skor al',
+    'achievement.quiz-master.name': 'Quiz Ustası',
+    'achievement.quiz-master.desc': 'Toplam 10 quiz çöz',
+    'achievement.persistent-mind.name': 'Dayanıklı Zihin',
+    'achievement.persistent-mind.desc': '5 quiz üst üste çöz',
+    'achievement.three-day-streak.name': '3 Günlük Seri',
+    'achievement.three-day-streak.desc': '3 gün üst üste çalış',
+    'achievement.weekly-student.name': 'Haftalık Çalışkan',
+    'achievement.weekly-student.desc': '7 gün boyunca her gün giriş yap',
+    'achievement.monthly-active.name': 'Ay Boyunca Devam',
+    'achievement.monthly-active.desc': '30 gün boyunca aktif ol',
+    'achievement.card-series.name': 'Kart Serisi',
+    'achievement.card-series.desc': 'Bir günde 50 kart çöz',
+    'achievement.quiz-series.name': 'Quiz Serisi',
+    'achievement.quiz-series.desc': 'Bir günde 5 quiz çöz',
+    'achievement.chemistry-lover.name': 'Kimya Tutkunu',
+    'achievement.chemistry-lover.desc': 'Toplam 100 element çalış',
+    'achievement.knowledge-collector.name': 'Bilgi Koleksiyoneri',
+    'achievement.knowledge-collector.desc': '200 kart aç',
+    'achievement.perfect-master.name': 'Tam Not Ustası',
+    'achievement.perfect-master.desc': '3 quiz üst üste %100 skor yap',
+    'achievement.flashcard-master.name': 'Flashcard Ustası',
+    'achievement.flashcard-master.desc': 'Tüm elementleri en az 1 kez çalış',
+    'achievement.chemist-badge.name': 'Kimyager Rozeti',
+    'achievement.chemist-badge.desc': 'Tüm başarıların %75\'ini tamamla',
+    
     // Units
     'units.kelvin': 'K',
     'units.celsius': '°C',
@@ -221,6 +272,7 @@ export const translations = {
     'nav.quiz': 'Quiz',
     'nav.flashcards': 'Flashcards',
     'nav.favorites': 'Favorites',
+    'nav.achievements': 'Achievements',
     'nav.history': 'History',
     'nav.notes': 'Notes',
     'nav.settings': 'Settings',
@@ -421,6 +473,56 @@ export const translations = {
     'category.lanthanide': 'Lanthanide',
     'category.actinide': 'Actinide',
     
+    // Achievements
+    'achievements.title': 'Achievements',
+    'achievements.page-title': '🏆 Achievements',
+    'achievements.subtitle': 'Earn badges as you complete goals, track your progress.',
+    'achievements.completed': 'Completed',
+    'achievements.progress': 'Progress',
+    'achievements.unlock-date': 'Unlock Date',
+    
+    // Achievement names and descriptions
+    'achievement.first-step.name': 'First Step',
+    'achievement.first-step.desc': 'Complete first 5 cards',
+    'achievement.element-hunter.name': 'Element Hunter',
+    'achievement.element-hunter.desc': 'Study 10 different elements',
+    'achievement.period-master.name': 'Period Master',
+    'achievement.period-master.desc': 'Complete 1st and 2nd period elements',
+    'achievement.group-collector.name': 'Group Collector',
+    'achievement.group-collector.desc': 'Study an entire element group',
+    'achievement.molecule-curious.name': 'Molecule Curious',
+    'achievement.molecule-curious.desc': 'Open properties of 20 elements',
+    'achievement.quiz-beginner.name': 'Quiz Beginner',
+    'achievement.quiz-beginner.desc': 'Take your first quiz',
+    'achievement.high-score.name': 'High Score',
+    'achievement.high-score.desc': 'Score 90%+ in a quiz',
+    'achievement.perfectionist.name': 'Perfectionist',
+    'achievement.perfectionist.desc': 'Score 100% in a quiz',
+    'achievement.quiz-master.name': 'Quiz Master',
+    'achievement.quiz-master.desc': 'Complete 10 quizzes total',
+    'achievement.persistent-mind.name': 'Persistent Mind',
+    'achievement.persistent-mind.desc': 'Complete 5 quizzes in a row',
+    'achievement.three-day-streak.name': '3-Day Streak',
+    'achievement.three-day-streak.desc': 'Study for 3 consecutive days',
+    'achievement.weekly-student.name': 'Weekly Student',
+    'achievement.weekly-student.desc': 'Login every day for 7 days',
+    'achievement.monthly-active.name': 'Monthly Active',
+    'achievement.monthly-active.desc': 'Stay active for 30 days',
+    'achievement.card-series.name': 'Card Series',
+    'achievement.card-series.desc': 'Complete 50 cards in one day',
+    'achievement.quiz-series.name': 'Quiz Series',
+    'achievement.quiz-series.desc': 'Take 5 quizzes in one day',
+    'achievement.chemistry-lover.name': 'Chemistry Lover',
+    'achievement.chemistry-lover.desc': 'Study 100 elements total',
+    'achievement.knowledge-collector.name': 'Knowledge Collector',
+    'achievement.knowledge-collector.desc': 'Open 200 cards',
+    'achievement.perfect-master.name': 'Perfect Master',
+    'achievement.perfect-master.desc': 'Score 100% in 3 consecutive quizzes',
+    'achievement.flashcard-master.name': 'Flashcard Master',
+    'achievement.flashcard-master.desc': 'Study all elements at least once',
+    'achievement.chemist-badge.name': 'Chemist Badge',
+    'achievement.chemist-badge.desc': 'Complete 75% of all achievements',
+    
     // Phases
     'phase.solid': 'Solid',
     'phase.liquid': 'Liquid',
@@ -440,8 +542,9 @@ export const setLanguage = (lang: Language) => {
 
 export const getLanguage = (): Language => currentLanguage;
 
-export const t = (key: TranslationKey): string => {
-  return translations[currentLanguage][key] || key;
+export const t = (key: TranslationKey | string): string => {
+  const typedKey = key as TranslationKey;
+  return translations[currentLanguage][typedKey] || key;
 };
 
 export const getElementName = (element: { name_tr: string; name_en: string }): string => {

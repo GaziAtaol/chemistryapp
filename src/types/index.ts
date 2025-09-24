@@ -161,5 +161,25 @@ export interface AppData {
     flashcards: string[];
     notes: string[];
   };
+  achievements: UserAchievement[];
   settings: UserSettings;
+}
+
+// Achievement system types
+export interface Achievement {
+  id: string;
+  name_key: string; // Translation key for name
+  description_key: string; // Translation key for description
+  icon: string; // Emoji icon
+  category: 'flashcards' | 'quiz' | 'consistency' | 'exploration' | 'mastery';
+  target_value: number;
+  check_function: (data: AppData) => number; // Function to calculate current progress
+}
+
+export interface UserAchievement {
+  achievement_id: string;
+  unlocked: boolean;
+  progress: number;
+  unlock_date?: Date;
+  current_value: number;
 }

@@ -18,6 +18,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange, onTo
     { id: 'quiz', label: t('nav.quiz') },
     { id: 'flashcards', label: t('nav.flashcards') },
     { id: 'favorites', label: t('nav.favorites') },
+    { id: 'achievements', label: t('nav.achievements') },
     { id: 'history', label: t('nav.history') },
     { id: 'notes', label: t('nav.notes') },
     { id: 'settings', label: t('nav.settings') }

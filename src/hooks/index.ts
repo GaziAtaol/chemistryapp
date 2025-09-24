@@ -22,6 +22,7 @@ import {
   loadSampleData
 } from '../utils/storage';
 import { setLanguage } from '../utils/i18n';
+import { checkAndUpdateAchievements } from '../utils/achievements';
 
 // App data hook
 export const useAppData = () => {
@@ -96,6 +97,9 @@ export const useFavorites = () => {
   const toggleElement = useCallback((elementId: number) => {
     toggleElementFavorite(elementId);
     refreshData();
+    
+    // Check for achievement updates after favoriting elements
+    checkAndUpdateAchievements();
   }, [refreshData]);
   
   const toggleFlashCard = useCallback((cardId: string) => {
@@ -220,6 +224,9 @@ export const useFlashCards = () => {
     };
     addFlashCard(newCard);
     refreshData();
+    
+    // Check for achievement updates after flashcard creation
+    checkAndUpdateAchievements();
   }, [refreshData]);
   
   const updateCard = useCallback((cardId: string, updates: Partial<FlashCard>) => {
@@ -324,6 +331,9 @@ export const useQuiz = () => {
     };
     addQuizSession(newSession);
     refreshData();
+    
+    // Check for achievement updates after quiz completion
+    checkAndUpdateAchievements();
   }, [refreshData]);
   
   const getRecentSessions = useCallback((limit: number = 10) => {
