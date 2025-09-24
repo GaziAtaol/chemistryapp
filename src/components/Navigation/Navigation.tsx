@@ -8,9 +8,10 @@ import logoImg from '../../assets/logo-newest.png';
 interface NavigationProps {
   currentPage: string;
   onPageChange: (page: string) => void;
+  onToggleCalculator: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) => {
+const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange, onToggleCalculator }) => {
   const navItems = [
     { id: 'dashboard', label: t('nav.dashboard') },
     { id: 'periodic-table', label: t('nav.periodic-table') },
@@ -24,7 +25,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
 
   const handleCalculatorClick = () => {
     playButtonClickSound();
-    alert('🧮 Hesap makinesi özelliği yakında gelecek!');
+    onToggleCalculator();
   };
 
   return (
