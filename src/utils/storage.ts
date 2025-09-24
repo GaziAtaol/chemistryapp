@@ -34,6 +34,7 @@ const defaultAppData: AppData = {
     flashcards: [],
     notes: []
   },
+  achievements: [],
   settings: defaultSettings
 };
 

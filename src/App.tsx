@@ -8,6 +8,7 @@ import PageContainer from './components/PageContainer/PageContainer';
 import Notes from './components/Notes/Notes';
 import Calculator from './components/Calculator/Calculator';
 import FlashCardApp from './components/FlashCard';
+import Achievements from './components/Achievements';
 import type { Element } from './types';
 import { useSettings, useAppData, useFavorites } from './hooks';
 import { t, getElementName } from './utils/i18n';
@@ -146,6 +147,12 @@ const History: React.FC = () => (
 const NotesPage: React.FC = () => (
   <PageContainer title={t('notes.page-title')}>
     <Notes />
+  </PageContainer>
+);
+
+const AchievementsPage: React.FC = () => (
+  <PageContainer>
+    <Achievements />
   </PageContainer>
 );
 
@@ -519,6 +526,8 @@ function App() {
         return <FlashCards />;
       case 'favorites':
         return <Favorites />;
+      case 'achievements':
+        return <AchievementsPage />;
       case 'history':
         return <History />;
       case 'notes':
