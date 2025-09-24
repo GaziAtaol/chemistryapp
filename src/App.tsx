@@ -65,17 +65,22 @@ const FavoriteElementCell: React.FC<FavoriteElementCellProps> = ({ element, onCl
   const { isElementFavorite } = useFavorites();
   const isFavorite = isElementFavorite(element.z);
   
+  const handleClick = () => {
+    playButtonClickSound();
+    onClick(element);
+  };
+  
   return (
     <div
       className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
-      onClick={() => onClick(element)}
+      onClick={handleClick}
       tabIndex={0}
       role="button"
       aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick(element);
+          handleClick();
         }
       }}
     >
@@ -163,7 +168,7 @@ const Settings: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium mb-3 text-brand">{t('settings.language')}</label>
                 <div className="settings-options">
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="language"
@@ -180,7 +185,7 @@ const Settings: React.FC = () => {
                     </div>
                     <div className="option-glow"></div>
                   </label>
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="language"
@@ -204,7 +209,7 @@ const Settings: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium mb-3 text-brand">{t('settings.theme')}</label>
                 <div className="settings-options">
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="theme"
@@ -221,7 +226,7 @@ const Settings: React.FC = () => {
                     </div>
                     <div className="option-glow"></div>
                   </label>
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="theme"
@@ -245,7 +250,7 @@ const Settings: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium mb-3 text-brand">{t('settings.font-size')}</label>
                 <div className="settings-options settings-options-3">
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="font_size"
@@ -262,7 +267,7 @@ const Settings: React.FC = () => {
                     </div>
                     <div className="option-glow"></div>
                   </label>
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="font_size"
@@ -279,7 +284,7 @@ const Settings: React.FC = () => {
                     </div>
                     <div className="option-glow"></div>
                   </label>
-                  <label className="option-card">
+                  <label className="option-card" onClick={() => playButtonClickSound()}>
                     <input
                       type="radio"
                       name="font_size"
@@ -361,7 +366,7 @@ const Settings: React.FC = () => {
               <div>
                 <label className="block text-sm font-medium mb-3 text-brand">🔊 Ses Efektleri</label>
                 <div className="settings-toggle">
-                  <label className="toggle-switch">
+                  <label className="toggle-switch" onClick={() => playButtonClickSound()}>
                     <input
                       type="checkbox"
                       checked={settings.sound_effects.button_clicks}
@@ -378,7 +383,7 @@ const Settings: React.FC = () => {
                   </label>
                 </div>
                 <div className="settings-toggle">
-                  <label className="toggle-switch">
+                  <label className="toggle-switch" onClick={() => playButtonClickSound()}>
                     <input
                       type="checkbox"
                       checked={settings.sound_effects.next_question}
@@ -395,7 +400,7 @@ const Settings: React.FC = () => {
                   </label>
                 </div>
                 <div className="settings-toggle">
-                  <label className="toggle-switch">
+                  <label className="toggle-switch" onClick={() => playButtonClickSound()}>
                     <input
                       type="checkbox"
                       checked={settings.sound_effects.quiz_success}

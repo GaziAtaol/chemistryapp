@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { t } from '../../utils/i18n';
+import { playButtonClickSound } from '../../utils/audio';
 import logoImg from '../../assets/logo-newest.png';
 
 interface NavigationProps {
@@ -21,6 +22,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
     { id: 'settings', label: t('nav.settings') }
   ];
 
+  const handleCalculatorClick = () => {
+    playButtonClickSound();
+    alert('🧮 Hesap makinesi özelliği yakında gelecek!');
+  };
+
   return (
     <nav className="nav">
       <div className="container">
@@ -38,6 +44,15 @@ const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) =>
                 <div className="nav-btn-glow"></div>
               </button>
             ))}
+            {/* Calculator button for future feature */}
+            <button
+              onClick={handleCalculatorClick}
+              className="nav-btn nav-btn-special"
+              title={t('nav.calculator')}
+            >
+              <span className="nav-btn-text">🧮 {t('nav.calculator')}</span>
+              <div className="nav-btn-glow"></div>
+            </button>
           </div>
         </div>
       </div>
