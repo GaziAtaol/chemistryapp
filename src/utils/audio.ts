@@ -6,11 +6,13 @@ import { loadSettings } from './storage';
 const AUDIO_FILES = {
   buttonClick: '/button_click_sound.mp3',
   nextQuestion: '/next_question_sound.mp3',
-  quizSuccess: '/quiz_success_sound.mp3'
+  quizSuccess: '/quiz_success_sound.mp3',
+  modernDactilo: '/modern_dactilo.mp3',
+  enterDactilo: '/enter_dactilo.mp3'
 };
 
 // Audio effect types
-export type AudioEffectType = 'button_clicks' | 'next_question' | 'quiz_success';
+export type AudioEffectType = 'button_clicks' | 'next_question' | 'quiz_success' | 'element_hover' | 'element_click';
 
 // Audio cache to avoid loading the same audio multiple times
 const audioCache = new Map<string, HTMLAudioElement>();
@@ -45,6 +47,12 @@ export const playAudioEffect = (effectType: AudioEffectType): void => {
     case 'quiz_success':
       audioFile = AUDIO_FILES.quizSuccess;
       break;
+    case 'element_hover':
+      audioFile = AUDIO_FILES.modernDactilo;
+      break;
+    case 'element_click':
+      audioFile = AUDIO_FILES.enterDactilo;
+      break;
     default:
       return;
   }
@@ -65,6 +73,8 @@ export const playAudioEffect = (effectType: AudioEffectType): void => {
 export const playButtonClickSound = () => playAudioEffect('button_clicks');
 export const playNextQuestionSound = () => playAudioEffect('next_question');
 export const playQuizSuccessSound = () => playAudioEffect('quiz_success');
+export const playElementHoverSound = () => playAudioEffect('element_hover');
+export const playElementClickSound = () => playAudioEffect('element_click');
 
 // Preload all audio files
 export const preloadAudioFiles = (): void => {

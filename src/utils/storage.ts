@@ -16,7 +16,9 @@ const defaultSettings: UserSettings = {
   sound_effects: {
     button_clicks: true,
     next_question: true,
-    quiz_success: true
+    quiz_success: true,
+    element_hover: true,
+    element_click: true
   }
 };
 

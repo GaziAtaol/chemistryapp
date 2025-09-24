@@ -4,6 +4,7 @@ import React from 'react';
 import type { Element } from '../../types';
 import { useElements, useFavorites } from '../../hooks';
 import { t, getElementName } from '../../utils/i18n';
+import { playElementHoverSound, playElementClickSound } from '../../utils/audio';
 
 interface ElementCellProps {
   element: Element;
@@ -44,17 +45,27 @@ const ElementCell: React.FC<ElementCellProps> = ({ element, onClick, isSelected 
 
   const gridPosition = getGridPosition();
 
+  const handleElementClick = (element: Element) => {
+    playElementClickSound();
+    onClick(element);
+  };
+
+  const handleElementHover = () => {
+    playElementHoverSound();
+  };
+
   return (
     <div
       className={`element-cell element-${element.category} ${isSelected ? 'selected' : ''} relative group`}
-      onClick={() => onClick(element)}
+      onClick={() => handleElementClick(element)}
+      onMouseEnter={handleElementHover}
       tabIndex={0}
       role="button"
       aria-label={`${getElementName(element)}, ${t('element.atomic-number')} ${element.z}`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick(element);
+          handleElementClick(element);
         }
       }}
       style={{
