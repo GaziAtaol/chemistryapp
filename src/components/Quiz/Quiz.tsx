@@ -4,6 +4,7 @@ import QuizConfigComponent, { type QuizConfig } from './QuizConfig';
 import QuizTaking, { type QuizResults } from './QuizTaking';
 import QuizResultsComponent from './QuizResults';
 import { generateQuestions } from '../../utils/questionGenerator';
+import { syncQuizCompletion } from '../../utils/progressSync';
 import type { QuizQuestion } from '../../types';
 
 type QuizState = 'config' | 'taking' | 'results';
@@ -36,6 +37,9 @@ const Quiz: React.FC = () => {
   const handleFinishQuiz = (results: QuizResults) => {
     setQuizResults(results);
     setQuizState('results');
+    
+    // Sync with progress store
+    syncQuizCompletion(results);
   };
 
   const handleRetakeQuiz = () => {

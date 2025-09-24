@@ -24,6 +24,9 @@ import {
 import { setLanguage } from '../utils/i18n';
 import { checkAndUpdateAchievements } from '../utils/achievements';
 
+// Export the new useProgress hook
+export { useProgress } from './useProgress';
+
 // App data hook
 export const useAppData = () => {
   const [data, setData] = useState<AppData>(() => {

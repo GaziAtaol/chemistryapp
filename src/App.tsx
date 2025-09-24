@@ -9,8 +9,9 @@ import Notes from './components/Notes/Notes';
 import Calculator from './components/Calculator/Calculator';
 import FlashCardApp from './components/FlashCard';
 import Achievements from './components/Achievements';
+import AchievementManager from './components/AchievementToast/AchievementManager';
 import type { Element } from './types';
-import { useSettings, useAppData, useFavorites } from './hooks';
+import { useSettings, useAppData, useFavorites, useProgress } from './hooks';
 import { t, getElementName } from './utils/i18n';
 import { playButtonClickSound, preloadAudioFiles } from './utils/audio';
 import './styles/main.css';
@@ -18,25 +19,69 @@ import './styles/main.css';
 // Page components (simplified for now)
 const Dashboard: React.FC = () => {
   const { data } = useAppData();
+  const { progress, isDailyTargetReached, getDailyProgressPercentage } = useProgress();
+  
+  // Format last quiz date
+  const formatLastQuizDate = (isoString: string) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Bugün';
+    if (diffDays === 1) return 'Dün';
+    if (diffDays < 7) return `${diffDays} gün önce`;
+    return date.toLocaleDateString('tr-TR');
+  };
+
+  const targetReached = isDailyTargetReached();
+  const progressPercentage = getDailyProgressPercentage();
   
   return (
     <PageContainer title={t('dashboard.page-title')}>
       <div className="grid grid-auto gap-6">
-        <div className="quiz-question-card">
+        {/* Today's Flashcards Card */}
+        <div className={`quiz-question-card ${targetReached ? 'border-green-500 bg-green-50' : ''}`}>
           <h3 className="text-lg font-semibold mb-3 text-brand">{t('dashboard.daily-cards')}</h3>
-          <div className="text-2xl font-bold text-brand">
-            {data.flashcards.filter(card => new Date(card.next_review) <= new Date()).length}
+          <div className="space-y-2">
+            <div className="text-2xl font-bold text-brand">
+              {progress.daily.flashcardsDone} / {progress.daily.flashcardsTarget}
+            </div>
+            {/* Progress bar */}
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div 
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  targetReached ? 'bg-green-500' : 'bg-blue-500'
+                }`}
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            <div className="text-sm text-gray-600">
+              {targetReached ? '🎉 Günlük hedef tamamlandı!' : `${Math.round(progressPercentage)}% tamamlandı`}
+            </div>
           </div>
         </div>
+
+        {/* Last Quiz Score Card */}
         <div className="quiz-question-card">
           <h3 className="text-lg font-semibold mb-3 text-accent">{t('dashboard.last-quiz')}</h3>
-          <div className="text-2xl font-bold text-accent">
-            {data.quiz_sessions.length > 0 
-              ? `${Math.round(data.quiz_sessions[data.quiz_sessions.length - 1].score)}%`
-              : '-'
-            }
+          <div className="space-y-1">
+            <div className="text-2xl font-bold text-accent">
+              {progress.quiz.lastScore > 0 
+                ? `${Math.round(progress.quiz.lastScore * 10) / 10}%`
+                : '—'
+              }
+            </div>
+            {progress.quiz.lastTakenAt && (
+              <div className="text-sm text-gray-600">
+                {formatLastQuizDate(progress.quiz.lastTakenAt)}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Favorites Card */}
         <div className="quiz-question-card">
           <h3 className="text-lg font-semibold mb-3 text-warning">{t('favorites.title')}</h3>
           <div className="text-2xl font-bold text-warning">
@@ -514,6 +559,10 @@ function App() {
     setIsCalculatorVisible(false);
   };
 
+  const handleNavigateToAchievements = () => {
+    setCurrentPage('achievements');
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard':
@@ -550,6 +599,11 @@ function App() {
       <Calculator 
         isVisible={isCalculatorVisible}
         onClose={handleCloseCalculator}
+      />
+      
+      {/* Achievement Toast Manager */}
+      <AchievementManager 
+        onNavigateToAchievements={handleNavigateToAchievements}
       />
     </div>
   );
