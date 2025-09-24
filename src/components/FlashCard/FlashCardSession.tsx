@@ -36,24 +36,6 @@ const FlashCardSession: React.FC<FlashCardSessionProps> = ({ onSessionComplete }
     }
   }, [currentElement, session, onSessionComplete]);
 
-  // Handle keyboard input
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        handleNextStep();
-      } else if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        if (cardState === 'full-details') {
-          handleNextStep();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [cardState]);
-
   const handleNextStep = useCallback(() => {
     if (!currentElement || isTransitioning) return;
 
@@ -94,6 +76,24 @@ const FlashCardSession: React.FC<FlashCardSessionProps> = ({ onSessionComplete }
       }, 500);
     }
   }, [currentElement, cardState, isTransitioning, onSessionComplete]);
+
+  // Handle keyboard input
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleNextStep();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        if (cardState === 'full-details') {
+          handleNextStep();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleNextStep, cardState]);
 
   const handleCardClick = useCallback(() => {
     handleNextStep();
