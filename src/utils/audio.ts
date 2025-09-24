@@ -17,6 +17,15 @@ export type AudioEffectType = 'button_clicks' | 'next_question' | 'quiz_success'
 // Audio cache to avoid loading the same audio multiple times
 const audioCache = new Map<string, HTMLAudioElement>();
 
+// Audio throttling to prevent overlapping sounds from being too rapid
+let lastPlayTime: Record<AudioEffectType, number> = {
+  button_clicks: 0,
+  next_question: 0,
+  quiz_success: 0,
+  element_hover: 0,
+  element_click: 0
+};
+
 // Get audio element from cache or create new one
 const getAudioElement = (filePath: string): HTMLAudioElement => {
   if (!audioCache.has(filePath)) {
@@ -34,6 +43,15 @@ export const playAudioEffect = (effectType: AudioEffectType): void => {
   // Check if this specific sound effect is enabled
   if (!settings.sound_effects[effectType]) {
     return;
+  }
+
+  // For element hover sounds, prevent too rapid firing (max 10 per second)
+  const now = Date.now();
+  if (effectType === 'element_hover') {
+    if (now - lastPlayTime.element_hover < 100) {
+      return;
+    }
+    lastPlayTime.element_hover = now;
   }
   
   let audioFile: string;
@@ -59,8 +77,9 @@ export const playAudioEffect = (effectType: AudioEffectType): void => {
   
   try {
     const audio = getAudioElement(audioFile);
-    // Reset audio to beginning and play
+    // Reset audio to beginning and play immediately
     audio.currentTime = 0;
+    audio.volume = 0.3; // Reduce volume for better UX during rapid hover
     audio.play().catch(error => {
       console.warn('Failed to play audio effect:', error);
     });
