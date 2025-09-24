@@ -163,6 +163,7 @@ export interface AppData {
   };
   achievements: UserAchievement[];
   settings: UserSettings;
+  progress?: ProgressState;
 }
 
 // Achievement system types
@@ -182,4 +183,33 @@ export interface UserAchievement {
   progress: number;
   unlock_date?: Date;
   current_value: number;
+}
+
+// Progress tracking types
+export interface DailyProgress {
+  flashcardsTarget: number;
+  flashcardsDone: number;
+  dateKey: string; // YYYY-MM-DD format
+}
+
+export interface QuizProgress {
+  lastScore: number;
+  lastTakenAt: string; // ISO string
+}
+
+export interface AchievementQueue {
+  unlocked: Array<{
+    id: string;
+    timestamp: string;
+  }>;
+  queue: Array<{
+    id: string;
+    timestamp: string;
+  }>;
+}
+
+export interface ProgressState {
+  daily: DailyProgress;
+  quiz: QuizProgress;
+  achievements: AchievementQueue;
 }

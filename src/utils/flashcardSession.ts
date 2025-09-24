@@ -2,6 +2,7 @@
 import type { Element } from '../types';
 import { allElements } from '../data/elements';
 import { loadSettings } from './storage';
+import { syncFlashcardProgress } from './progressSync';
 
 interface FlashcardSession {
   date: string; // YYYY-MM-DD format
@@ -93,6 +94,9 @@ export const markElementAsShown = (elementId: number): FlashcardSession => {
   if (!session.shownElements.includes(elementId)) {
     session.shownElements.push(elementId);
     session.completedCount = session.shownElements.length;
+    
+    // Sync with progress store
+    syncFlashcardProgress(elementId);
   }
   
   saveFlashcardSession(session);
