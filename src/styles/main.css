@@ -609,12 +609,31 @@ select.input {
   position: relative;
   overflow: hidden;
   border: 2px solid transparent;
+  transform-origin: center;
 }
 
 .element-cell:hover {
-  transform: scale(1.05);
+  animation: elementWaveHover 0.6s ease-in-out;
   z-index: 10;
   box-shadow: 0 8px 16px var(--shadow-lg);
+}
+
+@keyframes elementWaveHover {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.08) translateY(-2px);
+  }
+  50% {
+    transform: scale(1.12) translateY(-4px);
+  }
+  75% {
+    transform: scale(1.08) translateY(-2px);
+  }
+  100% {
+    transform: scale(1.05) translateY(0);
+  }
 }
 
 .element-cell:focus {

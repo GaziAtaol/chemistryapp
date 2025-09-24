@@ -145,6 +145,8 @@ export interface UserSettings {
     button_clicks: boolean;
     next_question: boolean;
     quiz_success: boolean;
+    element_hover: boolean;
+    element_click: boolean;
   };
 }
 
